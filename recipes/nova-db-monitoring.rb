@@ -33,8 +33,13 @@ end
 monitoring_metric "mysql" do
   type "mysql"
   host mysql_info["bind_address"]
-  user node["nova"]["db"]["username"]
-  password node["nova"]["db"]["password"]
+  user "root"
+  password node["mysql"]["server_root_password"]
   port 3306
-  db "nova"
+
+  alarms("max_connections" => {
+           :warning_max => node["mysql"]["tunable"]["max_connections"].to_i * 0.8,
+           :failure_max => node["mysql"]["tunable"]["max_connections"].to_i * 0.9
+         })
+
 end
