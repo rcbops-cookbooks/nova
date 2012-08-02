@@ -1,4 +1,4 @@
-maintainer        "Rackspace Hosting, Inc."
+maintainer        "Rackspace US, Inc."
 license           "Apache 2.0"
 description       "Installs and configures Openstack"
 long_description  IO.read(File.join(File.dirname(__FILE__), 'README.md'))
