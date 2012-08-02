@@ -51,4 +51,13 @@ monitoring_procmon "nova-scheduler" do
   stop_cmd "/usr/sbin/service #{service_name} stop"
 end
 
+monitoring_metric "nova-scheduler-proc" do
+  type "proc"
+  proc_name "nova-scheduler"
+  proc_regex platform_options["nova_scheduler_service"]
+
+  alarms(:failure_min => 2.0)
+end
+
+
 include_recipe "nova::nova-scheduler-patch"

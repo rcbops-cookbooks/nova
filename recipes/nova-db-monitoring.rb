@@ -30,6 +30,15 @@ monitoring_procmon "mysqld" do
   stop_cmd "/usr/sbin/service #{service_name} stop"
 end
 
+# This is going to fail for an external database server...
+monitoring_metric "mysqld-proc" do
+  type "proc"
+  proc_name "mysqld"
+  proc_regex node["nova"]["platform"]["mysql_service"]
+
+  alarms(:failure_min => 1.0)
+end
+
 monitoring_metric "mysql" do
   type "mysql"
   host mysql_info["bind_address"]

@@ -52,6 +52,14 @@ monitoring_procmon "libvirt-bin" do
   stop_cmd "/usr/sbin/service #{service_name} stop"
 end
 
+monitoring_metric "libvirtd-proc" do
+  type "proc"
+  proc_name "libvirtd-consoleauth"
+  proc_regex platform_options["libvirt_service"]
+
+  alarms(:failure_min => 1.0)
+end
+
 #
 # TODO(breu): this section needs to be rewritten to support key privisioning
 #

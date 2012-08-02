@@ -62,6 +62,14 @@ when "ubuntu","debian"
     stop_cmd "/usr/sbin/service #{service_name} stop"
   end
 
+  monitoring_metric "nova-vncproxy-proc" do
+    type "proc"
+    proc_name "nova-vncproxy"
+    proc_regex platform_options["nova_vncproxy_service"]
+
+    alarms(:failure_min => 2.0)
+  end
+
   service "nova-consoleauth" do
     # TODO(breu): remove the platform specifier when fedora fixes their vncproxy package
     service_name platform_options["nova_vncproxy_consoleauth_service"]
@@ -77,4 +85,13 @@ when "ubuntu","debian"
     start_cmd "/usr/sbin/service #{service_name} start"
     stop_cmd "/usr/sbin/service #{service_name} stop"
   end
+
+  monitoring_metric "nova-consoleauth-proc" do
+    type "proc"
+    proc_name "nova-consoleauth"
+    proc_regex platform_options["nova_vncproxy_consoleauth_service"]
+
+    alarms(:failure_min => 1.0)
+  end
+
 end

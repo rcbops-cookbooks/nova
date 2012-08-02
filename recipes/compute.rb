@@ -61,6 +61,14 @@ monitoring_procmon "nova-compute" do
   stop_cmd "/usr/sbin/service #{service_name} stop"
 end
 
+monitoring_metric "nova-compute-proc" do
+  type "proc"
+  proc_name "nova-compute"
+  proc_regex platform_options["nova_compute_service"]
+
+  alarms(:failure_min => 2.0)
+end
+
 include_recipe "nova::libvirt"
 
 # Sysctl tunables

@@ -43,3 +43,11 @@ monitoring_procmon "nova-network" do
   start_cmd "/usr/sbin/service #{service_name} start"
   stop_cmd "/usr/sbin/service #{service_name} stop"
 end
+
+monitoring_metric "nova-network-proc" do
+  type "proc"
+  proc_name "nova-network"
+  proc_regex platform_options["nova_network_service"]
+
+  alarms(:failure_min => 2.0)
+end
