@@ -60,6 +60,14 @@ monitoring_procmon "nova-api-os-compute" do
   stop_cmd "/usr/sbin/service #{service_name} stop"
 end
 
+monitoring_metric "nova-api-os-compute-proc" do
+  type "proc"
+  proc_name "nova-api-os-compute"
+  proc_regex platform_options["api_os_compute_service"]
+
+  alarms(:failure_min => 2.0)
+end
+
 keystone = get_settings_by_role("keystone", "keystone")
 ks_admin_endpoint = get_access_endpoint("keystone", "keystone", "admin-api")
 ks_service_endpoint = get_access_endpoint("keystone", "keystone", "service-api")
