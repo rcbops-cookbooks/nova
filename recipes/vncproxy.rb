@@ -57,7 +57,7 @@ when "ubuntu","debian"
   monitoring_procmon "nova-vncproxy" do
     service_name=platform_options["nova_vncproxy_service"]
 
-    process_name "nova-vncproxy"
+    process_name "nova-novncproxy"
     start_cmd "/usr/sbin/service #{service_name} start"
     stop_cmd "/usr/sbin/service #{service_name} stop"
   end
