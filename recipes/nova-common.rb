@@ -37,7 +37,7 @@ directory "/etc/nova" do
 end
 
 mysql_info = get_settings_by_role("mysql-master", "mysql")
-rabbit_info = get_bind_enpoint("rabbitmq", "queue")
+rabbit_info = get_bind_endpoint("rabbitmq", "queue")
 
 # nova::nova-setup does not need to be double escaped here
 nova_setup_info = get_settings_by_role("nova-setup", "nova")
