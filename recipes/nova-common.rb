@@ -36,7 +36,7 @@ directory "/etc/nova" do
   mode "0755"
 end
 
-mysql_info = get_settings_by_role("mysql-master", "mysql")
+mysql_info = get_access_endpoint("mysql-master", "mysql", "db")
 rabbit_info = get_access_endpoint("rabbitmq-server", "rabbitmq", "queue")
 
 # nova::nova-setup does not need to be double escaped here
@@ -63,7 +63,7 @@ template "/etc/nova/nova.conf" do
   variables(
     "use_syslog" => node["nova"]["syslog"]["use"],
     "log_facility" => node["nova"]["syslog"]["facility"],
-    "db_ipaddress" => mysql_info["bind_address"],
+    "db_ipaddress" => mysql_info["host"],
     "user" => node["nova"]["db"]["username"],
     "passwd" => nova_setup_info["db"]["password"],
     "db_name" => node["nova"]["db"]["name"],
