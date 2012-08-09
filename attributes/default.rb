@@ -171,6 +171,8 @@ when "ubuntu"
     "nova_vncproxy_consoleauth_service" => "nova-consoleauth",
     "libvirt_packages" => ["libvirt-bin"],
     "libvirt_service" => "libvirt-bin",
+    "nova_cert_packages" => ["nova-cert"],
+    "nova_cert_service" => "nova-cert",
     "mysql_service" => "mysql",
     "common_packages" => ["nova-common"],
     "iscsi_helper" => "tgtadm",
