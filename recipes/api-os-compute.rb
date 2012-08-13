@@ -2,7 +2,7 @@
 # Cookbook Name:: nova
 # Recipe:: api-os-compute
 #
-# Copyright 2009, Rackspace Hosting, Inc.
+# Copyright 2012, Rackspace US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
 
 ::Chef::Recipe.send(:include, Opscode::OpenSSL::Password)
 include_recipe "nova::nova-common"
@@ -57,6 +58,14 @@ monitoring_procmon "nova-api-os-compute" do
   process_name "nova-api-os-compute"
   start_cmd "/usr/sbin/service #{service_name} start"
   stop_cmd "/usr/sbin/service #{service_name} stop"
+end
+
+monitoring_metric "nova-api-os-compute-proc" do
+  type "proc"
+  proc_name "nova-api-os-compute"
+  proc_regex platform_options["api_os_compute_service"]
+
+  alarms(:failure_min => 2.0)
 end
 
 keystone = get_settings_by_role("keystone", "keystone")

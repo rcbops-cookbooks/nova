@@ -2,7 +2,7 @@
 # Cookbook Name:: nova
 # Recipe:: scheduler
 #
-# Copyright 2009, Rackspace Hosting, Inc.
+# Copyright 2012, Rackspace US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -50,5 +50,14 @@ monitoring_procmon "nova-scheduler" do
   start_cmd "/usr/sbin/service #{service_name} start"
   stop_cmd "/usr/sbin/service #{service_name} stop"
 end
+
+monitoring_metric "nova-scheduler-proc" do
+  type "proc"
+  proc_name "nova-scheduler"
+  proc_regex platform_options["nova_scheduler_service"]
+
+  alarms(:failure_min => 2.0)
+end
+
 
 include_recipe "nova::nova-scheduler-patch"

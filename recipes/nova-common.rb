@@ -1,8 +1,8 @@
 #
 # Cookbook Name:: nova
-# Recipe:: common
+# Recipe:: nova-common
 #
-# Copyright 2009, Rackspace Hosting, Inc.
+# Copyright 2012, Rackspace US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+
 include_recipe "nova::nova-rsyslog"
 include_recipe "osops-utils::autoetchosts"
 
@@ -35,8 +36,8 @@ directory "/etc/nova" do
   mode "0755"
 end
 
-mysql_info = get_settings_by_role("mysql-master", "mysql")
-rabbit_ip = IPManagement.get_ips_for_role("rabbitmq-server", "nova", node)[0] # FIXME: we need to be able to specify foreign endpoints.  Nova?
+mysql_info = get_access_endpoint("mysql-master", "mysql", "db")
+rabbit_info = get_access_endpoint("rabbitmq-server", "rabbitmq", "queue")
 
 # nova::nova-setup does not need to be double escaped here
 nova_setup_info = get_settings_by_role("nova-setup", "nova")
@@ -46,7 +47,7 @@ keystone = get_settings_by_role("keystone", "keystone")
 ks_admin_endpoint = get_access_endpoint("keystone", "keystone", "admin-api")
 ks_service_endpoint = get_access_endpoint("keystone", "keystone", "service-api")
 xvpvnc_endpoint = get_access_endpoint("nova-vncproxy", "nova", "xvpvnc")
-novnc_endpoint = get_access_endpoint("nova-vncproxy", "nova", "novnc")
+novnc_endpoint = get_access_endpoint("nova-vncproxy", "nova", "novnc-server")
 novnc_proxy_endpoint = get_bind_endpoint("nova", "novnc")
 
 glance_endpoint = get_access_endpoint("glance-api", "glance", "api")
@@ -62,7 +63,7 @@ template "/etc/nova/nova.conf" do
   variables(
     "use_syslog" => node["nova"]["syslog"]["use"],
     "log_facility" => node["nova"]["syslog"]["facility"],
-    "db_ipaddress" => mysql_info["bind_address"],
+    "db_ipaddress" => mysql_info["host"],
     "user" => node["nova"]["db"]["username"],
     "passwd" => nova_setup_info["db"]["password"],
     "db_name" => node["nova"]["db"]["name"],
@@ -72,12 +73,14 @@ template "/etc/nova/nova.conf" do
     "xvpvncproxy_bind_host" => xvpvnc_endpoint["host"],
     "xvpvncproxy_bind_port" => xvpvnc_endpoint["port"],
     "xvpvncproxy_base_url" => xvpvnc_endpoint["uri"],
-    "rabbit_ipaddress" => rabbit_ip,
+    "rabbit_ipaddress" => rabbit_info["host"],
+    "rabbit_port" => rabbit_info["port"],
     "keystone_api_ipaddress" => ks_admin_endpoint["host"],
     "keystone_service_port" => ks_service_endpoint["port"],
     "glance_api_ipaddress" => glance_endpoint["host"],
     "glance_api_port" => glance_endpoint["port"],
     "iscsi_helper" => platform_options["iscsi_helper"],
+    "public_interface" => node["nova"]["network"]["public_interface"],
     "network_manager" => node["nova"]["network"]["network_manager"],
     "scheduler_driver" => node["nova"]["scheduler"]["scheduler_driver"],
     "scheduler_default_filters" => node["nova"]["scheduler"]["default_filters"].join(","),
@@ -88,6 +91,7 @@ template "/etc/nova/nova.conf" do
     "force_raw_images" => node["nova"]["config"]["force_raw_images"],
     "dmz_cidr" => node["nova"]["network"]["dmz_cidr"],
     "allow_same_net_traffic" => node["nova"]["config"]["allow_same_net_traffic"],
+    "osapi_max_limit" => node["nova"]["config"]["osapi_max_limit"],
     "cpu_allocation_ratio" => node["nova"]["config"]["cpu_allocation_ratio"],
     "ram_allocation_ratio" => node["nova"]["config"]["ram_allocation_ratio"],
     "snapshot_image_format" => node["nova"]["config"]["snapshot_image_format"],

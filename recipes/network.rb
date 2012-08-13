@@ -2,7 +2,7 @@
 # Cookbook Name:: nova
 # Recipe:: network
 #
-# Copyright 2009, Rackspace Hosting, Inc.
+# Copyright 2012, Rackspace US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -42,4 +42,12 @@ monitoring_procmon "nova-network" do
   process_name "nova-network"
   start_cmd "/usr/sbin/service #{service_name} start"
   stop_cmd "/usr/sbin/service #{service_name} stop"
+end
+
+monitoring_metric "nova-network-proc" do
+  type "proc"
+  proc_name "nova-network"
+  proc_regex platform_options["nova_network_service"]
+
+  alarms(:failure_min => 2.0)
 end

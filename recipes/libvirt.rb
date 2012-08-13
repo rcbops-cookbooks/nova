@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: openstack
+# Cookbook Name:: nova
 # Recipe:: libvirt
 #
-# Copyright 2012, Rackspace Hosting, Inc.
+# Copyright 2012, Rackspace US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -50,6 +50,14 @@ monitoring_procmon "libvirt-bin" do
   process_name "libvirtd"
   start_cmd "/usr/sbin/service #{service_name} start"
   stop_cmd "/usr/sbin/service #{service_name} stop"
+end
+
+monitoring_metric "libvirtd-proc" do
+  type "proc"
+  proc_name "libvirtd-consoleauth"
+  proc_regex platform_options["libvirt_service"]
+
+  alarms(:failure_min => 1.0)
 end
 
 #

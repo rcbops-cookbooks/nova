@@ -36,7 +36,7 @@ default_schedule_zone=<%= @default_schedule_zone %>
 network_manager=<%= @network_manager %>
 #--flat_interface=eth1
 #--flat_network_dhcp_start=10.20.1.2
-#--public_interface=eth0
+public_interface=<% @public_interface %>
 fixed_range=<%= @fixed_range %>
 dmz_cidr=<%= @dmz_cidr %>
 force_dhcp_release=true
@@ -73,6 +73,7 @@ vncserver_proxyclient_address=<%= @vncserver_proxyclient_address %>
 # force backing images to raw format
 force_raw_images=<%= @force_raw_images %>
 allow_same_net_traffic=<%= @allow_same_net_traffic %>
+osapi_max_limit=<%= @osapi_max_limit %>
 snapshot_image_format=<%= @snapshot_image_format %>
 start_guests_on_host_boot=<%= @start_guests_on_host_boot %>
 resume_guests_state_on_host_boot=<%= @resume_guests_state_on_host_boot %>

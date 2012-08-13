@@ -36,6 +36,11 @@ default["nova"]["services"]["novnc"]["network"] = "nova"
 default["nova"]["services"]["novnc"]["port"] = 6080
 default["nova"]["services"]["novnc"]["path"] = "/vnc_auto.html"
 
+default["nova"]["services"]["novnc-server"]["scheme"] = "http"
+default["nova"]["services"]["novnc-server"]["network"] = "nova"
+default["nova"]["services"]["novnc-server"]["port"] = 6080
+default["nova"]["services"]["novnc-server"]["path"] = "/vnc_auto.html"
+
 default["nova"]["services"]["volume"]["scheme"] = "http"
 default["nova"]["services"]["volume"]["network"] = "public"
 default["nova"]["services"]["volume"]["port"] = 8776
@@ -76,6 +81,7 @@ default["nova"]["networks"] = [
 default["nova"]["network"]["fixed_range"] = default["nova"]["networks"][0]["ipv4_cidr"]
 default["nova"]["network"]["dmz_cidr"] = "10.128.0.0/24"
 default["nova"]["network"]["network_manager"] = "nova.network.manager.FlatDHCPManager"
+default["nova"]["network"]["public_interface"] = "eth0"
 
 default["nova"]["scheduler"]["scheduler_driver"] = "nova.scheduler.filter_scheduler.FilterScheduler"
 default["nova"]["scheduler"]["default_filters"] = ["AvailabilityZoneFilter",
@@ -92,6 +98,7 @@ default["nova"]["config"]["availability_zone"] = "nova"
 default["nova"]["config"]["default_schedule_zone"] = "nova"
 default["nova"]["config"]["force_raw_images"] = false
 default["nova"]["config"]["allow_same_net_traffic"] = true
+default["nova"]["config"]["osapi_max_limit"] = 1000
 default["nova"]["config"]["cpu_allocation_ratio"] = 16.0
 default["nova"]["config"]["ram_allocation_ratio"] = 1.5
 default["nova"]["config"]["snapshot_image_format"] = "qcow2"

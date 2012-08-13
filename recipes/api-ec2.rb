@@ -2,7 +2,7 @@
 # Cookbook Name:: nova
 # Recipe:: api-ec2
 #
-# Copyright 2009, Rackspace Hosting, Inc.
+# Copyright 2012, Rackspace US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
 
 ::Chef::Recipe.send(:include, Opscode::OpenSSL::Password)
 include_recipe "nova::nova-common"
@@ -53,9 +54,18 @@ end
 monitoring_procmon "nova-api-ec2" do
   service_name = platform_options["api_ec2_service"]
 
-  process_name "nova-api_ec2"
+  # TODO(shep): should this be platform_options["api_ec2_service"]
+  process_name "nova-api-ec2"
   start_cmd "/usr/sbin/service #{service_name} start"
   stop_cmd "/usr/sbin/service #{service_name} stop"
+end
+
+monitoring_metric "nova-api-ec2-proc" do
+  type "proc"
+  proc_name "nova-api-ec2"
+  proc_regex platform_options["api_ec2_service"]
+
+  alarms(:failure_min => 2.0)
 end
 
 ks_admin_endpoint = get_access_endpoint("keystone", "keystone", "admin-api")
