@@ -106,6 +106,10 @@ default["nova"]["config"]["start_guests_on_host_boot"] = true
 # requires https://review.openstack.org/#/c/8423/
 default["nova"]["config"]["resume_guests_state_on_host_boot"] = false
 
+# quota settings
+default["nova"]["config"]["quota_security_groups"] = 50
+default["nova"]["config"]["quota_security_group_rules"] = 20
+
 default["nova"]["ratelimit"]["settings"] = {
     "generic-post-limit" => { "verb" => "POST", "uri" => "*", "regex" => ".*", "limit" => "10", "interval" => "MINUTE" },
     "create-servers-limit" => { "verb" => "POST", "uri" => "*/servers", "regex" => "^/servers", "limit" => "50", "interval" => "DAY" },
