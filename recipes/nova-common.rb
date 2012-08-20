@@ -96,7 +96,9 @@ template "/etc/nova/nova.conf" do
     "ram_allocation_ratio" => node["nova"]["config"]["ram_allocation_ratio"],
     "snapshot_image_format" => node["nova"]["config"]["snapshot_image_format"],
     "start_guests_on_host_boot" => node["nova"]["config"]["start_guests_on_host_boot"],
-    "resume_guests_state_on_host_boot" => node["nova"]["config"]["resume_guests_state_on_host_boot"]
+    "resume_guests_state_on_host_boot" => node["nova"]["config"]["resume_guests_state_on_host_boot"],
+    "quota_security_groups" => node["nova"]["config"]["quota_security_groups"],
+    "quota_security_group_rules" => node["nova"]["config"]["quota_security_group_rules"]
   )
 end
 

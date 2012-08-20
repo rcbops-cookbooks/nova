@@ -77,6 +77,10 @@ osapi_max_limit=<%= @osapi_max_limit %>
 snapshot_image_format=<%= @snapshot_image_format %>
 start_guests_on_host_boot=<%= @start_guests_on_host_boot %>
 resume_guests_state_on_host_boot=<%= @resume_guests_state_on_host_boot %>
+# number of security groups per project (default: 10)
+quota_security_groups=<%= @quota_security_groups %>
+# number of security rules per security group (default: 20)
+quota_security_group_rules=<%= @quota_security_group_rules %>
 
 <%- if /FilterScheduler/.match(@scheduler_driver) or
        /MultiScheduler/.match(@scheduler_driver) %>
