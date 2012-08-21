@@ -121,7 +121,7 @@ default["nova"]["ratelimit"]["api"]["enabled"] = true
 default["nova"]["ratelimit"]["volume"]["enabled"] = true
 
 case platform
-when "fedora", "redhat"
+when "fedora", "redhat", "centos"
   default["nova"]["platform"] = {
     "api_ec2_packages" => ["openstack-nova"],
     "api_ec2_service" => "openstack-nova-api",
@@ -144,6 +144,8 @@ when "fedora", "redhat"
     "nova_vncproxy_consoleauth_packages" => ["openstack-nova"],
     "libvirt_packages" => ["libvirt"],
     "libvirt_service" => "libvirtd",
+    "nova_cert_packages" => ["openstack-nova"],
+    "nova_cert_service" => "openstack-nova-cert",
     "mysql_service" => "mysqld",
     "common_packages" => ["openstack-nova"],
     "iscsi_helper" => "ietadm",
