@@ -40,7 +40,8 @@ network_manager=<%= @network_manager %>
 fixed_range=<%= @fixed_range %>
 dmz_cidr=<%= @dmz_cidr %>
 force_dhcp_release=true
-send_arp_for_ha=True
+send_arp_for_ha=true
+use_single_default_gateway=true
 <% if @virt_type == "qemu" -%>
 libvirt_use_virtio_for_bridges=false
 <% else -%>
