@@ -22,76 +22,62 @@ include_recipe "monitoring"
 
 platform_options = node["nova"]["platform"]
 
-case node["platform"]
-when "ubuntu","debian"
-  platform_options["nova_vncproxy_packages"].each do |pkg|
-    package pkg do
-      action :upgrade
-      options platform_options["package_overrides"]
-    end
+platform_options["nova_vncproxy_packages"].each do |pkg|
+  package pkg do
+    action :upgrade
+    options platform_options["package_overrides"]
   end
+end
 
-  # required for vnc console authentication
-  platform_options["nova_vncproxy_consoleauth_packages"].each do |pkg|
-    package pkg do
-      action :upgrade
-    end
+# required for vnc console authentication
+platform_options["nova_vncproxy_consoleauth_packages"].each do |pkg|
+  package pkg do
+    action :upgrade
   end
+end
 
-  # TODO(breu):this needs to be re-worked when novnc and nova-xvpvncproxy can coexist.  for
-  # now don't do this at all.
-  #execute "Fix permission Bug" do
-  #  command "sed -i 's/nova$/root/g' /etc/init/nova-vncproxy.conf"
-  #  action :run
-  #  only_if { File.readlines("/etc/init/nova-vncproxy.conf").grep(/exec.*nova$/).size > 0 }
-  #end
+service "nova-vncproxy" do
+  service_name platform_options["nova_vncproxy_service"]
+  supports :status => true, :restart => true
+  action :enable
+  subscribes :restart, resources(:template => "/etc/nova/nova.conf"), :delayed
+end
 
-  service "nova-vncproxy" do
-    # TODO(breu): remove the platform specifier when fedora fixes their vncproxy package
-    service_name platform_options["nova_vncproxy_service"]
-    supports :status => true, :restart => true
-    action :enable
-    subscribes :restart, resources(:template => "/etc/nova/nova.conf"), :delayed
-  end
+monitoring_procmon "nova-vncproxy" do
+  service_name=platform_options["nova_vncproxy_service"]
 
-  monitoring_procmon "nova-vncproxy" do
-    service_name=platform_options["nova_vncproxy_service"]
+  process_name "nova-novncproxy"
+  start_cmd "/usr/sbin/service #{service_name} start"
+  stop_cmd "/usr/sbin/service #{service_name} stop"
+end
 
-    process_name "nova-novncproxy"
-    start_cmd "/usr/sbin/service #{service_name} start"
-    stop_cmd "/usr/sbin/service #{service_name} stop"
-  end
+monitoring_metric "nova-vncproxy-proc" do
+  type "proc"
+  proc_name "nova-vncproxy"
+  proc_regex platform_options["nova_vncproxy_service"]
 
-  monitoring_metric "nova-vncproxy-proc" do
-    type "proc"
-    proc_name "nova-vncproxy"
-    proc_regex platform_options["nova_vncproxy_service"]
+  alarms(:failure_min => 2.0)
+end
 
-    alarms(:failure_min => 2.0)
-  end
+service "nova-consoleauth" do
+  service_name platform_options["nova_vncproxy_consoleauth_service"]
+  supports :status => true, :restart => true
+  action :enable
+  subscribes :restart, resources(:template => "/etc/nova/nova.conf"), :delayed
+end
 
-  service "nova-consoleauth" do
-    # TODO(breu): remove the platform specifier when fedora fixes their vncproxy package
-    service_name platform_options["nova_vncproxy_consoleauth_service"]
-    supports :status => true, :restart => true
-    action :enable
-    subscribes :restart, resources(:template => "/etc/nova/nova.conf"), :delayed
-  end
+monitoring_procmon "nova-consoleauth" do
+  service_name=platform_options["nova_vncproxy_consoleauth_service"]
 
-  monitoring_procmon "nova-consoleauth" do
-    service_name=platform_options["nova_vncproxy_consoleauth_service"]
+  process_name "nova-consoleauth"
+  start_cmd "/usr/sbin/service #{service_name} start"
+  stop_cmd "/usr/sbin/service #{service_name} stop"
+end
 
-    process_name "nova-consoleauth"
-    start_cmd "/usr/sbin/service #{service_name} start"
-    stop_cmd "/usr/sbin/service #{service_name} stop"
-  end
+monitoring_metric "nova-consoleauth-proc" do
+  type "proc"
+  proc_name "nova-consoleauth"
+  proc_regex platform_options["nova_vncproxy_consoleauth_service"]
 
-  monitoring_metric "nova-consoleauth-proc" do
-    type "proc"
-    proc_name "nova-consoleauth"
-    proc_regex platform_options["nova_vncproxy_consoleauth_service"]
-
-    alarms(:failure_min => 1.0)
-  end
-
+  alarms(:failure_min => 1.0)
 end

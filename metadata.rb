@@ -19,7 +19,7 @@ recipe		  "scheduler", ""
 recipe		  "vncproxy", ""
 recipe		  "volume", ""
 
-%w{ ubuntu fedora }.each do |os|
+%w{ ubuntu fedora redhat centos }.each do |os|
   supports os
 end
 

@@ -35,7 +35,15 @@ bash "create libvirtd group" do
       groupadd -f libvirtd
       usermod -G libvirtd nova
   EOH
-  only_if { platform?(%w{fedora}) }
+  only_if { platform?(%w{fedora redhat centos}) }
+end
+
+# oh redhat
+# http://fedoraproject.org/wiki/Getting_started_with_OpenStack_EPEL#Installing_within_a_VM
+# ln -s /usr/libexec/qemu-kvm /usr/bin/qemu-system-x86_64
+link "/usr/bin/qemu-system-x86_64" do
+  to "/usr/libexec/qemu-kvm"
+  only_if { platform?(%w{fedora redhat centos}) }
 end
 
 service "libvirt-bin" do
