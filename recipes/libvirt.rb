@@ -88,6 +88,16 @@ template "/etc/default/libvirt-bin" do
   group "root"
   mode "0644"
   notifies :restart, resources(:service => "libvirt-bin"), :immediately
+  only_if { platform?(%w{ubuntu debian}) }
+end
+
+template "/etc/sysconfig/libvirtd" do
+  source "libvirtd.erb"
+  owner "root"
+  group "root"
+  mode "0644"
+  notifies :restart, resources(:service => "libvirt-bin"), :immediately
+  only_if { platform?(%w{fedora redhat centos}) }
 end
 
 monitoring_metric "libvirt" do
