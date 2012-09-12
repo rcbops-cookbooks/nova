@@ -28,6 +28,7 @@ end
 
 include_recipe "nova::nova-common"
 include_recipe "mysql::client"
+include_recipe "mysql::ruby"
 include_recipe "monitoring"
 
 ks_service_endpoint = get_access_endpoint("keystone", "keystone","service-api")
