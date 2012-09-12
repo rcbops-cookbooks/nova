@@ -39,16 +39,14 @@ end
 service "nova-scheduler" do
   service_name platform_options["nova_scheduler_service"]
   supports :status => true, :restart => true
-  action :enable
+  action [ :enable, :start ]
   subscribes :restart, resources(:template => "/etc/nova/nova.conf"), :delayed
 end
 
 monitoring_procmon "nova-scheduler" do
   service_name=platform_options["nova_scheduler_service"]
-
   process_name "nova-scheduler"
-  start_cmd "/usr/sbin/service #{service_name} start"
-  stop_cmd "/usr/sbin/service #{service_name} stop"
+  script_name service_name
 end
 
 monitoring_metric "nova-scheduler-proc" do

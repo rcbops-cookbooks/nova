@@ -38,10 +38,8 @@ end
 
 monitoring_procmon "nova-network" do
   service_name=platform_options["nova_network_service"]
-
   process_name "nova-network"
-  start_cmd "/usr/sbin/service #{service_name} start"
-  stop_cmd "/usr/sbin/service #{service_name} stop"
+  script_name service_name
 end
 
 monitoring_metric "nova-network-proc" do

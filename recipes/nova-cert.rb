@@ -36,9 +36,7 @@ service "nova-cert" do
 end
 
 monitoring_procmon "nova-cert" do
-  service_name = platform_options["nova_cert_services"]
-
+  service_name = platform_options["nova_cert_service"]
   process_name "nova-cert"
-  start_cmd "/usr/sbin/service #{service_name} start"
-  stop_cmd "/usr/sbin/service #{service_name} stop"
+  script_name service_name
 end

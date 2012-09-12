@@ -55,10 +55,8 @@ end
 
 monitoring_procmon "nova-compute" do
   service_name=platform_options["nova_compute_service"]
-
   process_name "nova-compute"
-  start_cmd "/usr/sbin/service #{service_name} start"
-  stop_cmd "/usr/sbin/service #{service_name} stop"
+  script_name service_name
 end
 
 monitoring_metric "nova-compute-proc" do

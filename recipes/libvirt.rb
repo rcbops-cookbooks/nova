@@ -54,10 +54,8 @@ end
 
 monitoring_procmon "libvirt-bin" do
   service_name=platform_options["libvirt_service"]
-
   process_name "libvirtd"
-  start_cmd "/usr/sbin/service #{service_name} start"
-  stop_cmd "/usr/sbin/service #{service_name} stop"
+  script_name service_name
 end
 
 monitoring_metric "libvirtd-proc" do
