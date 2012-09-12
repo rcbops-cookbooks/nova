@@ -53,11 +53,9 @@ end
 
 monitoring_procmon "nova-api-ec2" do
   service_name = platform_options["api_ec2_service"]
-
-  # TODO(shep): should this be platform_options["api_ec2_service"]
-  process_name "nova-api-ec2"
-  start_cmd "/usr/sbin/service #{service_name} start"
-  stop_cmd "/usr/sbin/service #{service_name} stop"
+  pname = platform_options["api_ec2_process_name"]
+  process_name pname
+  script_name service_name
 end
 
 monitoring_metric "nova-api-ec2-proc" do

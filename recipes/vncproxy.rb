@@ -45,10 +45,8 @@ end
 
 monitoring_procmon "nova-vncproxy" do
   service_name=platform_options["nova_vncproxy_service"]
-
   process_name "nova-novncproxy"
-  start_cmd "/usr/sbin/service #{service_name} start"
-  stop_cmd "/usr/sbin/service #{service_name} stop"
+  script_name service_name
 end
 
 monitoring_metric "nova-vncproxy-proc" do
@@ -68,10 +66,9 @@ end
 
 monitoring_procmon "nova-consoleauth" do
   service_name=platform_options["nova_vncproxy_consoleauth_service"]
-
-  process_name "nova-consoleauth"
-  start_cmd "/usr/sbin/service #{service_name} start"
-  stop_cmd "/usr/sbin/service #{service_name} stop"
+  pname=platform_options["nova_vncproxy_consoleauth_process_name"]
+  process_name pname
+  script_name service_name
 end
 
 monitoring_metric "nova-consoleauth-proc" do

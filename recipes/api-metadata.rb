@@ -49,10 +49,8 @@ end
 
 monitoring_procmon "nova-api-metadata" do
   service_name = platform_options["nova_api_metadata_service"]
-
   process_name "nova-api-metadata"
-  start_cmd "/usr/sbin/service #{service_name} start"
-  stop_cmd "/usr/sbin/service #{service_name} stop"
+  script_name service_name
 end
 
 monitoring_metric "nova-api-metadata-proc" do

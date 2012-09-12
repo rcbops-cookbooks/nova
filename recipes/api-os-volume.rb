@@ -49,11 +49,8 @@ end
 
 monitoring_procmon "nova-api-os-volume" do
   service_name=platform_options["api_os_volume_service"]
-
-  # TODO(shep): should this be platform_options["api_os_volume_service"]
   process_name "nova-api-os-volume"
-  start_cmd "/usr/sbin/service #{service_name} start"
-  stop_cmd "/usr/sbin/service #{service_name} stop"
+  script_name service_name
 end
 
 monitoring_metric "nova-api-os-volume-proc" do
