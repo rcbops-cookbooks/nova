@@ -62,9 +62,16 @@ compute_manager=nova.compute.manager.ComputeManager
 sql_connection=mysql://<%= @user %>:<%= @passwd %>@<%= @db_ipaddress %>/<%= @db_name %>
 connection_type=libvirt
 libvirt_type=<%= @virt_type %>
+# Command prefix to use for running commands as root (default: sudo)
 root_helper=sudo nova-rootwrap
-remove_unused_base_images=true
-remove_unused_original_minimum_age_seconds=360
+# Should unused base images be removed? (default: false)
+remove_unused_base_images=<% @remove_unused_base_images %>
+# Unused resized base images younger than this will not be removed (default: 3600)
+remove_unused_resized_minimum_age_seconds=<% @remove_unused_resized_minimum_age_seconds %>
+# Unused unresized base images younger than this will not be removed (default: 86400)
+remove_unused_original_minimum_age_seconds=<% @remove_unused_original_minimum_age_seconds %>
+# Write a checksum for files in _base to disk (default: false)
+checksum_base_images=<% @checksum_base_images %>
 
 ##### VNCPROXY #####
 novncproxy_base_url=<%= @novncproxy_base_url %>
