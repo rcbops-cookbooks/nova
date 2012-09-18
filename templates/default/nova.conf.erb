@@ -39,12 +39,7 @@ network_manager=<%= @network_manager %>
 public_interface=<%= @public_interface %>
 fixed_range=<%= @fixed_range %>
 dmz_cidr=<%= @dmz_cidr %>
-<% if %w(fedora redhat centos).include? node.platform -%>
-# https://bugzilla.redhat.com/show_bug.cgi?id=788485 - not released in epel yet
-force_dhcp_release=false
-<% else -%>
 force_dhcp_release=true
-<% end -%>
 send_arp_for_ha=true
 use_single_default_gateway=true
 <% if @virt_type == "qemu" -%>
