@@ -139,7 +139,7 @@ when "fedora", "redhat", "centos"
     "nova_api_metadata_packages" => ["openstack-nova-api"],
     "nova_api_metadata_process_name" => "nova-api",
     "nova_api_metadata_service" => "openstack-nova-api",
-    "nova_compute_packages" => ["openstack-nova-compute"],
+    "nova_compute_packages" => ["openstack-nova-compute", "dnsmasq-utils"],
     "nova_compute_service" => "openstack-nova-compute",
     "nova_network_packages" => ["iptables", "openstack-nova-network"],
     "nova_network_service" => "openstack-nova-network",
