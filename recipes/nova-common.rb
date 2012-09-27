@@ -132,6 +132,13 @@ template "/root/openrc" do
   )
 end
 
+# NOTE(shep): this is for backwards compatability with Alamo
+link "/root/.novarc" do
+  to "/root/openrc"
+  link_type :symbolic
+  only_if { File.exists? "/root/openrc" }
+end
+
 execute "enable nova login" do
   command "usermod -s /bin/sh nova"
 end
