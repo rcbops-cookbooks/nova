@@ -148,8 +148,8 @@ when "fedora", "redhat", "centos"
     "nova_vncproxy_packages" => ["openstack-nova-novncproxy"], # me thinks this is right?
     "nova_vncproxy_service" => "openstack-nova-novncproxy",
     "nova_vncproxy_consoleauth_packages" => ["openstack-nova-console"],
-    "nova_vncproxy_consoleauth_service" => "openstack-nova-console",
-    "nova_vncproxy_consoleauth_process_name" => "nova-console",
+    "nova_vncproxy_consoleauth_service" => "openstack-nova-consoleauth",
+    "nova_vncproxy_consoleauth_process_name" => "nova-consoleauth",
     "libvirt_packages" => ["libvirt"],
     "libvirt_service" => "libvirtd",
     "nova_cert_packages" => ["openstack-nova-cert"],
