@@ -11,6 +11,8 @@ default["nova"]["service_tenant_name"] = "service"                          # no
 default["nova"]["service_user"] = "nova"                                    # node_attribute
 default["nova"]["service_role"] = "admin"                                   # node_attribute
 
+default["nova"]["volumes"]["enabled"] = false                               # cluster attribute
+
 default["nova"]["services"]["api"]["scheme"] = "http"                       # node_attribute
 default["nova"]["services"]["api"]["network"] = "public"                    # node_attribute
 default["nova"]["services"]["api"]["port"] = 8774                           # node_attribute
@@ -156,7 +158,8 @@ when "fedora", "redhat", "centos"
     "nova_cert_service" => "openstack-nova-cert",
     "mysql_service" => "mysqld",
     "common_packages" => ["openstack-nova-common"],
-    "iscsi_helper" => "ietadm",
+    "iscsi_helper" => "tgtadm",
+    "iscsi_service" => "tgtd",
     "package_overrides" => ""
   }
 when "ubuntu"
@@ -171,7 +174,7 @@ when "ubuntu"
     "nova_api_metadata_packages" => ["nova-api-metadata"],
     "nova_api_metadata_service" => "nova-api-metadata",
     "nova_api_metadata_process_name" => "nova-api-metadata",
-    "nova_volume_packages" => ["nova-volume"],
+    "nova_volume_packages" => ["nova-volume", "tgt"],
     "nova_volume_service" => "nova-volume",
     "nova_compute_packages" => ["nova-compute"],
     "nova_compute_service" => "nova-compute",
@@ -191,6 +194,7 @@ when "ubuntu"
     "mysql_service" => "mysql",
     "common_packages" => ["nova-common"],
     "iscsi_helper" => "tgtadm",
+    "iscsi_service" => "tgt",
     "package_overrides" => "-o Dpkg::Options::='--force-confold' -o Dpkg::Options::='--force-confdef'"
   }
 end
