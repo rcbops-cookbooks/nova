@@ -109,6 +109,7 @@ volume
 ----
 -Includes recipes `nova-common`, `api-os-volume`  
 -Installs nova volume service and configures the service and endpoints in keystone  
+-To use you must created a LVM Volume Group named nova-volumes
 
 nova-scheduler-patch
 ----
@@ -205,6 +206,7 @@ NOTE: The filter scheduler currently does not work with ec2.
 * `nova["syslog"]["use"]` - Should nova log to syslog? 
 * `nova["syslog"]["facility"]` - Which facility nova should use when logging in python style (for example, LOG_LOCAL1)
 * `nova["syslog"]["config_facility"]` - Which facility nova should use when logging in rsyslog style (for example, local1)
+* `nova["volumes"]["enabled"]` - Turn on or off the nova-volumes service
 
 Templates
 =====
