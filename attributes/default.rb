@@ -174,7 +174,7 @@ when "ubuntu"
     "nova_api_metadata_packages" => ["nova-api-metadata"],
     "nova_api_metadata_service" => "nova-api-metadata",
     "nova_api_metadata_process_name" => "nova-api-metadata",
-    "nova_volume_packages" => ["nova-volume"],
+    "nova_volume_packages" => ["nova-volume", "iscsitarget"],
     "nova_volume_service" => "nova-volume",
     "nova_compute_packages" => ["nova-compute"],
     "nova_compute_service" => "nova-compute",
