@@ -46,6 +46,13 @@ cookbook_file "/etc/nova/nova-compute.conf" do
   action :create
 end
 
+template "/var/lib/nova/.ssh/config" do
+  source "libvirtd-ssh-config"
+  owner "nova"
+  group "nova"
+  mode "0600"
+end
+
 service "nova-compute" do
   service_name platform_options["nova_compute_service"]
   supports :status => true, :restart => true
