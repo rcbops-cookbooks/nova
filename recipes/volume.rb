@@ -34,10 +34,22 @@ platform_options["nova_volume_packages"].each do |pkg|
   end
 end
 
+if node["nova"]["volumes"]["enabled"] == true
+  iscsi_service_state=[ :enable, :start ]
+else
+  iscsi_service_state=[ :disabled ]
+end
+
+service "iscsitarget" do
+  service_name platform_options["iscsi_service"]
+  supports :status => true, :restart => true
+  action iscsi_service_state
+end
+
 service "nova-volume" do
   service_name platform_options["nova_volume_service"]
   supports :status => true, :restart => true
-  action :disable
+  action iscsi_service_state
   subscribes :restart, resources(:template => "/etc/nova/nova.conf"), :delayed
 end
 
