@@ -37,7 +37,7 @@ end
 if node["nova"]["volumes"]["enabled"] == true
   iscsi_service_state=[ :enable, :start ]
 else
-  iscsi_service_state=[ :disabled ]
+  iscsi_service_state=[ :disable ]
 end
 
 service "iscsitarget" do
