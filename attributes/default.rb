@@ -174,7 +174,7 @@ when "ubuntu"
     "nova_api_metadata_packages" => ["nova-api-metadata"],
     "nova_api_metadata_service" => "nova-api-metadata",
     "nova_api_metadata_process_name" => "nova-api-metadata",
-    "nova_volume_packages" => ["nova-volume", "iscsitarget"],
+    "nova_volume_packages" => ["nova-volume", "tgt"],
     "nova_volume_service" => "nova-volume",
     "nova_compute_packages" => ["nova-compute"],
     "nova_compute_service" => "nova-compute",
@@ -193,8 +193,8 @@ when "ubuntu"
     "nova_cert_service" => "nova-cert",
     "mysql_service" => "mysql",
     "common_packages" => ["nova-common"],
-    "iscsi_helper" => "ietadm",
-    "iscsi_service" => "iscsitarget",
+    "iscsi_helper" => "tgtadm",
+    "iscsi_service" => "tgt",
     "package_overrides" => "-o Dpkg::Options::='--force-confold' -o Dpkg::Options::='--force-confdef'"
   }
 end
