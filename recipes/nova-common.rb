@@ -106,7 +106,8 @@ template "/etc/nova/nova.conf" do
     "start_guests_on_host_boot" => node["nova"]["config"]["start_guests_on_host_boot"],
     "resume_guests_state_on_host_boot" => node["nova"]["config"]["resume_guests_state_on_host_boot"],
     "quota_security_groups" => node["nova"]["config"]["quota_security_groups"],
-    "quota_security_group_rules" => node["nova"]["config"]["quota_security_group_rules"]
+    "quota_security_group_rules" => node["nova"]["config"]["quota_security_group_rules"],
+    "dhcp_domain" => node["nova"]["network"]["dhcp_domain"]
   )
 end
 
