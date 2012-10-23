@@ -85,9 +85,9 @@ default["nova"]["network"]["dmz_cidr"] = "10.128.0.0/24"                        
 default["nova"]["network"]["network_manager"] = "nova.network.manager.FlatDHCPManager"         # cluster_attribute
 default["nova"]["network"]["public_interface"] = "eth0"                                        # node_attribute
 default["nova"]["network"]["dhcp_domain"] = "novalocal"                                        # cluster_attribute
-default["nova"]["network"]["force_dhcp_release"] = true					       # cluster_attribute
-default["nova"]["network"]["send_arp_for_ha"] = true					       # cluster_attribute
-default["nova"]["network"]["auto_assign_floating_ip"] = false				       # cluster_attribute
+default["nova"]["network"]["force_dhcp_release"] = true                                        # cluster_attribute
+default["nova"]["network"]["send_arp_for_ha"] = true                                           # cluster_attribute
+default["nova"]["network"]["auto_assign_floating_ip"] = false                                  # cluster_attribute
 
 default["nova"]["scheduler"]["scheduler_driver"] = "nova.scheduler.filter_scheduler.FilterScheduler"           # cluster_attribute
 default["nova"]["scheduler"]["default_filters"] = ["AvailabilityZoneFilter",                                   # cluster_attribute
