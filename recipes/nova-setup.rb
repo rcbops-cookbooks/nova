@@ -47,7 +47,7 @@ create_db_and_user("mysql",
 execute "nova-manage db sync" do
   command "nova-manage db sync"
   action :run
-  not_if "nova-manage db version && test $(nova-manage db version) -gt 0"
+#  not_if "nova-manage db version && test $(nova-manage db version) -gt 0"
 end
 
 node["nova"]["networks"].each do |net|

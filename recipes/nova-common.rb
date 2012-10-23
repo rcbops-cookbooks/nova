@@ -58,9 +58,15 @@ glance_endpoint = get_access_endpoint("glance-api", "glance", "api")
 nova_api_endpoint = get_access_endpoint("nova-api-os-compute", "nova", "api")
 ec2_public_endpoint = get_access_endpoint("nova-api-ec2", "nova", "ec2-public")
 
+if not node['package_component'].nil?
+  release = node['package_component']
+else
+  release = "essex-final"
+end
+
 # TODO: need to re-evaluate this for accuracy
 template "/etc/nova/nova.conf" do
-  source "nova.conf.erb"
+  source "#{release}/nova.conf.erb"
   owner "root"
   group "root"
   mode "0644"
