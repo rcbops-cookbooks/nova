@@ -39,8 +39,12 @@ network_manager=<%= @network_manager %>
 public_interface=<%= @public_interface %>
 fixed_range=<%= @fixed_range %>
 dmz_cidr=<%= @dmz_cidr %>
-force_dhcp_release=true
-send_arp_for_ha=true
+# Send a dhcp release on instance termination (default: false)
+force_dhcp_release=<%= @force_dhcp_release %>
+# Send gratuitous ARPs for HA setup (default: false)
+send_arp_for_ha=<%= @send_arp_for_ha %>
+# Auto-assign floating ip to VM (default: false)
+auto_assign_floating_ip=<%= @auto_assign_floating_ip %>
 use_single_default_gateway=true
 <% if @virt_type == "qemu" -%>
 libvirt_use_virtio_for_bridges=false
