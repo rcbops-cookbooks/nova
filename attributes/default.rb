@@ -104,6 +104,7 @@ default["nova"]["libvirt"]["remove_unused_base_images"] = true                  
 default["nova"]["libvirt"]["remove_unused_resized_minimum_age_seconds"] = 3600      # node_attribute (inherited from cluster?)
 default["nova"]["libvirt"]["remove_unused_original_minimum_age_seconds"] = 3600     # node_attribute (inherited from cluster?)
 default["nova"]["libvirt"]["checksum_base_images"] = false                          # node_attribute (inherited from cluster?)
+default["nova"]["libvirt"]["libvirt_inject_key"] = false                            # cluster_attribute
 default["nova"]["config"]["availability_zone"] = "nova"                             # node_attribute
 default["nova"]["config"]["default_schedule_zone"] = "nova"                         # cluster_attribute
 default["nova"]["config"]["force_raw_images"] = false                               # cluster_attribute
