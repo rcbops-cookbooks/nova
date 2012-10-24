@@ -101,6 +101,7 @@ template "/etc/nova/nova.conf" do
     "remove_unused_resized_minimum_age_seconds" => node["nova"]["libvirt"]["remove_unused_resized_minimum_age_seconds"],
     "remove_unused_original_minimum_age_seconds" => node["nova"]["libvirt"]["remove_unused_original_minimum_age_seconds"],
     "checksum_base_images" => node["nova"]["libvirt"]["checksum_base_images"],
+    "libvirt_inject_key" => node["nova"]["libvirt"]["libvirt_inject_key"],
     "fixed_range" => node["nova"]["network"]["fixed_range"],
     "force_dhcp_release" => node["nova"]["network"]["force_dhcp_release"],
     "send_arp_for_ha" => node["nova"]["network"]["send_arp_for_ha"],

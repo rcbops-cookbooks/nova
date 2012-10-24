@@ -62,6 +62,8 @@ compute_manager=nova.compute.manager.ComputeManager
 sql_connection=mysql://<%= @user %>:<%= @passwd %>@<%= @db_ipaddress %>/<%= @db_name %>
 connection_type=libvirt
 libvirt_type=<%= @virt_type %>
+# Inject the ssh public key at boot time (default: true)
+libvirt_inject_key=<%= @libvirt_inject_key %>
 # Command prefix to use for running commands as root (default: sudo)
 root_helper=sudo nova-rootwrap
 # Should unused base images be removed? (default: false)
