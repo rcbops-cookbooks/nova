@@ -80,6 +80,7 @@ default["nova"]["networks"] = [                                             # cl
         }
 ]
 
+default["nova"]["network"]["public_interface"] = "eth0"                                        # node_attribute
 default["nova"]["network"]["dmz_cidr"] = "10.128.0.0/24"                                       # cluster_attribute
 default["nova"]["network"]["network_manager"] = "nova.network.manager.FlatDHCPManager"         # cluster_attribute
 default["nova"]["network"]["dhcp_domain"] = "novalocal"                                        # cluster_attribute
