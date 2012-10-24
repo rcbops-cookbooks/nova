@@ -90,7 +90,7 @@ template "/etc/nova/nova.conf" do
     "glance_api_ipaddress" => glance_endpoint["host"],
     "glance_api_port" => glance_endpoint["port"],
     "iscsi_helper" => platform_options["iscsi_helper"],
-    "fixed_range" => node["nova"]["network"]["fixed_range"],
+    "fixed_range" => node["nova"]["networks"][0]["ipv4_cidr"],
     "public_interface" => node["nova"]["network"]["public_interface"],
     "network_manager" => node["nova"]["network"]["network_manager"],
     "scheduler_driver" => node["nova"]["scheduler"]["scheduler_driver"],
