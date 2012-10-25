@@ -22,6 +22,12 @@ include_recipe "monitoring"
 
 platform_options = node["nova"]["platform"]
 
+if not node['package_component'].nil?
+  release = node['package_component']
+else
+  release = "essex-final"
+end
+
 directory "/var/lock/nova" do
     owner "nova"
     group "nova"
@@ -66,7 +72,7 @@ ks_service_endpoint = get_access_endpoint("keystone", "keystone", "service-api")
 keystone = get_settings_by_role("keystone","keystone")
 
 template "/etc/nova/api-paste.ini" do
-  source "api-paste.ini.erb"
+  source "#{release}/api-paste.ini.erb"
   owner "root"
   group "root"
   mode "0644"

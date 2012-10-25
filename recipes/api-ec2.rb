@@ -26,6 +26,12 @@ platform_options=node["nova"]["platform"]
 # Set a secure keystone service password
 node.set_unless['nova']['service_pass'] = secure_password
 
+if not node['package_component'].nil?
+  release = node['package_component']
+else
+  release = "essex-final"
+end
+
 directory "/var/lock/nova" do
     owner "nova"
     group "nova"
@@ -127,7 +133,7 @@ keystone_register "Register EC2 Service" do
 end
 
 template "/etc/nova/api-paste.ini" do
-  source "api-paste.ini.erb"
+  source "#{release}/api-paste.ini.erb"
   owner "root"
   group "root"
   mode "0644"
