@@ -7,7 +7,12 @@
 
 # LOGS/STATE
 verbose=true
+<% if node["nova"]["ratelimit"]["api"]["enabled"] %>
 auth_strategy=keystone
+<% else %>
+auth_strategy=keystone_nolimit
+<% end %>
+
 dhcpbridge_flagfile=/etc/nova/nova.conf
 dhcpbridge=/usr/bin/nova-dhcpbridge
 logdir=/var/log/nova
