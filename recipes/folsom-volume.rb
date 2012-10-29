@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: nova
-# Recipe:: volume
+# Recipe:: folsom-volume
 #
 # Copyright 2012, Rackspace US, Inc.
 #
@@ -17,10 +17,4 @@
 # limitations under the License.
 #
 
-if not node['package_component'].nil?
-  release = node['package_component']
-else
-  release = node['essex-final']
-end
-
-include_recipe "nova::#{release}-volume"
+include_recipe "cinder::cinder-volume"
