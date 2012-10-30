@@ -196,7 +196,7 @@ when "ubuntu"
     "nova_cert_packages" => ["nova-cert"],
     "nova_cert_service" => "nova-cert",
     "mysql_service" => "mysql",
-    "common_packages" => ["nova-common"],
+    "common_packages" => ["nova-commona", "python-nova", "python-novaclient"],
     "iscsi_helper" => "tgtadm",
     "iscsi_service" => "tgt",
     "package_overrides" => "-o Dpkg::Options::='--force-confold' -o Dpkg::Options::='--force-confdef'"
