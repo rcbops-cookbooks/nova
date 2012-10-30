@@ -130,4 +130,10 @@ keystone_ec2_url=http://<%= @keystone_api_ipaddress %>:<%= @keystone_service_por
 
 ##### VOLUMES #####
 # iscsi target user-land tool to use
+# NOTE(darren): (this is a nova-volume attribute - cinder carries this
+# separately in it's own cinder.conf
 iscsi_helper=<%= @iscsi_helper %>
+
+# when in folsom...
+volume_manager=cinder.volume.manager.VolumeManager
+volume_api_class=nova.volume.cinder.API
