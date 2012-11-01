@@ -24,13 +24,13 @@ include_recipe "monitoring"
 # Set a secure keystone service password
 node.set_unless['nova']['service_pass'] = secure_password
 
-platform_options = node["nova"]["platform"]
-
 if not node['package_component'].nil?
   release = node['package_component']
 else
   release = "essex-final"
 end
+
+platform_options = node["nova"]["platform"][release]
 
 directory "/var/lock/nova" do
   owner "nova"

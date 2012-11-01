@@ -22,7 +22,14 @@ include_recipe "nova::api-metadata"
 include_recipe "nova::network"
 include_recipe "monitoring"
 
-platform_options = node["nova"]["platform"]
+if not node['package_component'].nil?
+  release = node['package_component']
+else
+  release = "essex-final"
+end
+
+platform_options = node["nova"]["platform"][release]
+
 nova_compute_packages = platform_options["nova_compute_packages"]
 
 if platform?(%w(ubuntu))

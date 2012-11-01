@@ -20,7 +20,13 @@
 include_recipe "nova::nova-common"
 include_recipe "monitoring"
 
-platform_options = node["nova"]["platform"]
+if not node['package_component'].nil?
+  release = node['package_component']
+else
+  release = "essex-final"
+end
+
+platform_options = node["nova"]["platform"][release]
 
 platform_options["nova_network_packages"].each do |pkg|
   package pkg do
