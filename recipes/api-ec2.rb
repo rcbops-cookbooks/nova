@@ -21,7 +21,6 @@
 include_recipe "nova::nova-common"
 include_recipe "monitoring"
 
-platform_options=node["nova"]["platform"]
 
 # Set a secure keystone service password
 node.set_unless['nova']['service_pass'] = secure_password
@@ -31,6 +30,8 @@ if not node['package_component'].nil?
 else
   release = "essex-final"
 end
+
+platform_options=node["nova"]["platform"][release]
 
 directory "/var/lock/nova" do
     owner "nova"
