@@ -70,7 +70,7 @@ libvirt_type=<%= @virt_type %>
 # Inject the ssh public key at boot time (default: true)
 libvirt_inject_key=<%= @libvirt_inject_key %>
 # Command prefix to use for running commands as root (default: sudo)
-root_helper=sudo nova-rootwrap /etc/nova/rootwrap.conf
+rootwrap_config=/etc/nova/rootwrap.conf
 # Should unused base images be removed? (default: false)
 remove_unused_base_images=<%= @remove_unused_base_images %>
 # Unused resized base images younger than this will not be removed (default: 3600)
