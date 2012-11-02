@@ -20,7 +20,7 @@
 if not node['package_component'].nil?
   release = node['package_component']
 else
-  release = node['essex-final']
+  release = 'essex-final'
 end
 
 include_recipe "nova::#{release}-volume"
