@@ -60,9 +60,9 @@ end
 
 if node.has_key?(:floating) and node["nova"]["network"]["floating"].has_key?(:ipv4_cidr)
   execute "nova-manage floating create" do
-    command "nova-manage floating create --ip_range=#{node["nova"]["network"]["floating"]["ipv4_cidr"]}"
+    command "nova-manage floating create --pool=#{node["nova"]["network"]["floating_pool_name"]} --ip_range=#{node["nova"]["network"]["floating"]["ipv4_cidr"]}"
     action :run
-    not_if "nova-manage floating list"
+    not_if "nova --os-username #{keystone_admin_user} --os-tenant-name #{keystone_admin_tenant} --os-password #{keystone_admin_password} floating-ip-pool-list|grep #{node["nova"]["network"]["floating_pool_name"]}"
   end
 end
 
