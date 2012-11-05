@@ -19,4 +19,3 @@
 
 include_recipe "cinder::cinder-api"
 include_recipe "cinder::cinder-scheduler"
-include_recipe "cinder::cinder-volume"
