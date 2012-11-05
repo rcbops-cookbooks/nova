@@ -83,6 +83,13 @@ end
 
 include_recipe "nova::libvirt"
 
+execute "remove vhost-net module" do
+    command "rmmod vhost_net"
+    notifies :restart, "service[nova-compute]"
+    notifies :restart, "service[libvirt-bin]"
+    only_if "lsmod | grep vhost_net"
+end
+
 # Sysctl tunables
 sysctl_multi "nova" do
   instructions "net.ipv4.ip_forward" => "1"

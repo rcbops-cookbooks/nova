@@ -107,3 +107,10 @@ end
 monitoring_metric "libvirt" do
   type "libvirt"
 end
+
+# remove default libvirt network
+execute "remove libvirt default network" do
+  command "virsh net-destroy default && virsh net-undefine default"
+  action :run
+  only_if "virsh net-info default"
+end

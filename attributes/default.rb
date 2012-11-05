@@ -87,7 +87,7 @@ default["nova"]["network"]["dhcp_domain"] = "novalocal"                         
 default["nova"]["network"]["force_dhcp_release"] = true                                        # cluster_attribute
 default["nova"]["network"]["send_arp_for_ha"] = true                                           # cluster_attribute
 default["nova"]["network"]["auto_assign_floating_ip"] = false                                  # cluster_attribute
-default["nova"]["network"]["floating_pool_name"] = "nova_floating"                             # cluster_attribute
+default["nova"]["network"]["floating_pool_name"] = "nova"                             # cluster_attribute
 
 default["nova"]["scheduler"]["scheduler_driver"] = "nova.scheduler.filter_scheduler.FilterScheduler"           # cluster_attribute
 default["nova"]["scheduler"]["default_filters"] = ["AvailabilityZoneFilter",                                   # cluster_attribute
