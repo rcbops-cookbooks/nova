@@ -189,6 +189,7 @@ NOTE: service password is no longer set statically in the attributes file, but s
 * `nova["network"]["private"]["network_size"]` - Number of IP addresses to be used in this network
 * `nova["network"]["private"]["bridge"]` - Bridge to be created for accessing the VM network (e.g., br200)
 * `nova["network"]["private"]["bridge_dev"]` - Physical device on which the bridge device should be attached (e.g., eth3)
+* `nova["network"]["floating_pool_name"]` - if creating a floating ip pool, what to name it
 
 * `nova["libvirt"]["virt_type"]` - What hypervisor software layer to use with libvirt (e.g., kvm, qemu)
 
