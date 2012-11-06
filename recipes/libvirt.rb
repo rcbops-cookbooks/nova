@@ -110,7 +110,7 @@ end
 
 # remove default libvirt network
 execute "remove libvirt default network" do
-  command "virsh net-destroy default && virsh net-undefine default"
+  command "virsh net-destroy default && virsh net-autostart default --disable"
   action :run
-  only_if "virsh net-info default"
+  only_if "virsh net-list | grep default"
 end
