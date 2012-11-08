@@ -255,7 +255,7 @@ when "ubuntu"
     "nova_network_service" => "nova-network",
     "nova_scheduler_packages" => ["nova-scheduler"],
     "nova_scheduler_service" => "nova-scheduler",
-    "nova_vncproxy_packages" => ["websockify", "novnc", "nova-novncproxy"],
+    "nova_vncproxy_packages" => ["nova-novncproxy"],
     "nova_vncproxy_service" => "nova-novncproxy",
     "nova_vncproxy_consoleauth_packages" => ["nova-consoleauth"],
     "nova_vncproxy_consoleauth_service" => "nova-consoleauth",
