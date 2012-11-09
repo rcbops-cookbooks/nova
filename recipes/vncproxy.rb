@@ -46,7 +46,7 @@ end
 service "nova-vncproxy" do
   service_name platform_options["nova_vncproxy_service"]
   supports :status => true, :restart => true
-  action :enable
+  action [ :enable, :start ]
   subscribes :restart, resources(:template => "/etc/nova/nova.conf"), :delayed
 end
 
