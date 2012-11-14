@@ -95,6 +95,7 @@ template "/etc/nova/nova.conf" do
     "fixed_range" => node["nova"]["networks"][0]["ipv4_cidr"],
     "public_interface" => node["nova"]["network"]["public_interface"],
     "network_manager" => node["nova"]["network"]["network_manager"],
+    "multi_host" => node["nova"]["network"]["multi_host"],
     "scheduler_driver" => node["nova"]["scheduler"]["scheduler_driver"],
     "scheduler_default_filters" => node["nova"]["scheduler"]["default_filters"].join(","),
     "availability_zone" => node["nova"]["config"]["availability_zone"],
