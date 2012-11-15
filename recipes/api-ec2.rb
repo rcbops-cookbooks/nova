@@ -73,12 +73,12 @@ monitoring_metric "nova-api-ec2-proc" do
   alarms(:failure_min => 2.0)
 end
 
+
 ks_admin_endpoint = get_access_endpoint("keystone", "keystone", "admin-api")
 ks_service_endpoint = get_access_endpoint("keystone", "keystone", "service-api")
 keystone = get_settings_by_role("keystone","keystone")
-
-ec2_admin_endpoint = get_bind_endpoint("nova", "ec2-admin")
 ec2_public_endpoint = get_bind_endpoint("nova", "ec2-public")
+ec2_admin_endpoint = get_bind_endpoint("nova", "ec2-admin")
 
 # Register Service Tenant
 keystone_register "Register Service Tenant" do
