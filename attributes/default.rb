@@ -22,13 +22,11 @@ default["nova"]["services"]["ec2-admin"]["scheme"] = "http"                 # no
 default["nova"]["services"]["ec2-admin"]["network"] = "public"              # node_attribute
 default["nova"]["services"]["ec2-admin"]["port"] = 8773                     # node_attribute
 default["nova"]["services"]["ec2-admin"]["path"] = "/services/Admin"        # node_attribute
-default["nova"]["services"]["ec2-admin"]["ip"] = ""                         # cluster_attribute
 
 default["nova"]["services"]["ec2-public"]["scheme"] = "http"                # node_attribute
 default["nova"]["services"]["ec2-public"]["network"] = "public"             # node_attribute
 default["nova"]["services"]["ec2-public"]["port"] = 8773                    # node_attribute
 default["nova"]["services"]["ec2-public"]["path"] = "/services/Cloud"       # node_attribute
-default["nova"]["services"]["ec2-public"]["ip"] = ""                        # cluster_attribute
 
 default["nova"]["services"]["xvpvnc"]["scheme"] = "http"                    # node_attribute
 default["nova"]["services"]["xvpvnc"]["network"] = "nova"                   # node_attribute
