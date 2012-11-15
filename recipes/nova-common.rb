@@ -97,7 +97,7 @@ template "/etc/nova/nova.conf" do
     "network_manager" => node["nova"]["network"]["network_manager"],
     "multi_host" => node["nova"]["network"]["multi_host"],
     "scheduler_driver" => node["nova"]["scheduler"]["scheduler_driver"],
-    "scheduler_default_filters" => node["nova"]["scheduler"]["default_filters"].join(","),
+    "scheduler_default_filters" => platform_options["nova_scheduler_default_filters"].join(","),
     "availability_zone" => node["nova"]["config"]["availability_zone"],
     "default_schedule_zone" => node["nova"]["config"]["default_schedule_zone"],
     "virt_type" => node["nova"]["libvirt"]["virt_type"],
@@ -120,7 +120,8 @@ template "/etc/nova/nova.conf" do
     "resume_guests_state_on_host_boot" => node["nova"]["config"]["resume_guests_state_on_host_boot"],
     "quota_security_groups" => node["nova"]["config"]["quota_security_groups"],
     "quota_security_group_rules" => node["nova"]["config"]["quota_security_group_rules"],
-    "dhcp_domain" => node["nova"]["network"]["dhcp_domain"]
+    "dhcp_domain" => node["nova"]["network"]["dhcp_domain"],
+    "scheduler_max_attempts" => node["nova"]["config"]["scheduler_max_attempts"]
   )
 end
 

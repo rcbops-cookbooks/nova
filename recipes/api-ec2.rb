@@ -77,23 +77,23 @@ end
 # then use it and construct the uri.  Else use osops-utils::ip_location to find
 # ip and construct the uri
 
-if not node["nova"]["services"]["ec2-public"]["ip"].nil?
-  svc = node["nova"]["services"]["ec2-public"]
-  ec2_public_endpoint = {}
-  ec2_public_endpoint["uri"] = "#{svc['scheme']}://#{svc['ip']}:#{svc['port']}"
-  ec2_public_endpoint["uri"] += svc["path"]
-else
-  ec2_public_endpoint = get_bind_endpoint("nova", "ec2-public")
-end
+#if not node["nova"]["services"]["ec2-public"]["ip"].nil?
+#  svc = node["nova"]["services"]["ec2-public"]
+#  ec2_public_endpoint = {}
+#  ec2_public_endpoint["uri"] = "#{svc['scheme']}://#{svc['ip']}:#{svc['port']}"
+#  ec2_public_endpoint["uri"] += svc["path"]
+#else
+ec2_public_endpoint = get_bind_endpoint("nova", "ec2-public")
+#end
 
-if not node["nova"]["services"]["ec2-admin"]["ip"].nil?
-  svc = node["nova"]["services"]["ec2-admin"]
-  ec2_admin_endpoint = {}
-  ec2_admin_endpoint["uri"] = "#{svc['scheme']}://#{svc['ip']}:#{svc['port']}"
-  ec2_admin_endpoint["uri"] += svc["path"]
-else
-  ec2_admin_endpoint = get_bind_endpoint("nova", "ec2-admin")
-end
+#if not node["nova"]["services"]["ec2-admin"]["ip"].nil?
+#  svc = node["nova"]["services"]["ec2-admin"]
+#  ec2_admin_endpoint = {}
+#  ec2_admin_endpoint["uri"] = "#{svc['scheme']}://#{svc['ip']}:#{svc['port']}"
+#  ec2_admin_endpoint["uri"] += svc["path"]
+#else
+ec2_admin_endpoint = get_bind_endpoint("nova", "ec2-admin")
+#end
 
 ks_admin_endpoint = get_access_endpoint("keystone", "keystone", "admin-api")
 ks_service_endpoint = get_access_endpoint("keystone", "keystone", "service-api")

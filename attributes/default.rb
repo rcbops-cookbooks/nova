@@ -93,12 +93,12 @@ default["nova"]["network"]["floating_pool_name"] = "nova"                       
 default["nova"]["network"]["multi_host"] = false
 
 default["nova"]["scheduler"]["scheduler_driver"] = "nova.scheduler.filter_scheduler.FilterScheduler"           # cluster_attribute
-default["nova"]["scheduler"]["default_filters"] = ["AvailabilityZoneFilter",                                   # cluster_attribute
-                                                   "RamFilter",
-                                                   "ComputeFilter",
-                                                   "CoreFilter",
-                                                   "SameHostFilter",
-                                                   "DifferentHostFilter"]
+#default["nova"]["scheduler"]["default_filters"] = ["AvailabilityZoneFilter",                                   # cluster_attribute
+#                                                   "RamFilter",
+#                                                   "ComputeFilter",
+#                                                   "CoreFilter",
+#                                                   "SameHostFilter",
+#                                                   "DifferentHostFilter"]
 default["nova"]["libvirt"]["virt_type"] = "kvm"                                     # node_attribute (inherited from cluster?)
 default["nova"]["libvirt"]["vncserver_listen"] = node["ipaddress"]                  # node_attribute
 default["nova"]["libvirt"]["vncserver_proxyclient_address"] = node["ipaddress"]     # node_attribute
@@ -117,6 +117,7 @@ default["nova"]["config"]["cpu_allocation_ratio"] = 16.0                        
 default["nova"]["config"]["ram_allocation_ratio"] = 1.5                             # node_attribute (inherited from cluster?)
 default["nova"]["config"]["snapshot_image_format"] = "qcow2"                        # cluster_attribute
 default["nova"]["config"]["start_guests_on_host_boot"] = true                       # node_attribute (inherited from cluster?)
+default["nova"]["config"]["scheduler_max_attempts"] = 3                       # node_attribute (inherited from cluster?)
 # requires https://review.openstack.org/#/c/8423/
 default["nova"]["config"]["resume_guests_state_on_host_boot"] = false               # node_attribute (inherited from cluster?)
 
@@ -168,7 +169,13 @@ when "fedora", "redhat", "centos"
     "common_packages" => ["openstack-nova-common"],
     "iscsi_helper" => "tgtadm",
     "iscsi_service" => "tgtd",
-    "package_overrides" => ""
+    "package_overrides" => "",
+    "nova_scheduler_default_filters" => ["AvailabilityZoneFilter",                                   # cluster_attribute
+                                                   "RamFilter",
+                                                   "ComputeFilter",
+                                                   "CoreFilter",
+                                                   "SameHostFilter",
+                                                   "DifferentHostFilter"]
   }
   default["nova"]["platform"]["folsom"] = {                                                   # node_attribute
     "api_ec2_packages" => ["openstack-nova-api"],
@@ -202,7 +209,14 @@ when "fedora", "redhat", "centos"
     "common_packages" => ["openstack-nova-common", "python-cinderclient"],
     "iscsi_helper" => "tgtadm",
     "iscsi_service" => "tgtd",
-    "package_overrides" => ""
+    "package_overrides" => "",
+    "nova_scheduler_default_filters" => ["RetryFilter",
+                                                   "AvailabilityZoneFilter",                                   # cluster_attribute
+                                                   "RamFilter",
+                                                   "ComputeFilter",
+                                                   "CoreFilter",
+                                                   "SameHostFilter",
+                                                   "DifferentHostFilter"]
   }
 when "ubuntu"
   default["nova"]["platform"]["essex-final"] = {                                                   # node_attribute
@@ -237,7 +251,13 @@ when "ubuntu"
     "common_packages" => ["nova-common", "python-nova", "python-novaclient"],
     "iscsi_helper" => "tgtadm",
     "iscsi_service" => "tgt",
-    "package_overrides" => "-o Dpkg::Options::='--force-confold' -o Dpkg::Options::='--force-confdef'"
+    "package_overrides" => "-o Dpkg::Options::='--force-confold' -o Dpkg::Options::='--force-confdef'",
+    "nova_scheduler_default_filters" => ["AvailabilityZoneFilter",                                   # cluster_attribute
+                                                   "RamFilter",
+                                                   "ComputeFilter",
+                                                   "CoreFilter",
+                                                   "SameHostFilter",
+                                                   "DifferentHostFilter"]
   }
   default["nova"]["platform"]["folsom"] = {                                                   # node_attribute
     "api_ec2_packages" => ["nova-api-ec2"],
@@ -272,6 +292,13 @@ when "ubuntu"
     "common_packages" => ["nova-common", "python-nova", "python-novaclient"],
     "iscsi_helper" => "tgtadm",
     "iscsi_service" => "tgt",
-    "package_overrides" => "-o Dpkg::Options::='--force-confold' -o Dpkg::Options::='--force-confdef'"
+    "package_overrides" => "-o Dpkg::Options::='--force-confold' -o Dpkg::Options::='--force-confdef'",
+    "nova_scheduler_default_filters" => ["RetryFilter",
+                                                   "AvailabilityZoneFilter",                                   # cluster_attribute
+                                                   "RamFilter",
+                                                   "ComputeFilter",
+                                                   "CoreFilter",
+                                                   "SameHostFilter",
+                                                   "DifferentHostFilter"]
   }
 end
