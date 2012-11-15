@@ -42,6 +42,11 @@ directory "/etc/nova" do
   mode "0755"
 end
 
+# Public interface needs to be the bridge if the public interface is in the bridge
+if node["nova"]["networks"][0]["bridge_dev"] == node["nova"]["network"]["public_interface"]
+  node.set["nova"]["network"]["public_interface"] = node["nova"]["networks"][0]["bridge"]
+end
+
 mysql_info = get_access_endpoint("mysql-master", "mysql", "db")
 rabbit_info = get_access_endpoint("rabbitmq-server", "rabbitmq", "queue")
 
