@@ -126,8 +126,8 @@ template "/etc/nova/nova.conf" do
     "quota_security_groups" => node["nova"]["config"]["quota_security_groups"],
     "quota_security_group_rules" => node["nova"]["config"]["quota_security_group_rules"],
     "dhcp_domain" => node["nova"]["network"]["dhcp_domain"],
-    "scheduler_max_attempts" => node["nova"]["config"]["scheduler_max_attempts"],
-    "use_single_default_gateway" => node["nova"]["config"]["use_single_default_gateway"]
+    "use_single_default_gateway" => node["nova"]["config"]["use_single_default_gateway"],
+    "scheduler_max_attempts" => node["nova"]["config"]["scheduler_max_attempts"]
   )
 end
 
