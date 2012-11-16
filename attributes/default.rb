@@ -91,12 +91,7 @@ default["nova"]["network"]["floating_pool_name"] = "nova"                       
 default["nova"]["network"]["multi_host"] = false
 
 default["nova"]["scheduler"]["scheduler_driver"] = "nova.scheduler.filter_scheduler.FilterScheduler"           # cluster_attribute
-#default["nova"]["scheduler"]["default_filters"] = ["AvailabilityZoneFilter",                                   # cluster_attribute
-#                                                   "RamFilter",
-#                                                   "ComputeFilter",
-#                                                   "CoreFilter",
-#                                                   "SameHostFilter",
-#                                                   "DifferentHostFilter"]
+default["nova"]["scheduler"]["least_cost_functions"] = "nova.scheduler.least_cost.compute_fill_first_cost_fn"   # cluster_attribute
 default["nova"]["libvirt"]["virt_type"] = "kvm"                                     # node_attribute (inherited from cluster?)
 default["nova"]["libvirt"]["vncserver_listen"] = node["ipaddress"]                  # node_attribute
 default["nova"]["libvirt"]["vncserver_proxyclient_address"] = node["ipaddress"]     # node_attribute
@@ -209,13 +204,13 @@ when "fedora", "redhat", "centos"
     "iscsi_helper" => "tgtadm",
     "iscsi_service" => "tgtd",
     "package_overrides" => "",
-    "nova_scheduler_default_filters" => ["RetryFilter",
-                                                   "AvailabilityZoneFilter",                                   # cluster_attribute
-                                                   "RamFilter",
-                                                   "ComputeFilter",
-                                                   "CoreFilter",
-                                                   "SameHostFilter",
-                                                   "DifferentHostFilter"]
+    "nova_scheduler_default_filters" => [ "AvailabilityZoneFilter",                                   # cluster_attribute
+                                          "RamFilter",
+                                          "ComputeFilter",
+                                          "CoreFilter",
+                                          "SameHostFilter",
+                                          "DifferentHostFilter",
+                                          "RetryFilter"]
   }
 when "ubuntu"
   default["nova"]["platform"]["essex-final"] = {                                                   # node_attribute
@@ -292,12 +287,12 @@ when "ubuntu"
     "iscsi_helper" => "tgtadm",
     "iscsi_service" => "tgt",
     "package_overrides" => "-o Dpkg::Options::='--force-confold' -o Dpkg::Options::='--force-confdef'",
-    "nova_scheduler_default_filters" => ["RetryFilter",
-                                                   "AvailabilityZoneFilter",                                   # cluster_attribute
-                                                   "RamFilter",
-                                                   "ComputeFilter",
-                                                   "CoreFilter",
-                                                   "SameHostFilter",
-                                                   "DifferentHostFilter"]
+    "nova_scheduler_default_filters" => [ "AvailabilityZoneFilter",                                   # cluster_attribute
+                                          "RamFilter",
+                                          "ComputeFilter",
+                                          "CoreFilter",
+                                          "SameHostFilter",
+                                          "DifferentHostFilter",
+                                          "RetryFilter"]
   }
 end
