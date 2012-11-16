@@ -103,6 +103,7 @@ template "/etc/nova/nova.conf" do
     "multi_host" => node["nova"]["network"]["multi_host"],
     "scheduler_driver" => node["nova"]["scheduler"]["scheduler_driver"],
     "scheduler_default_filters" => platform_options["nova_scheduler_default_filters"].join(","),
+    "least_cost_functions" => node["nova"]["least_cost_functions"],
     "availability_zone" => node["nova"]["config"]["availability_zone"],
     "default_schedule_zone" => node["nova"]["config"]["default_schedule_zone"],
     "virt_type" => node["nova"]["libvirt"]["virt_type"],
