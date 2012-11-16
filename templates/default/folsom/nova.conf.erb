@@ -141,3 +141,10 @@ iscsi_helper=<%= @iscsi_helper %>
 volume_manager=cinder.volume.manager.VolumeManager
 volume_api_class=nova.volume.cinder.API
 enabled_apis=ec2,osapi_compute,metadata
+
+##### API #####
+ec2_workers=<%= node["cpu"]["total"].to_i %>
+osapi_compute_workers=<%= node["cpu"]["total"].to_i %>
+metadata_workers=<%= node["cpu"]["total"].to_i %>
+osapi_volume_workers=<%= node["cpu"]["total"].to_i %>
+
