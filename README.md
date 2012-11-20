@@ -208,6 +208,49 @@ NOTE: The filter scheduler currently does not work with ec2.
 * `nova["syslog"]["facility"]` - Which facility nova should use when logging in python style (for example, LOG_LOCAL1)
 * `nova["syslog"]["config_facility"]` - Which facility nova should use when logging in rsyslog style (for example, local1)
 * `nova["volumes"]["enabled"]` - Turn on or off the nova-volumes service
+* `nova["ratelimit"]` - Tune OpenStack Compute API rate limits.  For Example:
+"override_attribute": {
+  "nova": {
+     "ratelimit": {
+        "settings": {
+          "changes-since-limit": {
+            "limit": "500000",
+            "verb": "GET",
+            "uri": "*changes-since*",
+            "interval": "MINUTE",
+            "regex": ".*changes-since.*"
+          },
+          "create-servers-limit": {
+            "limit": "500000",
+            "verb": "POST",
+            "uri": "*/servers",
+            "interval": "DAY",
+            "regex": "^/servers"
+          },
+          "generic-post-limit": {
+            "limit": "500000",
+            "verb": "POST",
+            "uri": "*",
+            "interval": "MINUTE",
+            "regex": ".*"
+          },
+          "generic-delete-limit": {
+            "limit": "500000",
+            "verb": "DELETE",
+            "uri": "*",
+            "interval": "MINUTE",
+            "regex": ".*"
+          },
+          "generic-put-limit": {
+            "limit": "500000",
+            "verb": "PUT",
+            "uri": "*",
+            "interval": "MINUTE",
+            "regex": ".*"
+          }
+        }
+      }
+    }
 
 Templates
 =====
