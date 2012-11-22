@@ -17,5 +17,6 @@
 # limitations under the License.
 #
 
+include_recipe "cinder::cinder-setup"
 include_recipe "cinder::cinder-api"
 include_recipe "cinder::cinder-scheduler"
