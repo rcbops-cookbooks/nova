@@ -72,7 +72,7 @@ keystone = get_settings_by_role("keystone","keystone")
 volume_endpoint = get_access_endpoint("nova-volume", "nova", "volume")
 
 # Register Volume Service
-keystone_register "Register Volume Service" do
+keystone_service "Register Volume Service" do
   auth_host ks_admin_endpoint["host"]
   auth_port ks_admin_endpoint["port"]
   auth_protocol ks_admin_endpoint["scheme"]
@@ -81,11 +81,11 @@ keystone_register "Register Volume Service" do
   service_name "Volume Service"
   service_type "volume"
   service_description "Nova Volume Service"
-  action :create_service
+  action :create
 end
 
 # Register Image Endpoint
-keystone_register "Register Volume Endpoint" do
+keystone_endpoint "Register Volume Endpoint" do
   auth_host ks_admin_endpoint["host"]
   auth_port ks_admin_endpoint["port"]
   auth_protocol ks_admin_endpoint["scheme"]
@@ -96,5 +96,5 @@ keystone_register "Register Volume Endpoint" do
   endpoint_adminurl volume_endpoint["uri"]
   endpoint_internalurl volume_endpoint["uri"]
   endpoint_publicurl volume_endpoint["uri"]
-  action :create_endpoint
+  action :create
 end
