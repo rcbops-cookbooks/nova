@@ -118,7 +118,7 @@ keystone_register "Grant 'admin' Role to Service User for Service Tenant" do
 end
 
 # Register Compute Service
-keystone_register "Register Compute Service" do
+keystone_service "Register Compute Service" do
   auth_host ks_admin_endpoint["host"]
   auth_port ks_admin_endpoint["port"]
   auth_protocol ks_admin_endpoint["scheme"]
@@ -127,7 +127,7 @@ keystone_register "Register Compute Service" do
   service_name "nova"
   service_type "compute"
   service_description "Nova Compute Service"
-  action :create_service
+  action :create
 end
 
 template "/etc/nova/api-paste.ini" do
@@ -146,7 +146,7 @@ template "/etc/nova/api-paste.ini" do
 end
 
 # Register Compute Endpoing
-keystone_register "Register Compute Endpoint" do
+keystone_endpoint "Register Compute Endpoint" do
   auth_host ks_admin_endpoint["host"]
   auth_port ks_admin_endpoint["port"]
   auth_protocol ks_admin_endpoint["scheme"]
@@ -157,5 +157,5 @@ keystone_register "Register Compute Endpoint" do
   endpoint_adminurl nova_api_endpoint["uri"]
   endpoint_internalurl nova_api_endpoint["uri"]
   endpoint_publicurl nova_api_endpoint["uri"]
-  action :create_endpoint
+  action :create
 end
