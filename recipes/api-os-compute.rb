@@ -78,7 +78,7 @@ ks_service_endpoint = get_access_endpoint("keystone", "keystone", "service-api")
 nova_api_endpoint = get_access_endpoint("nova-api-os-compute", "nova", "api")
 
 # Register Service Tenant
-keystone_register "Register Service Tenant" do
+keystone_tenant "Register Service Tenant" do
   auth_host ks_admin_endpoint["host"]
   auth_port ks_admin_endpoint["port"]
   auth_protocol ks_admin_endpoint["scheme"]
@@ -87,11 +87,11 @@ keystone_register "Register Service Tenant" do
   tenant_name node["nova"]["service_tenant_name"]
   tenant_description "Service Tenant"
   tenant_enabled "true" # Not required as this is the default
-  action :create_tenant
+  action :create
 end
 
 # Register Service User
-keystone_register "Register Service User" do
+keystone_user "Register Service User" do
   auth_host ks_admin_endpoint["host"]
   auth_port ks_admin_endpoint["port"]
   auth_protocol ks_admin_endpoint["scheme"]
@@ -101,7 +101,7 @@ keystone_register "Register Service User" do
   user_name node["nova"]["service_user"]
   user_pass node["nova"]["service_pass"]
   user_enabled "true" # Not required as this is the default
-  action :create_user
+  action :create
 end
 
 ## Grant Admin role to Service User for Service Tenant ##
