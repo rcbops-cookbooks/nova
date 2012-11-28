@@ -81,7 +81,7 @@ ec2_public_endpoint = get_bind_endpoint("nova", "ec2-public")
 ec2_admin_endpoint = get_bind_endpoint("nova", "ec2-admin")
 
 # Register Service Tenant
-keystone_register "Register Service Tenant" do
+keystone_tenant "Register Service Tenant" do
   auth_host ks_admin_endpoint["host"]
   auth_port ks_admin_endpoint["port"]
   auth_protocol ks_admin_endpoint["scheme"]
@@ -90,11 +90,11 @@ keystone_register "Register Service Tenant" do
   tenant_name node["nova"]["service_tenant_name"]
   tenant_description "Service Tenant"
   tenant_enabled "true" # Not required as this is the default
-  action :create_tenant
+  action :create
 end
 
 # Register Service User
-keystone_register "Register Service User" do
+keystone_user "Register Service User" do
   auth_host ks_admin_endpoint["host"]
   auth_port ks_admin_endpoint["port"]
   auth_protocol ks_admin_endpoint["scheme"]
@@ -104,7 +104,7 @@ keystone_register "Register Service User" do
   user_name node["nova"]["service_user"]
   user_pass node["nova"]["service_pass"]
   user_enabled "true" # Not required as this is the default
-  action :create_user
+  action :create
 end
 
 ## Grant Admin role to Service User for Service Tenant ##
@@ -121,7 +121,7 @@ keystone_register "Grant 'admin' Role to Service User for Service Tenant" do
 end
 
 # Register EC2 Service
-keystone_register "Register EC2 Service" do
+keystone_service "Register EC2 Service" do
   auth_host ks_admin_endpoint["host"]
   auth_port ks_admin_endpoint["port"]
   auth_protocol ks_admin_endpoint["scheme"]
@@ -130,7 +130,7 @@ keystone_register "Register EC2 Service" do
   service_name "ec2"
   service_type "ec2"
   service_description "EC2 Compatibility Layer"
-  action :create_service
+  action :create
 end
 
 template "/etc/nova/api-paste.ini" do
@@ -148,7 +148,7 @@ template "/etc/nova/api-paste.ini" do
 end
 
 # Register EC2 Endpoint
-keystone_register "Register Compute Endpoint" do
+keystone_endpoint "Register Compute Endpoint" do
   auth_host ks_admin_endpoint["host"]
   auth_port ks_admin_endpoint["port"]
   auth_protocol ks_admin_endpoint["scheme"]
@@ -159,5 +159,5 @@ keystone_register "Register Compute Endpoint" do
   endpoint_adminurl ec2_admin_endpoint["uri"]
   endpoint_internalurl ec2_public_endpoint["uri"]
   endpoint_publicurl ec2_public_endpoint["uri"]
-  action :create_endpoint
+  action :create
 end
