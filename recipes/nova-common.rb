@@ -61,6 +61,8 @@ xvpvnc_endpoint = get_access_endpoint("nova-vncproxy", "nova", "xvpvnc")
 novnc_endpoint = get_access_endpoint("nova-vncproxy", "nova", "novnc-server")
 novnc_proxy_endpoint = get_bind_endpoint("nova", "novnc")
 
+# NOTE:(mancdaz) we need to account for potentially many glance-api servers here, until
+# https://bugs.launchpad.net/nova/+bug/1084138 is fixed
 glance_endpoints = get_realserver_endpoints("glance-api", "glance", "api")
 glance_servers = glance_endpoints.each.inject([]) {|output, k| output << [k['host'],k['port']].join(":") }
 glance_serverlist = glance_servers.join(",")
@@ -97,8 +99,6 @@ template "/etc/nova/nova.conf" do
     "rabbit_port" => rabbit_info["port"],
     "keystone_api_ipaddress" => ks_admin_endpoint["host"],
     "keystone_service_port" => ks_service_endpoint["port"],
-#    "glance_api_ipaddress" => glance_endpoint["host"],
-#    "glance_api_port" => glance_endpoint["port"],
     "glance_serverlist" => glance_serverlist,
     "iscsi_helper" => platform_options["iscsi_helper"],
     "fixed_range" => node["nova"]["networks"][0]["ipv4_cidr"],
