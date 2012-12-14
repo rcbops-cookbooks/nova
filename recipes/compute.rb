@@ -19,7 +19,6 @@
 
 include_recipe "nova::nova-common"
 include_recipe "nova::api-metadata"
-include_recipe "nova::network"
 include_recipe "monitoring"
 
 if not node['package_component'].nil?
