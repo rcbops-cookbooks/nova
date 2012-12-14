@@ -56,40 +56,6 @@ default["nova"]["syslog"]["config_facility"] = "local1"                     # no
 # can this be wedged into the "api" endpoint?                               # node_attribute
 default["nova"]["compute"]["region"] = "RegionOne"                          # node_attribute
 
-# TODO(shep): This should probably be ['nova']['network']['fixed']
-default["nova"]["networks"] = [                                             # cluster_attribute
-        {
-                "label" => "public",
-                "ipv4_cidr" => "192.168.100.0/24",
-                "num_networks" => "1",
-                "network_size" => "255",
-                "bridge" => "br100",
-                "bridge_dev" => "eth2",
-                "dns1" => "8.8.8.8",
-                "dns2" => "8.8.4.4"
-        },
-        {
-                "label" => "private",
-                "ipv4_cidr" => "192.168.200.0/24",
-                "num_networks" => "1",
-                "network_size" => "255",
-                "bridge" => "br200",
-                "bridge_dev" => "eth3",
-                "dns1" => "8.8.8.8",
-                "dns2" => "8.8.4.4"
-        }
-]
-
-default["nova"]["network"]["public_interface"] = "eth0"                                        # node_attribute
-default["nova"]["network"]["dmz_cidr"] = "10.128.0.0/24"                                       # cluster_attribute
-default["nova"]["network"]["network_manager"] = "nova.network.manager.FlatDHCPManager"         # cluster_attribute
-default["nova"]["network"]["dhcp_domain"] = "novalocal"                                        # cluster_attribute
-default["nova"]["network"]["force_dhcp_release"] = true                                        # cluster_attribute
-default["nova"]["network"]["send_arp_for_ha"] = true                                           # cluster_attribute
-default["nova"]["network"]["auto_assign_floating_ip"] = false                                  # cluster_attribute
-default["nova"]["network"]["floating_pool_name"] = "nova"                             # cluster_attribute
-default["nova"]["network"]["multi_host"] = false
-
 default["nova"]["scheduler"]["scheduler_driver"] = "nova.scheduler.filter_scheduler.FilterScheduler"           # cluster_attribute
 default["nova"]["scheduler"]["least_cost_functions"] = "nova.scheduler.least_cost.compute_fill_first_cost_fn"   # cluster_attribute
 default["nova"]["libvirt"]["virt_type"] = "kvm"                                     # node_attribute (inherited from cluster?)
@@ -146,8 +112,6 @@ when "fedora", "redhat", "centos"
     "nova_api_metadata_service" => "openstack-nova-api",
     "nova_compute_packages" => ["openstack-nova-compute", "dnsmasq-utils"],
     "nova_compute_service" => "openstack-nova-compute",
-    "nova_network_packages" => ["iptables", "openstack-nova-network"],
-    "nova_network_service" => "openstack-nova-network",
     "nova_scheduler_packages" => ["openstack-nova-scheduler"],
     "nova_scheduler_service" => "openstack-nova-scheduler",
     "nova_vncproxy_packages" => ["openstack-nova-novncproxy"], # me thinks this is right?
@@ -186,8 +150,6 @@ when "fedora", "redhat", "centos"
     "nova_api_metadata_service" => "openstack-nova-api",
     "nova_compute_packages" => ["openstack-nova-compute", "dnsmasq-utils"],
     "nova_compute_service" => "openstack-nova-compute",
-    "nova_network_packages" => ["iptables", "openstack-nova-network"],
-    "nova_network_service" => "openstack-nova-network",
     "nova_scheduler_packages" => ["openstack-nova-scheduler"],
     "nova_scheduler_service" => "openstack-nova-scheduler",
     "nova_vncproxy_packages" => ["openstack-nova-novncproxy"], # me thinks this is right?
@@ -228,8 +190,6 @@ when "ubuntu"
     "nova_volume_service" => "nova-volume",
     "nova_compute_packages" => ["nova-compute"],
     "nova_compute_service" => "nova-compute",
-    "nova_network_packages" => ["iptables", "nova-network"],
-    "nova_network_service" => "nova-network",
     "nova_scheduler_packages" => ["nova-scheduler"],
     "nova_scheduler_service" => "nova-scheduler",
     "nova_vncproxy_packages" => ["novnc"],
@@ -268,8 +228,6 @@ when "ubuntu"
     "nova_volume_service" => "nova-volume",
     "nova_compute_packages" => ["nova-compute"],
     "nova_compute_service" => "nova-compute",
-    "nova_network_packages" => ["iptables", "nova-network"],
-    "nova_network_service" => "nova-network",
     "nova_scheduler_packages" => ["nova-scheduler"],
     "nova_scheduler_service" => "nova-scheduler",
     # Websockify is needed due to https://bugs.launchpad.net/ubuntu/+source/nova/+bug/1076442
