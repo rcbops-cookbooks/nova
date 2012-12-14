@@ -23,6 +23,6 @@ recipe		  "volume", ""
   supports os
 end
 
-%w{ apt cinder database dsh glance keystone monitoring mysql openssh rabbitmq selinux osops-utils sysctl yum }.each do |dep|
+%w{ apt cinder database dsh glance keystone monitoring mysql openssh rabbitmq selinux nova-network osops-utils sysctl yum }.each do |dep|
   depends dep
 end

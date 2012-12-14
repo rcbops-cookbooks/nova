@@ -30,6 +30,7 @@ The following cookbooks are dependencies:
 * rabbitmq
 * selinux (Fedora)
 * osops-utils
+* nova-network
 
 Resources/Providers
 ===================
