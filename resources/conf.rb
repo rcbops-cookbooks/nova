@@ -22,5 +22,5 @@ def initialize(*args)
     @action = :create
 end
 
-attribute :release, :kind_of => String, :default => "essex-final"
-attribute :choices, :kind_of => Hash
+attribute :version, :kind_of => String, :default => "essex-final"
+attribute :options, :kind_of => Hash
