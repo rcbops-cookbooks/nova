@@ -89,7 +89,7 @@ nova-common
 nova-setup
 ----
 -Includes recipes `nova-common`, `mysql:client`  
--Sets up the nova database on the mysql server, including the initial schema 
+-Sets up the nova database on the mysql server, including the initial schema
 
 scheduler
 ----
@@ -174,7 +174,6 @@ NOTE: service password is no longer set statically in the attributes file, but s
 
 * `nova["libvirt"]["vncserver_listen"]` - IP address on the hypervisor that libvirt listens for VNC requests on
 * `nova["libvirt"]["vncserver_proxyclient_address"]` - IP address on the hypervisor that libvirt exposes for VNC requests on (should be the same as vncserver_listen)
-
 * `nova["libvirt"]["auth_tcp"]` - Type of authentication your libvirt layer requires
 * `nova["libvirt"]["ssh"]["private_key"]` - Private key to use if using SSH authentication to your libvirt layer
 * `nova["libvirt"]["ssh"]["public_key"]` - Public key to use if using SSH authentication to your libvirt layer
