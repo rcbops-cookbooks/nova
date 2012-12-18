@@ -19,7 +19,7 @@ action :create do
    nova_api_endpoint = get_access_endpoint("nova-api-os-compute", "nova", "api")
    ec2_public_endpoint = get_access_endpoint("nova-api-ec2", "nova", "ec2-public")
 
-   platform_options = node["nova"]["platform"]["#{new_resource.version}"]
+   platform_options = node["nova"]["platform"][new_resource.version]
 
    template "/etc/nova/nova.conf" do
 	   source "#{new_resource.version}/nova.conf.erb"

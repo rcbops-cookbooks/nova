@@ -49,7 +49,7 @@ nova_api_endpoint = get_access_endpoint("nova-api-os-compute", "nova", "api")
 ec2_public_endpoint = get_access_endpoint("nova-api-ec2", "nova", "ec2-public")
 
 nova_conf "/etc/nova/nova.conf" do
-    version "#{release}"
+    version release
     action :create
 end
 
