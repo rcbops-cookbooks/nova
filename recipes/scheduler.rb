@@ -46,7 +46,7 @@ service "nova-scheduler" do
   service_name platform_options["nova_scheduler_service"]
   supports :status => true, :restart => true
   action [ :enable, :start ]
-  subscribes :restart, resources(:nova_conf => "nova.conf"), :delayed
+  subscribes :restart, resources(:nova_conf => "/etc/nova/nova.conf"), :delayed
 end
 
 monitoring_procmon "nova-scheduler" do

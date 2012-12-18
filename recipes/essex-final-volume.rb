@@ -56,7 +56,7 @@ service "nova-volume" do
   service_name platform_options["nova_volume_service"]
   supports :status => true, :restart => true
   action iscsi_service_state
-  subscribes :restart, resources(:nova_conf => "nova.conf"), :delayed
+  subscribes :restart, resources(:nova_conf => "/etc/nova/nova.conf"), :delayed
 end
 
 monitoring_procmon "nova-compute" do

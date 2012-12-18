@@ -63,7 +63,7 @@ service "nova-compute" do
   service_name platform_options["nova_compute_service"]
   supports :status => true, :restart => true
   action :enable
-  subscribes :restart, resources(:nova_conf => "nova.conf"), :delayed
+  subscribes :restart, resources(:nova_conf => "/etc/nova/nova.conf"), :delayed
 end
 
 monitoring_procmon "nova-compute" do
