@@ -73,17 +73,12 @@ apt
 
 compute
 ----
--Includes recipes `nova-common`, `api-metadata`, `network`  
+-Includes recipes `nova-common`, `api-metadata`
 -Installs nova-compute service  
 
 libvirt
 ----
 -Installs libvirt, used by nova compute for management of the virtual machine environment  
-
-network
-----
--Includes recipe `nova-common`  
--Installs nova network service  
 
 nova-common
 ----
@@ -94,7 +89,7 @@ nova-common
 nova-setup
 ----
 -Includes recipes `nova-common`, `mysql:client`  
--Sets up the nova database on the mysql server, including the initial schema and subsequent creation of the appropriate networks  
+-Sets up the nova database on the mysql server, including the initial schema 
 
 scheduler
 ----
@@ -174,23 +169,6 @@ NOTE: service password is no longer set statically in the attributes file, but s
 * `nova["volume"]["adminURL"]` - URL used to access the nova volumes API for admin functions
 * `nova["volume"]["internalURL"]` - URL used to access the nova volumes API for user functions from an internal network
 * `nova["volume"]["publicURL"]` - URL used to access the nova volumes API for user functions from an external network
-
-* `nova["network"]["public"]["label"]` - Network label to be assigned to the public network on creation
-* `nova["network"]["public"]["ipv4_cidr"]` - Network to be created (in CIDR notation, e.g., 192.168.100.0/24)
-* `nova["network"]["public"]["num_networks"]` - Number of networks to be created
-* `nova["network"]["public"]["network_size"]` - Number of IP addresses to be used in this network
-* `nova["network"]["public"]["bridge"]` - Bridge to be created for accessing the VM network (e.g., br100)
-* `nova["network"]["public"]["bridge_dev"]` - Physical device on which the bridge device should be attached (e.g., eth2)
-* `nova["network"]["public"]["dns1"]` - DNS server 1
-* `nova["network"]["public"]["dns2"]` - DNS server 2
-
-* `nova["network"]["private"]["label"]` - Network label to be assigned to the private network on creation
-* `nova["network"]["private"]["ipv4_cidr"]` - Network to be created (in CIDR notation e.g., 192.168.200.0/24)
-* `nova["network"]["private"]["num_networks"]` - Number of networks to be created
-* `nova["network"]["private"]["network_size"]` - Number of IP addresses to be used in this network
-* `nova["network"]["private"]["bridge"]` - Bridge to be created for accessing the VM network (e.g., br200)
-* `nova["network"]["private"]["bridge_dev"]` - Physical device on which the bridge device should be attached (e.g., eth3)
-* `nova["network"]["floating_pool_name"]` - if creating a floating ip pool, what to name it
 
 * `nova["libvirt"]["virt_type"]` - What hypervisor software layer to use with libvirt (e.g., kvm, qemu)
 
