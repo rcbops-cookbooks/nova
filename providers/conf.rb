@@ -19,12 +19,14 @@ action :create do
    nova_api_endpoint = get_access_endpoint("nova-api-os-compute", "nova", "api")
    ec2_public_endpoint = get_access_endpoint("nova-api-ec2", "nova", "ec2-public")
 
+   platform_options = node["nova"]["platform"]["#{new_resource.version}"]
+
    template "/etc/nova/nova.conf" do
-	   source "#{version}/nova.conf.erb"
+	   source "#{new_resource.version}/nova.conf.erb"
 	   owner "root"
 	   group "root"
 	   mode "0644"
-	   provider "nova_conf"
+	   cookbook "nova"
 	   variables(
 		"use_syslog" => node["nova"]["syslog"]["use"],
 		"log_facility" => node["nova"]["syslog"]["facility"],
