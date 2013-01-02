@@ -19,7 +19,41 @@ action :create do
    nova_api_endpoint = get_access_endpoint("nova-api-os-compute", "nova", "api")
    ec2_public_endpoint = get_access_endpoint("nova-api-ec2", "nova", "ec2-public")
 
+   if net_provider == "quantum"
+       quantum_endpoint  = get_bind_endpoint("quantum", "api")
+   end
+
    platform_options = node["nova"]["platform"][new_resource.version]
+
+   # Case nova or quantum
+   # network_options assemble hash here
+   net_provider = node["nova"]["network"]["provider"]
+   network_options = {}
+   case net_provider
+   when "nova"
+	   network_options["network_manager"] = node[net_provider]["network"]["network_manager"]
+	   network_options["multi_host"] = node[net_provider]["network"]["multi_host"]
+	   network_options["public_interface"] = node[net_provider]["network"]["public_interface"]
+	   network_options["fixed_range"] = node[net_provider]["networks"][0]["ipv4_cidr"]
+	   network_options["dmz_cidr"] = node[net_provider]["network"]["dmz_cidr"]
+	   network_options["force_dhcp_release"] = node[net_provider]["network"]["force_dhcp_release"]
+	   network_options["send_arp_for_ha"] = node[net_provider]["network"]["send_arp_for_ha"]
+	   network_options["auto_assign_floating_ip"] = node[net_provider]["network"]["auto_assign_floating_ip"]
+	   network_options["dhcp_domain"] = node[net_provider]["network"]["dhcp_domain"]
+	   #network_options["use_single_default_gateway"] = node[net_provider]["config"]["use_single_default_gateway"]
+	   #network_options["virt_type"] = node[net_provider]["libvirt"]["virt_type"]
+   when "quantum"
+	   network_options["quantum_url"] = quantum_endpoint["uri"]
+	   network_options["quantum_admin_tenant_name"] = node[net_provider]["service_tenant_name"]
+           network_options["quantum_admin_username"] = node[net_provider]["service_user"]
+	   network_options["quantum_admin_password"] = node[net_provider]["service_pass"]
+	   network_options["quantum_admin_auth_url"] = ks_admin_endpoint["uri"]
+	   network_options["network_api_class"] = node[net_provider]["network_api_class"]
+	   network_options["quantum_auth_strategy"] = node[net_provider]["auth_strategy"]
+	   network_options["libvirt_vif_driver"] = node[net_provider]["libvirt_vif_driver"]
+	   network_options["linuxnet_interface_driver"] = node[net_provider]["linuxnet_interface_driver"]
+	   network_options["firewall_driver"] = node[net_provider]["firewall_driver"]
+   end
 
    template "/etc/nova/nova.conf" do
 	   source "#{new_resource.version}/nova.conf.erb"
@@ -46,10 +80,6 @@ action :create do
 		"keystone_service_port" => ks_service_endpoint["port"],
 		"glance_serverlist" => glance_serverlist,
 		"iscsi_helper" => platform_options["iscsi_helper"],
-		"fixed_range" => node["nova"]["networks"][0]["ipv4_cidr"],
-		"public_interface" => node["nova"]["network"]["public_interface"],
-		"network_manager" => node["nova"]["network"]["network_manager"],
-		"multi_host" => node["nova"]["network"]["multi_host"],
 		"scheduler_driver" => node["nova"]["scheduler"]["scheduler_driver"],
 		"scheduler_default_filters" => platform_options["nova_scheduler_default_filters"].join(","),
 		"scheduler_least_cost_functions" => node["nova"]["scheduler"]["least_cost_functions"],
@@ -61,11 +91,7 @@ action :create do
 		"remove_unused_original_minimum_age_seconds" => node["nova"]["libvirt"]["remove_unused_original_minimum_age_seconds"],
 		"checksum_base_images" => node["nova"]["libvirt"]["checksum_base_images"],
 		"libvirt_inject_key" => node["nova"]["libvirt"]["libvirt_inject_key"],
-		"force_dhcp_release" => node["nova"]["network"]["force_dhcp_release"],
-		"send_arp_for_ha" => node["nova"]["network"]["send_arp_for_ha"],
-		"auto_assign_floating_ip" => node["nova"]["network"]["auto_assign_floating_ip"],
 		"force_raw_images" => node["nova"]["config"]["force_raw_images"],
-		"dmz_cidr" => node["nova"]["network"]["dmz_cidr"],
 		"allow_same_net_traffic" => node["nova"]["config"]["allow_same_net_traffic"],
 		"osapi_max_limit" => node["nova"]["config"]["osapi_max_limit"],
 		"cpu_allocation_ratio" => node["nova"]["config"]["cpu_allocation_ratio"],
@@ -75,8 +101,8 @@ action :create do
 		"resume_guests_state_on_host_boot" => node["nova"]["config"]["resume_guests_state_on_host_boot"],
 		"quota_security_groups" => node["nova"]["config"]["quota_security_groups"],
 		"quota_security_group_rules" => node["nova"]["config"]["quota_security_group_rules"],
-		"dhcp_domain" => node["nova"]["network"]["dhcp_domain"],
 		"use_single_default_gateway" => node["nova"]["config"]["use_single_default_gateway"],
+		"network_options" => network_options,
 		"scheduler_max_attempts" => node["nova"]["config"]["scheduler_max_attempts"]
 	)
    end
