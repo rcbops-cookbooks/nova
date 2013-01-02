@@ -19,6 +19,7 @@ action :create do
    nova_api_endpoint = get_access_endpoint("nova-api-os-compute", "nova", "api")
    ec2_public_endpoint = get_access_endpoint("nova-api-ec2", "nova", "ec2-public")
 
+   net_provider = node["nova"]["network"]["provider"]
    if net_provider == "quantum"
        quantum_endpoint  = get_bind_endpoint("quantum", "api")
    end
@@ -27,7 +28,6 @@ action :create do
 
    # Case nova or quantum
    # network_options assemble hash here
-   net_provider = node["nova"]["network"]["provider"]
    network_options = {}
    case net_provider
    when "nova"
