@@ -21,7 +21,9 @@ action :create do
 
    net_provider = node["nova"]["network"]["provider"]
    if net_provider == "quantum"
-       quantum_endpoint  = get_bind_endpoint("quantum", "api")
+       quantum_endpoint = get_access_endpoint("nova-network-controller", "quantum", "api")
+       nova_info = get_access_endpoint("nova-api-os-compute", "nova", "api")
+       metadata_ip = nova_info["host"]
    end
 
    platform_options = node["nova"]["platform"][new_resource.version]
@@ -53,6 +55,7 @@ action :create do
 	   network_options["libvirt_vif_driver"] = node[net_provider]["libvirt_vif_driver"]
 	   network_options["linuxnet_interface_driver"] = node[net_provider]["linuxnet_interface_driver"]
 	   network_options["firewall_driver"] = node[net_provider]["firewall_driver"]
+	   network_options["metadata_host"] = metadata_ip
    end
 
    template "/etc/nova/nova.conf" do
