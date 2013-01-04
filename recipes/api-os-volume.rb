@@ -36,12 +36,12 @@ directory "/var/lock/nova" do
 end
 
 package "python-keystone" do
-  action :upgrade
+  action :install
 end
 
 platform_options["api_os_volume_packages"].each do |pkg|
   package pkg do
-    action :upgrade
+    action :install
     options platform_options["package_overrides"]
   end
 end
