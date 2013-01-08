@@ -21,6 +21,7 @@ action :create do
 
    net_provider = node["nova"]["network"]["provider"]
    if net_provider == "quantum"
+       quantum_info = get_settings_by_recipe("nova-network\\:\\:nova-controller", "quantum")
        quantum_endpoint = get_access_endpoint("nova-network-controller", "quantum", "api")
        nova_info = get_access_endpoint("nova-api-os-compute", "nova", "api")
        metadata_ip = nova_info["host"]
@@ -42,13 +43,15 @@ action :create do
 	   network_options["send_arp_for_ha"] = node[net_provider]["network"]["send_arp_for_ha"]
 	   network_options["auto_assign_floating_ip"] = node[net_provider]["network"]["auto_assign_floating_ip"]
 	   network_options["dhcp_domain"] = node[net_provider]["network"]["dhcp_domain"]
+	   network_options["dhcpbridge_flagfile"] = "/etc/nova/nova.conf"
+	   network_options["dhcpbridge"] = "/usr/bin/nova-dhcpbridge"
 	   #network_options["use_single_default_gateway"] = node[net_provider]["config"]["use_single_default_gateway"]
 	   #network_options["virt_type"] = node[net_provider]["libvirt"]["virt_type"]
    when "quantum"
 	   network_options["quantum_url"] = quantum_endpoint["uri"]
-	   network_options["quantum_admin_tenant_name"] = node[net_provider]["service_tenant_name"]
-           network_options["quantum_admin_username"] = node[net_provider]["service_user"]
-	   network_options["quantum_admin_password"] = node[net_provider]["service_pass"]
+	   network_options["quantum_admin_tenant_name"] = quantum_info["service_tenant_name"]
+           network_options["quantum_admin_username"] = quantum_info["service_user"]
+	   network_options["quantum_admin_password"] = quantum_info["service_pass"]
 	   network_options["quantum_admin_auth_url"] = ks_admin_endpoint["uri"]
 	   network_options["network_api_class"] = node[net_provider]["network_api_class"]
 	   network_options["quantum_auth_strategy"] = node[net_provider]["auth_strategy"]
