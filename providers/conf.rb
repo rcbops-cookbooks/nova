@@ -9,15 +9,12 @@ action :create do
    xvpvnc_endpoint = get_access_endpoint("nova-vncproxy", "nova", "xvpvnc")
    novnc_endpoint = get_access_endpoint("nova-vncproxy", "nova", "novnc-server")
    novnc_proxy_endpoint = get_bind_endpoint("nova", "novnc")
-   
+
    # NOTE:(mancdaz) we need to account for potentially many glance-api servers here, until
    # https://bugs.launchpad.net/nova/+bug/1084138 is fixed
    glance_endpoints = get_realserver_endpoints("glance-api", "glance", "api")
    glance_servers = glance_endpoints.each.inject([]) {|output, k| output << [k['host'],k['port']].join(":") }
    glance_serverlist = glance_servers.join(",")
-   
-   nova_api_endpoint = get_access_endpoint("nova-api-os-compute", "nova", "api")
-   ec2_public_endpoint = get_access_endpoint("nova-api-ec2", "nova", "ec2-public")
 
    net_provider = node["nova"]["network"]["provider"]
    if net_provider == "quantum"
