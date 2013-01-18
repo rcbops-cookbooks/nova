@@ -100,6 +100,7 @@ when "fedora", "redhat", "centos"
   default["nova"]["platform"]["essex-final"] = {                                                   # node_attribute
     "api_ec2_packages" => ["openstack-nova-api"],
     "api_ec2_service" => "openstack-nova-api",
+    "api_ec2_process_name" => "openstack-nova-api",
     "api_os_compute_packages" => ["openstack-nova-api"],
     "api_os_compute_service" => "openstack-nova-api",
     "api_os_compute_process_name" => "nova-api",
@@ -138,6 +139,7 @@ when "fedora", "redhat", "centos"
   default["nova"]["platform"]["folsom"] = {                                                   # node_attribute
     "api_ec2_packages" => ["openstack-nova-api"],
     "api_ec2_service" => "openstack-nova-api",
+    "api_ec2_process_name" => "openstack-nova-api",
     "api_os_compute_packages" => ["openstack-nova-api"],
     "api_os_compute_service" => "openstack-nova-api",
     "api_os_compute_process_name" => "nova-api",
@@ -178,6 +180,7 @@ when "ubuntu"
   default["nova"]["platform"]["essex-final"] = {                                                   # node_attribute
     "api_ec2_packages" => ["nova-api-ec2"],
     "api_ec2_service" => "nova-api-ec2",
+    "api_ec2_process_name" => "nova-api-ec2",
     "api_os_compute_packages" => ["nova-api-os-compute"],
     "api_os_compute_process_name" => "nova-api-os-compute",
     "api_os_compute_service" => "nova-api-os-compute",
@@ -216,6 +219,7 @@ when "ubuntu"
   default["nova"]["platform"]["folsom"] = {                                                   # node_attribute
     "api_ec2_packages" => ["nova-api-ec2"],
     "api_ec2_service" => "nova-api-ec2",
+    "api_ec2_process_name" => "nova-api-ec2",
     "api_os_compute_packages" => ["nova-api-os-compute"],
     "api_os_compute_process_name" => "nova-api-os-compute",
     "api_os_compute_service" => "nova-api-os-compute",
