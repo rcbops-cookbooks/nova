@@ -47,6 +47,7 @@ default["nova"]["services"]["volume"]["scheme"] = "http"                    # no
 default["nova"]["services"]["volume"]["network"] = "public"                 # node_attribute
 default["nova"]["services"]["volume"]["port"] = 8776                        # node_attribute
 default["nova"]["services"]["volume"]["path"] = "/v1/%(tenant_id)s"         # node_attribute
+default["nova"]["services"]["volume"]["cinder_catalog_info"] = "volume:cinder:publicURL" #nod_ attribute
 
 # Logging stuff
 default["nova"]["syslog"]["use"] = true                                     # node_attribute

@@ -169,7 +169,7 @@ NOTE: service password is no longer set statically in the attributes file, but s
 * `nova["volume"]["adminURL"]` - URL used to access the nova volumes API for admin functions
 * `nova["volume"]["internalURL"]` - URL used to access the nova volumes API for user functions from an internal network
 * `nova["volume"]["publicURL"]` - URL used to access the nova volumes API for user functions from an external network
-
+* `nova["volume"]["cinder_catalog_info"]` - URL used for cinder
 * `nova["libvirt"]["virt_type"]` - What hypervisor software layer to use with libvirt (e.g., kvm, qemu)
 
 * `nova["libvirt"]["vncserver_listen"]` - IP address on the hypervisor that libvirt listens for VNC requests on
