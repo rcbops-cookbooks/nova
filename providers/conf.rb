@@ -106,7 +106,8 @@ action :create do
 		"quota_security_group_rules" => node["nova"]["config"]["quota_security_group_rules"],
 		"use_single_default_gateway" => node["nova"]["config"]["use_single_default_gateway"],
 		"network_options" => network_options,
-		"scheduler_max_attempts" => node["nova"]["config"]["scheduler_max_attempts"]
+		"scheduler_max_attempts" => node["nova"]["config"]["scheduler_max_attempts"],
+        "vpn_image_id" => node["nova"]["config"]["vpn_image_id"]
 	)
    end
    new_resource.updated_by_last_action(true)
