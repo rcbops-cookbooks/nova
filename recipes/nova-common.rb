@@ -59,7 +59,7 @@ template "/root/openrc" do
   owner "root"
   group "root"
   mode "0600"
-  variables(
+  vars = {
     "user" => keystone["admin_user"],
     "tenant" => keystone["users"][keystone["admin_user"]]["default_tenant"],
     "password" => keystone["users"][keystone["admin_user"]]["password"],
@@ -72,7 +72,11 @@ template "/root/openrc" do
     "ec2_url" => ec2_public_endpoint["uri"],
     "ec2_access_key" => node["credentials"]["EC2"]["admin"]["access"],
     "ec2_secret_key" => node["credentials"]["EC2"]["admin"]["secret"]
-  )
+  }
+  if release == "folsom"
+      vars["cinder_catalog_info"] = node["nova"]["services"]["volume"]["cinder_catalog_info"]
+  end
+  variables(vars)
 end
 
 # NOTE(shep): this is for backwards compatability with Alamo
