@@ -39,6 +39,7 @@ service "nova-cert" do
   supports :status => true, :restart => true
   action :enable
   subscribes :restart, resources(:nova_conf => "/etc/nova/nova.conf"), :delayed
+  subscribes :restart, resources(:template => "/etc/nova/logging.conf"), :delayed
 end
 
 monitoring_procmon "nova-cert" do

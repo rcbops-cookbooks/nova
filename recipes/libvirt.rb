@@ -77,9 +77,9 @@ end
 #
 template "/etc/libvirt/libvirtd.conf" do
   source "libvirtd.conf.erb"
-  owner "root"
-  group "root"
-  mode "0644"
+  owner "nova"
+  group "nova"
+  mode "0600"
   variables(
     :auth_tcp => node["nova"]["libvirt"]["auth_tcp"]
   )
@@ -88,18 +88,18 @@ end
 
 template "/etc/default/libvirt-bin" do
   source "libvirt-bin.erb"
-  owner "root"
-  group "root"
-  mode "0644"
+  owner "nova"
+  group "nova"
+  mode "0600"
   notifies :restart, resources(:service => "libvirt-bin"), :immediately
   only_if { platform?(%w{ubuntu debian}) }
 end
 
 template "/etc/sysconfig/libvirtd" do
   source "libvirtd.erb"
-  owner "root"
-  group "root"
-  mode "0644"
+  owner "nova"
+  group "nova"
+  mode "0600"
   notifies :restart, resources(:service => "libvirt-bin"), :immediately
   only_if { platform?(%w{fedora redhat centos}) }
 end

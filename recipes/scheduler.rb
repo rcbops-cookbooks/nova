@@ -31,7 +31,7 @@ platform_options = node["nova"]["platform"][release]
 directory "/var/lock/nova" do
     owner "nova"
     group "nova"
-    mode "0755"
+    mode "0700"
     action :create
 end
 
@@ -47,6 +47,7 @@ service "nova-scheduler" do
   supports :status => true, :restart => true
   action [ :enable, :start ]
   subscribes :restart, resources(:nova_conf => "/etc/nova/nova.conf"), :delayed
+  subscribes :restart, resources(:template => "/etc/nova/logging.conf"), :delayed
 end
 
 monitoring_procmon "nova-scheduler" do
