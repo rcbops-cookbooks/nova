@@ -59,7 +59,8 @@ template "/etc/nova/logging.conf" do
     group "nova"
     mode "0600"
     variables("use_syslog" => node["nova"]["syslog"]["use"],
-              "log_facility" => node["nova"]["syslog"]["facility"]
+              "log_facility" => node["nova"]["syslog"]["facility"],
+              "log_verbosity" => node["nova"]["config"]["log_verbosity"]
              )
 end
 

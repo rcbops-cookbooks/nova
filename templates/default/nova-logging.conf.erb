@@ -16,17 +16,8 @@ keys=production
 keys=file,devel
 <% end %>
 
-[ logger_syslog]
-level=WARNING
-handlers=production
-
 [logger_root]
-<% if node["developer_mode"] %>
-level=NOTSET
-<% else %>
-# developer_mode not set - using WARNING
-level=WARNING
-<% end %>
+level=<%= @log_verbosity %>
 <% if @use_syslog == true %>
 handlers=production
 <% else %>
@@ -35,25 +26,15 @@ handlers=file
 
 [handler_production]
 class=handlers.SysLogHandler
-<% if node["developer_mode"] %>
-level=NOTSET
-<% else %>
-# developer_mode not set - using WARNING
-level=WARNING
-<% end %>
+level=<%= @log_verbosity %>
 formatter=normal_with_name
 args=(('localhost', handlers.SYSLOG_UDP_PORT), handlers.SysLogHandler.<%= @log_facility %>)
 
 [handler_file]
 class=FileHandler
-<% if node["developer_mode"] %>
-level=NOTSET
-<% else %>
-# developer_mode not set - using WARNING
-level=WARNING
-<% end %>
+level=<%= @log_verbosity %>
 formatter=normal_with_name
-args=('/var/log/nova/nova-console.log', 'w')
+args=('/var/log/nova/nova.log', 'w')
 
 [handler_devel]
 class=StreamHandler
