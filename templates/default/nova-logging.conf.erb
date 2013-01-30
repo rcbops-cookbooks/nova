@@ -34,7 +34,7 @@ args=(('localhost', handlers.SYSLOG_UDP_PORT), handlers.SysLogHandler.<%= @log_f
 class=FileHandler
 level=<%= @log_verbosity %>
 formatter=normal_with_name
-args=('/var/log/nova/nova.log', 'w')
+args=('/var/log/nova/nova.log', 'a')
 
 [handler_devel]
 class=StreamHandler
