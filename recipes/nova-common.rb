@@ -71,8 +71,8 @@ template "/root/openrc" do
     "keystone_region" => node["nova"]["compute"]["region"],
     "auth_strategy" => "keystone",
     "ec2_url" => ec2_public_endpoint["uri"],
-    "ec2_access_key" => ec2_creds["EC2"]["admin"]["access"],
-    "ec2_secret_key" => ec2_creds["EC2"]["admin"]["secret"]
+    "ec2_access_key" => ec2_creds["EC2"][keystone['admin_user']]["access"],
+    "ec2_secret_key" => ec2_creds["EC2"][keystone['admin_user']]["secret"]
   }
   if release == "folsom"
       vars["cinder_catalog_info"] = node["nova"]["services"]["volume"]["cinder_catalog_info"]
