@@ -58,11 +58,11 @@ action :create do
 	   network_options["metadata_host"] = metadata_ip
    end
 
-   template "/etc/nova/nova.conf" do
+   t = template "/etc/nova/nova.conf" do
 	   source "#{new_resource.version}/nova.conf.erb"
-	   owner "root"
-	   group "root"
-	   mode "0644"
+	   owner "nova"
+	   group "nova"
+	   mode "0600"
 	   cookbook "nova"
 	   variables(
 		"use_syslog" => node["nova"]["syslog"]["use"],
@@ -107,8 +107,8 @@ action :create do
 		"use_single_default_gateway" => node["nova"]["config"]["use_single_default_gateway"],
 		"network_options" => network_options,
 		"scheduler_max_attempts" => node["nova"]["config"]["scheduler_max_attempts"],
-        "vpn_image_id" => node["nova"]["config"]["vpn_image_id"]
+      	        "vpn_image_id" => node["nova"]["config"]["vpn_image_id"]
 	)
    end
-   new_resource.updated_by_last_action(true)
+   new_resource.updated_by_last_action(t.updated_by_last_action?)
 end

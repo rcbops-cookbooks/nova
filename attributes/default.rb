@@ -82,6 +82,11 @@ default["nova"]["config"]["scheduler_max_attempts"] = 3                       # 
 # requires https://review.openstack.org/#/c/8423/
 default["nova"]["config"]["resume_guests_state_on_host_boot"] = false               # node_attribute (inherited from cluster?)
 
+# LOGGING VERBOSITY
+# in order of verbosity (most to least)
+# DEBUG, INFO, WARNING, ERROR, CRITICAL
+default["nova"]["config"]["log_verbosity"] = "INFO"                                 # node attributes
+
 # quota settings
 default["nova"]["config"]["quota_security_groups"] = 50                             # cluster_attribute
 default["nova"]["config"]["quota_security_group_rules"] = 20                        # cluster_attribute

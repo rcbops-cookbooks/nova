@@ -39,7 +39,7 @@ directory "/etc/nova" do
   action :create
   owner "nova"
   group "nova"
-  mode "0755"
+  mode "0700"
 end
 
 keystone = get_settings_by_role("keystone", "keystone")
@@ -53,11 +53,22 @@ nova_conf "/etc/nova/nova.conf" do
     action :create
 end
 
+template "/etc/nova/logging.conf" do
+    source "nova-logging.conf.erb"
+    owner "nova"
+    group "nova"
+    mode "0600"
+    variables("use_syslog" => node["nova"]["syslog"]["use"],
+              "log_facility" => node["nova"]["syslog"]["facility"],
+              "log_verbosity" => node["nova"]["config"]["log_verbosity"]
+             )
+end
+
 # TODO: need to re-evaluate this for accuracy
 template "/root/openrc" do
   source "openrc.erb"
-  owner "root"
-  group "root"
+  owner "nova"
+  group "nova"
   mode "0600"
   vars = {
     "user" => keystone["admin_user"],

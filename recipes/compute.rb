@@ -47,14 +47,16 @@ end
 
 template "/etc/nova/nova-compute.conf" do
   source "#{release}/nova-compute.conf.erb"
-  mode "0644"
+  owner "nova"
+  group "nova"
+  mode "0600"
   action :create
   only_if { node["nova"]["network"]["provider"] == "quantum" }
 end
 
 cookbook_file "/etc/nova/nova-compute.conf" do
   source "nova-compute.conf"
-  mode "0644"
+  mode "0600"
   action :create
   not_if { node["nova"]["network"]["provider"] == "quantum" }
 end
@@ -71,6 +73,7 @@ service "nova-compute" do
   supports :status => true, :restart => true
   action :enable
   subscribes :restart, resources(:nova_conf => "/etc/nova/nova.conf"), :delayed
+  subscribes :restart, resources(:template => "/etc/nova/logging.conf"), :delayed
 end
 
 monitoring_procmon "nova-compute" do

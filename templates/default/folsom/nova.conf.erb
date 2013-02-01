@@ -14,10 +14,7 @@ auth_strategy=keystone_nolimit
 <% end %>
 
 logdir=/var/log/nova
-<% if @use_syslog == true %>
-use_syslog=<%= @use_syslog %>
-syslog_log_facility=<%= @log_facility %>
-<% end %>
+log_config=/etc/nova/logging.conf
 state_path=/var/lib/nova
 lock_path=/var/lock/nova
 

@@ -146,6 +146,7 @@ NOTE: service password is no longer set statically in the attributes file, but s
 * `nova["config"]["snapshot_image_format"]` - Snapshot image format (valid options are : raw, qcow2, vmdk, vdi [we default to qcow2]).
 * `nova["config"]["start_guests_on_host_boot"]` - Whether to restart guests when the host reboots
 * `nova["config"]["resume_guests_state_on_host_boot"]` - Whether to start guests that were running before the host rebooted
+* `nova["config"]["log_verbosity"]` - Logging verbosity.  Valid options are DEBUG, INFO, WARNING, ERROR, CRITICAL.  Default is INFO
 
 * `nova["ec2"]["api"]["protocol"]` - Protocol used for the AWS EC2 compatible API
 * `nova["ec2"]["api"]["port"]` - Port on which AWS EC2 compatible API runs

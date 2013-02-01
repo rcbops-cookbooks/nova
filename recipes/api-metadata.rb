@@ -31,7 +31,7 @@ platform_options = node["nova"]["platform"][release]
 directory "/var/lock/nova" do
     owner "nova"
     group "nova"
-    mode "0755"
+    mode "0700"
     action :create
 end
 
@@ -51,6 +51,7 @@ service "nova-api-metadata" do
   supports :status => true, :restart => true
   action :enable
   subscribes :restart, resources(:nova_conf => "/etc/nova/nova.conf"), :delayed
+  subscribes :restart, resources(:template => "/etc/nova/logging.conf"), :delayed
 end
 
 monitoring_procmon "nova-api-metadata" do
@@ -73,9 +74,9 @@ keystone = get_settings_by_role("keystone","keystone")
 
 template "/etc/nova/api-paste.ini" do
   source "#{release}/api-paste.ini.erb"
-  owner "root"
-  group "root"
-  mode "0644"
+  owner "nova"
+  group "nova"
+  mode "0600"
   variables(
     "component"  => node["package_component"],
     "keystone_api_ipaddress" => ks_admin_endpoint["host"],
