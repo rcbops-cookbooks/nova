@@ -26,7 +26,7 @@ else
   release = "essex-final"
 end
 
-platform_options = node["nova"]["platform"][release]
+platform_options = node["nova"]["platform"][release].dup
 
 nova_compute_packages = platform_options["nova_compute_packages"]
 
