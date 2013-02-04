@@ -43,6 +43,7 @@ directory "/etc/nova" do
 end
 
 keystone = get_settings_by_role("keystone", "keystone")
+ec2_creds = get_settings_by_role("keystone", "credentials")
 ks_admin_endpoint = get_access_endpoint("keystone", "keystone", "admin-api")
 ks_service_endpoint = get_access_endpoint("keystone", "keystone", "service-api")
 nova_api_endpoint = get_access_endpoint("nova-api-os-compute", "nova", "api")
@@ -81,8 +82,8 @@ template "/root/openrc" do
     "keystone_region" => node["nova"]["compute"]["region"],
     "auth_strategy" => "keystone",
     "ec2_url" => ec2_public_endpoint["uri"],
-    "ec2_access_key" => node["credentials"]["EC2"]["admin"]["access"],
-    "ec2_secret_key" => node["credentials"]["EC2"]["admin"]["secret"]
+    "ec2_access_key" => ec2_creds["EC2"][keystone['admin_user']]["access"],
+    "ec2_secret_key" => ec2_creds["EC2"][keystone['admin_user']]["secret"]
   }
   if release == "folsom"
       vars["cinder_catalog_info"] = node["nova"]["services"]["volume"]["cinder_catalog_info"]
