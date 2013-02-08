@@ -85,9 +85,6 @@ template "/root/openrc" do
     "ec2_access_key" => ec2_creds["EC2"][keystone['admin_user']]["access"],
     "ec2_secret_key" => ec2_creds["EC2"][keystone['admin_user']]["secret"]
   }
-  if release == "folsom"
-      vars["cinder_catalog_info"] = node["nova"]["services"]["volume"]["cinder_catalog_info"]
-  end
   variables(vars)
 end
 
