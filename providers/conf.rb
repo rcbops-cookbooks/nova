@@ -15,6 +15,9 @@ action :create do
   glance_endpoints = get_realserver_endpoints("glance-api", "glance", "api")
   glance_servers = glance_endpoints.each.inject([]) {|output, k| output << [k['host'],k['port']].join(":") }
   glance_serverlist = glance_servers.join(",")
+  api_bind = get_bind_endpoint("nova", "api")
+  ec2_bind = get_bind_endpoint("nova", "ec2-public")
+  xvpvnc_bind = get_bind_endpoint("nova", "xvpvnc")
 
   net_provider = node["nova"]["network"]["provider"]
   if net_provider == "quantum"
@@ -74,8 +77,8 @@ action :create do
       "vncserver_listen" => "0.0.0.0",
       "vncserver_proxyclient_address" => novnc_proxy_endpoint["host"],
       "novncproxy_base_url" => novnc_endpoint["uri"],
-      "xvpvncproxy_bind_host" => xvpvnc_endpoint["host"],
-      "xvpvncproxy_bind_port" => xvpvnc_endpoint["port"],
+      "xvpvncproxy_bind_host" => xvpvnc_bind["host"],
+      "xvpvncproxy_bind_port" => xvpvnc_bind["port"],
       "xvpvncproxy_base_url" => xvpvnc_endpoint["uri"],
       "rabbit_ipaddress" => rabbit_info["host"],
       "rabbit_port" => rabbit_info["port"],
@@ -108,7 +111,12 @@ action :create do
       "network_options" => network_options,
       "scheduler_max_attempts" => node["nova"]["config"]["scheduler_max_attempts"],
       "vpn_image_id" => node["nova"]["config"]["vpn_image_id"],
-      "cinder_catalog_info" => node["nova"]["services"]["volume"]["cinder_catalog_info"]
+      "cinder_catalog_info" => node["nova"]["services"]["volume"]["cinder_catalog_info"],
+      "osapi_compute_listen" => api_bind["host"],
+      "osapi_compute_listen_port" => api_bind["port"],
+      "ec2_listen" => ec2_bind["host"],
+      "ec2_host" => ec2_bind["host"],
+      "ec2_listen_port" => ec2_bind["port"]
     )
   end
   new_resource.updated_by_last_action(t.updated_by_last_action?)

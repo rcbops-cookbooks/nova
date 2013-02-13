@@ -44,8 +44,8 @@ end
 
 keystone = get_settings_by_role("keystone", "keystone")
 ec2_creds = get_settings_by_role("keystone", "credentials")
-ks_admin_endpoint = get_access_endpoint("keystone", "keystone", "admin-api")
-ks_service_endpoint = get_access_endpoint("keystone", "keystone", "service-api")
+ks_admin_endpoint = get_access_endpoint("keystone-api", "keystone", "admin-api")
+ks_service_endpoint = get_access_endpoint("keystone-api", "keystone", "service-api")
 nova_api_endpoint = get_access_endpoint("nova-api-os-compute", "nova", "api")
 ec2_public_endpoint = get_access_endpoint("nova-api-ec2", "nova", "ec2-public")
 
