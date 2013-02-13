@@ -134,4 +134,8 @@ ec2_workers=<%= node["cpu"]["total"].to_i %>
 osapi_compute_workers=<%= node["cpu"]["total"].to_i %>
 metadata_workers=<%= node["cpu"]["total"].to_i %>
 osapi_volume_workers=<%= node["cpu"]["total"].to_i %>
-
+osapi_compute_listen=<%= @osapi_compute_listen %>
+osapi_compute_listen_port=<%= @osapi_compute_listen_port %>
+ec2_listen=<%= @ec2_listen %>
+ec2_listen_port=<%= @ec2_listen_port %>
+ec2_host=<%= @ec2_host %>
