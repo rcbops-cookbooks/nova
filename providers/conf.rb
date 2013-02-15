@@ -6,9 +6,6 @@ action :create do
   keystone = get_settings_by_role("keystone", "keystone")
   ks_admin_endpoint = get_access_endpoint("keystone", "keystone", "admin-api")
   ks_service_endpoint = get_access_endpoint("keystone", "keystone", "service-api")
-  xvpvnc_endpoint = get_access_endpoint("nova-vncproxy", "nova", "xvpvnc")
-  novnc_endpoint = get_access_endpoint("nova-vncproxy", "nova", "novnc-server")
-  novnc_proxy_endpoint = get_bind_endpoint("nova", "novnc")
 
   # NOTE:(mancdaz) we need to account for potentially many glance-api servers here, until
   # https://bugs.launchpad.net/nova/+bug/1084138 is fixed
@@ -17,8 +14,12 @@ action :create do
   glance_serverlist = glance_servers.join(",")
   api_bind = get_bind_endpoint("nova", "api")
   ec2_bind = get_bind_endpoint("nova", "ec2-public")
-  xvpvncproxy_bind = get_bind_endpoint("nova", "xvpvnc")
-  novncproxy_bind = get_bind_endpoint("nova", "novnc")
+
+  xvpvncproxy_endpoint = get_access_endpoint("nova-vncproxy", "nova", "xvpvnc-proxy")
+  novncproxy_endpoint = get_access_endpoint("nova-vncproxy", "nova", "novnc-proxy")
+  xvpvncproxy_bind = get_bind_endpoint("nova", "xvpvnc-proxy")
+  novncserver_bind = get_bind_endpoint("nova", "novnc-server")
+  novncproxy_bind = get_bind_endpoint("nova", "novnc-proxy")
 
   net_provider = node["nova"]["network"]["provider"]
   if net_provider == "quantum"
@@ -75,14 +76,14 @@ action :create do
       "user" => node["nova"]["db"]["username"],
       "passwd" => nova_setup_info["db"]["password"],
       "db_name" => node["nova"]["db"]["name"],
-      "vncserver_listen" => "0.0.0.0",
-      "vncserver_proxyclient_address" => novnc_proxy_endpoint["host"],
-      "novncproxy_base_url" => novnc_endpoint["uri"],
+      "vncserver_listen" => novncserver_bind["host"],
+      "vncserver_proxyclient_address" => novncproxy_endpoint["host"],
+      "novncproxy_base_url" => novncproxy_endpoint["uri"],
       "xvpvncproxy_bind_host" => xvpvncproxy_bind["host"],
       "xvpvncproxy_bind_port" => xvpvncproxy_bind["port"],
       "novncproxy_bind_host" => novncproxy_bind["host"],
       "novncproxy_bind_port" => novncproxy_bind["port"],
-      "xvpvncproxy_base_url" => xvpvnc_endpoint["uri"],
+      "xvpvncproxy_base_url" => xvpvncproxy_endpoint["uri"],
       "rabbit_ipaddress" => rabbit_info["host"],
       "rabbit_port" => rabbit_info["port"],
       "keystone_api_ipaddress" => ks_admin_endpoint["host"],

@@ -28,15 +28,15 @@ default["nova"]["services"]["ec2-public"]["network"] = "public"             # no
 default["nova"]["services"]["ec2-public"]["port"] = 8773                    # node_attribute
 default["nova"]["services"]["ec2-public"]["path"] = "/services/Cloud"       # node_attribute
 
-default["nova"]["services"]["xvpvnc"]["scheme"] = "http"                    # node_attribute
-default["nova"]["services"]["xvpvnc"]["network"] = "nova"                   # node_attribute
-default["nova"]["services"]["xvpvnc"]["port"] = 6081                        # node_attribute
-default["nova"]["services"]["xvpvnc"]["path"] = "/console"                  # node_attribute
+default["nova"]["services"]["xvpvnc-proxy"]["scheme"] = "http"                    # node_attribute
+default["nova"]["services"]["xvpvnc-proxy"]["network"] = "nova"                   # node_attribute
+default["nova"]["services"]["xvpvnc-proxy"]["port"] = 6081                        # node_attribute
+default["nova"]["services"]["xvpvnc-proxy"]["path"] = "/console"                  # node_attribute
 
-default["nova"]["services"]["novnc"]["scheme"] = "http"                     # node_attribute
-default["nova"]["services"]["novnc"]["network"] = "nova"                    # node_attribute
-default["nova"]["services"]["novnc"]["port"] = 6080                         # node_attribute
-default["nova"]["services"]["novnc"]["path"] = "/vnc_auto.html"             # node_attribute
+default["nova"]["services"]["novnc-proxy"]["scheme"] = "http"                     # node_attribute
+default["nova"]["services"]["novnc-proxy"]["network"] = "nova"                    # node_attribute
+default["nova"]["services"]["novnc-proxy"]["port"] = 6080                         # node_attribute
+default["nova"]["services"]["novnc-proxy"]["path"] = "/vnc_auto.html"             # node_attribute
 
 default["nova"]["services"]["novnc-server"]["scheme"] = "http"              # node_attribute
 default["nova"]["services"]["novnc-server"]["network"] = "nova"             # node_attribute
