@@ -17,7 +17,8 @@ action :create do
   glance_serverlist = glance_servers.join(",")
   api_bind = get_bind_endpoint("nova", "api")
   ec2_bind = get_bind_endpoint("nova", "ec2-public")
-  xvpvnc_bind = get_bind_endpoint("nova", "xvpvnc")
+  xvpvncproxy_bind = get_bind_endpoint("nova", "xvpvnc")
+  novncproxy_bind = get_bind_endpoint("nova", "novnc")
 
   net_provider = node["nova"]["network"]["provider"]
   if net_provider == "quantum"
@@ -77,8 +78,10 @@ action :create do
       "vncserver_listen" => "0.0.0.0",
       "vncserver_proxyclient_address" => novnc_proxy_endpoint["host"],
       "novncproxy_base_url" => novnc_endpoint["uri"],
-      "xvpvncproxy_bind_host" => xvpvnc_bind["host"],
-      "xvpvncproxy_bind_port" => xvpvnc_bind["port"],
+      "xvpvncproxy_bind_host" => xvpvncproxy_bind["host"],
+      "xvpvncproxy_bind_port" => xvpvncproxy_bind["port"],
+      "novncproxy_bind_host" => novncproxy_bind["host"],
+      "novncproxy_bind_port" => novncproxy_bind["port"],
       "xvpvncproxy_base_url" => xvpvnc_endpoint["uri"],
       "rabbit_ipaddress" => rabbit_info["host"],
       "rabbit_port" => rabbit_info["port"],
