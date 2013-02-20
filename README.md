@@ -13,110 +13,115 @@ Chef 0.10.0 or higher required (for Chef environment use).
 Platforms
 --------
 
-* Ubuntu-12.04
-* Fedora-17
+* CentOS >= 6.3
+* Ubuntu >= 12.04
 
 Cookbooks
 ---------
 
 The following cookbooks are dependencies:
 
-* apt
+* cinder
 * database
-* glance
+* dsh
 * keystone
+* monitoring
 * mysql
-* openssh
-* rabbitmq
-* selinux (Fedora)
-* osops-utils
 * nova-network
+* openssl
+* osops-utils
+* sysctl
 
 Resources/Providers
 ===================
 
-None
+Conf
+----
 
+Handles creation of nova.conf file
 
 Recipes
 =======
 
 api-ec2
 ----
--Includes recipe `nova-common`  
--Installs AWS EC2 compatible API and configures the service and endpoints in keystone  
-
-api-ec2-monitoring
----
-- Includes recipe `monit::server`
-- Configures monit process monitoring for the nova-api-ec2 service
-- Included from recipe `nova::api-ec2`
+- Includes recipe `nova-common`  
+- Installs AWS EC2 compatible API and configures the service and endpoints in keystone  
 
 api-metadata
 ----
--Includes recipe `nova-common`  
--Installs the nova metadata package  
+- Includes recipe `nova-common`  
+- Installs the nova metadata package  
 
 api-os-compute
 ----
--Includes recipe `nova-common`  
--Installs OS API and configures the service and endpoints in keystone  
+- Includes recipe `nova-common`  
+- Installs OS API and configures the service and endpoints in keystone  
 
 api-os-volume
 ----
--Includes recipe `nova-common`  
--Installs the OpenStack volume service API  
-
-apt
-----
--Performs an apt-get update  
+- Includes recipe `nova-common`  
+- Installs the OpenStack volume service API  
 
 compute
 ----
--Includes recipes `nova-common`, `api-metadata`
--Installs nova-compute service  
+- Includes recipes `nova-common`, `api-metadata`
+- Installs nova-compute service  
+
+essex-final-volume
+----
+- Includes recipes `nova-common` and `api-os-volume`
+- Installs nova volume service and configures the service and endpoints in keystone  
+- To use you must created a LVM Volume Group named nova-volumes
+
+folsom-volume
+---
+- Includes recipes `cinder::cinder-setup`, `cinder::cinder-api`, `cinder::cinder-scheduler`
 
 libvirt
 ----
--Installs libvirt, used by nova compute for management of the virtual machine environment  
+- Installs libvirt, used by nova compute for management of the virtual machine environment  
+
+nova-cert
+----
+- Includes recipe `nova-common`
+- Installs nova-cert service
 
 nova-common
 ----
--May include recipe `selinux` (Fedora)  
--Builds the basic nova.conf config file with details of the rabbitmq, mysql, glance and keystone servers  
--Builds a openrc file for root with appropriate environment variables to interact with the nova client CLI  
+- Includes recipe `nova-rsyslog` and `osops-utils::autoetchosts`
+- Builds the basic nova.conf config file with details of the rabbitmq, mysql, glance and keystone servers  
+- Builds a openrc file for root with appropriate environment variables to interact with the nova client CLI  
 
-nova-setup
+nova-rsyslog
 ----
--Includes recipes `nova-common`, `mysql:client`  
--Sets up the nova database on the mysql server, including the initial schema
-
-scheduler
-----
--Includes recipe `nova-common`  
--Installs nova scheduler service  
-
-vncproxy
-----
--Includes recipe `nova-common`  
--Installs and configures the vncproxy service for console access to VMs  
-
-volume
-----
--Includes recipes `nova-common`, `api-os-volume`  
--Installs nova volume service and configures the service and endpoints in keystone  
--To use you must created a LVM Volume Group named nova-volumes
+- Creates rsyslog config file for nova
 
 nova-scheduler-patch
 ----
--Includes recipe osops-utils
--Patches nova-scheduler based on installed package version
+- Includes recipe `osops-utils`
+- Patches nova-scheduler based on installed package version
+
+nova-setup
+----
+- Includes recipes `nova-common`, `mysql::client`, `mysql::ruby`
+- Sets up the nova database on the mysql server, including the initial schema
+
+scheduler
+----
+- Includes recipe `nova-common`  
+- Installs nova scheduler service  
+
+vncproxy
+----
+- Includes recipe `nova-common`  
+- Installs and configures the vncproxy service for console access to VMs  
 
 
 Attributes
 ==========
 
-* `nova["patch_files_on_disk"] - Boolean for patching files on disk
+* `nova["patch_files_on_disk"]` - Boolean for patching files on disk
 * `nova["db"]["name"]` - Name of nova database
 * `nova["db"]["username"]` - Username for nova database access
 * `nova["db"]["password"]` - Password for nova database access
@@ -128,14 +133,63 @@ NOTE: db password is no longer set statically in the attributes file, but secure
 NOTE: service password is no longer set statically in the attributes file, but securely/randomly in the *api recipes
 * `nova["service_role"]` - User role used by nova when interacting with keystone
 
-* `nova["compute"]["api"]["protocol"]` - Protocol used for the OS API
-* `nova["compute"]["api"]["port"]` - Port on which OS API runs
-* `nova["compute"]["api"]["version"]` - Version of the OS API used
+* `nova["volumes"]["enabled"]` - Turn the nova-volumes service on or off
 
-* `nova["compute"]["adminURL"]` - URL used to access the OS API for admin functions
-* `nova["compute"]["internalURL"]` - URL used to access the OS API for user functions from an internal network
-* `nova["compute"]["publicURL"]` - URL used to access the OS API for user functions from an external network
+* `nova["services"]["api"]["scheme"]` - Scheme for OpenStack API service (http/https)
+* `nova["services"]["api"]["network"]` - `osops_networks` network name which service operates on
+* `nova["services"]["api"]["port"]` - Port to bind service to
+* `nova["services"]["api"]["path"]` - URI to use
 
+* `nova["services"]["ec2-admin"]["scheme"]` - Scheme for EC2-compatible admin service (http/https)
+* `nova["services"]["ec2-admin"]["network"]` - `osops_networks` network name which service operates on
+* `nova["services"]["ec2-admin"]["port"]` - Port to bind service to
+* `nova["services"]["ec2-admin"]["path"]` - URI to use
+
+* `nova["services"]["ec2-public"]["scheme"]` - Scheme for EC2-compatible public service (http/https)
+* `nova["services"]["ec2-public"]["network"]` - `osops_networks` network name which service operates on
+* `nova["services"]["ec2-public"]["port"]` - Port to bind service to
+* `nova["services"]["ec2-public"]["path"]` - URI to use
+
+* `nova["services"]["xvpvnc-proxy"]["scheme"]` - Scheme for xvpvncproxy service service (http/https)
+* `nova["services"]["xvpvnc-proxy"]["network"]` - `osops_networks` network name which service operates on
+* `nova["services"]["xvpvnc-proxy"]["port"]` - Port to bind service to
+* `nova["services"]["xvpvnc-proxy"]["path"]` - URI to use
+
+* `nova["services"]["novnc-proxy"]["scheme"]` - Scheme for novncproxy service (http/https)
+* `nova["services"]["novnc-proxy"]["network"]` - `osops_networks` network name which service operates on
+* `nova["services"]["novnc-proxy"]["port"]` - Port to bind service to
+* `nova["services"]["novnc-proxy"]["path"]` - URI to use
+
+* `nova["services"]["novnc-server"]["scheme"]` - Scheme for novncserver service (http/https)
+* `nova["services"]["novnc-server"]["network"]` - `osops_networks` network name which service operates on
+* `nova["services"]["novnc-server"]["port"]` - Port to bind service to
+* `nova["services"]["novnc-server"]["path"]` - URI to use
+
+* `nova["services"]["volume"]["scheme"]` - Scheme for volume service (http/https)
+* `nova["services"]["volume"]["network"]` - `osops_networks` network name which service operates on
+* `nova["services"]["volume"]["port"]` - Port to bind service to
+* `nova["services"]["volume"]["path"]` - URI to use
+* `nova["services"]["volume"]["cinder_catalog_info"]` - URL used for cinder
+
+* `nova["syslog"]["use"]` - Should nova log to syslog? 
+* `nova["syslog"]["facility"]` - Which facility nova should use when logging in python style (for example, LOG_LOCAL1)
+* `nova["syslog"]["config_facility"]` - Which facility nova should use when logging in rsyslog style (for example, local1)
+
+* `nova["compute"]["region"]` - Region name, defaults to RegionOne
+
+* `nova["scheduler"]["scheduler_driver"]` - The scheduler driver to use
+NOTE: The filter scheduler currently does not work with ec2.
+* `nova["scheduler"]["least_cost_functions"]` - A list of scheduler cost functions separated by commas, defaults to nova.scheduler.least_cost.compute_fill_first_cost_fn
+* `nova["libvirt"]["virt_type"]` - What hypervisor software layer to use with libvirt (e.g., kvm, qemu)
+* `nova["libvirt"]["vncserver_listen"]` - IP address on the hypervisor that libvirt listens for VNC requests on
+* `nova["libvirt"]["vncserver_proxyclient_address"]` - IP address on the hypervisor that libvirt exposes for VNC requests on (should be the same as vncserver_listen)
+* `nova["libvirt"]["auth_tcp"]` - Type of authentication your libvirt layer requires
+* `nova["libvirt"]["remove_unused_base_images"]` - Remove unused base images?
+* `nova["libvirt"]["remove_unused_resized_minimum_age_seconds"]` - Defaults to 3600 seconds
+* `nova["libvirt"]["remove_unused_original_minimum_age_seconds"]` - Defaults to 3600 seconds
+* `nova["libvirt"]["checksum_base_images"]` - Record and validate image checksums?
+* `nova["libvirt"]["libvirt_inject_key"]` - Inject ssh public key at boot?
+* `nova["config"]["use_single_default_gateway"]` - Use single default gateway?
 * `nova["config"]["availability_zone"]` - Nova availability zone.  Usually set at the node level to place a compute node in another az
 * `nova["config"]["default_schedule_zone"]` - The availability zone to schedule instances in when no az is specified in the request
 * `nova["config"]["force_raw_images"]` - Convert all images used as backing files for instances to raw (we default to false)
@@ -145,49 +199,15 @@ NOTE: service password is no longer set statically in the attributes file, but s
 * `nova["config"]["ram_allocation_ratio"]` - Virtual RAM to Physical RAM allocation ratio (default 1.5)
 * `nova["config"]["snapshot_image_format"]` - Snapshot image format (valid options are : raw, qcow2, vmdk, vdi [we default to qcow2]).
 * `nova["config"]["start_guests_on_host_boot"]` - Whether to restart guests when the host reboots
+* `nova["config"]["scheduler_max_attempts"]` - Max number of attempts to schedule an instance before setting to error status
 * `nova["config"]["resume_guests_state_on_host_boot"]` - Whether to start guests that were running before the host rebooted
+
 * `nova["config"]["log_verbosity"]` - Logging verbosity.  Valid options are DEBUG, INFO, WARNING, ERROR, CRITICAL.  Default is INFO
 
-* `nova["ec2"]["api"]["protocol"]` - Protocol used for the AWS EC2 compatible API
-* `nova["ec2"]["api"]["port"]` - Port on which AWS EC2 compatible API runs
-* `nova["ec2"]["api"]["admin_path"]` - Path for admin functions in the AWS EC2 compatible API
-* `nova["ec2"]["api"]["cloud_path"]` - Path for service functions in the AWS EC2 compatible API
+* `nova["config"]["quota_security_groups"]` - Number of security groups per project, defaults to 50
+* `nova["config"]["quota_security_group_rules"]` - Number of security rules per security group, defaults to 20
 
-* `nova["ec2"]["adminURL"]` - URL used to access the AWS EC2 compatible API for admin functions
-* `nova["ec2"]["internalURL"]` - URL used to access the AWS EC2 compatible API for user functions from an internal network
-* `nova["ec2"]["publicURL"]` - URL used to access the AWS EC2 compatible API for user functions from an external network
-
-* `nova["xvpvnc"]["proxy_bind_host"]` - IP address which the xvpvncproxy binds to
-* `nova["xvpvnc"]["proxy_bind_port"]` - Port on which the xvpvncproxy runs
-* `nova["xvpvnc"]["ip_address"]` - IP address for accessing the xvpvncproxy service
-* `nova["xvpvnc"]["proxy_base_url"]` - Base URL returned for xvpvncproxy requests
-
-* `nova["novnc"]["proxy_bind_port"]` - Port on which the novncproxy runs
-* `nova["novnc"]["proxy_base_url"]` - Base URL returned for novncproxy requests
-
-* `nova["volume"]["api_port"]` - Port on which nova volumes API runs
-* `nova["volume"]["ipaddress"]` - IP address where nova volumes API runs
-* `nova["volume"]["adminURL"]` - URL used to access the nova volumes API for admin functions
-* `nova["volume"]["internalURL"]` - URL used to access the nova volumes API for user functions from an internal network
-* `nova["volume"]["publicURL"]` - URL used to access the nova volumes API for user functions from an external network
-* `nova["volume"]["cinder_catalog_info"]` - URL used for cinder
-* `nova["libvirt"]["virt_type"]` - What hypervisor software layer to use with libvirt (e.g., kvm, qemu)
-
-* `nova["libvirt"]["vncserver_listen"]` - IP address on the hypervisor that libvirt listens for VNC requests on
-* `nova["libvirt"]["vncserver_proxyclient_address"]` - IP address on the hypervisor that libvirt exposes for VNC requests on (should be the same as vncserver_listen)
-* `nova["libvirt"]["auth_tcp"]` - Type of authentication your libvirt layer requires
-* `nova["libvirt"]["ssh"]["private_key"]` - Private key to use if using SSH authentication to your libvirt layer
-* `nova["libvirt"]["ssh"]["public_key"]` - Public key to use if using SSH authentication to your libvirt layer
-
-* `nova["scheduler"]["scheduler_driver"]` - the scheduler driver to use
-NOTE: The filter scheduler currently does not work with ec2.
-* `nova["scheduler"]["default_filters"]` - a list of filters enabled for schedulers that support them. 
-
-* `nova["syslog"]["use"]` - Should nova log to syslog? 
-* `nova["syslog"]["facility"]` - Which facility nova should use when logging in python style (for example, LOG_LOCAL1)
-* `nova["syslog"]["config_facility"]` - Which facility nova should use when logging in rsyslog style (for example, local1)
-* `nova["volumes"]["enabled"]` - Turn on or off the nova-volumes service
-* `nova["ratelimit"]` - Tune OpenStack Compute API rate limits.  For Example:
+* `nova["ratelimit"]["settings"]` - Tune OpenStack Compute API rate limits.  For Example:
 "override_attribute": {
   "nova": {
      "ratelimit": {
@@ -230,17 +250,21 @@ NOTE: The filter scheduler currently does not work with ec2.
         }
       }
     }
+* `nova["ratelimit"]["api"]["enabled"]` - Enable API ratelimiting?
+* `nova["ratelimit"]["volume"]["enabled"]` - Enable volume service ratelimiting?
+
+* `nova["platform"]` - Hash of platform specific package/service names and options
 
 Templates
 =====
+* `21-nova.conf.erb` - Config for rsyslog
 * `api-paste.ini.erb` - Paste config for nova API middleware
 * `libvirt-bin.erb` - Initscript for starting libvirtd
 * `libvirtd-ssh-config` - Config file for libvirt SSH auth
-* `libvirtd-ssh-private-key.erb` - Private SSH key for libvirt SSH
-* `libvirtd-ssh-public-key.erb` - Public SSH key for libvirt SSH auth
 * `libvirtd.conf.erb` - Libvirt config file
-* `local_settings.py.erb` - Dashboard (horizon) config file
 * `nova.conf.erb` - Basic nova.conf file
+* `nova-compute.conf.erb` - Config for nova-compute service (folsom only)
+* `nova-logging.conf.erb` - Logging config for nova services
 * `openrc.erb` - Contains environment variable settings to enable easy use of the nova client
 * `patches/` - misc. patches for nova
 
@@ -255,6 +279,7 @@ Author:: Joseph Breu (<joseph.breu@rackspace.com>)
 Author:: William Kelly (<william.kelly@rackspace.com>)  
 Author:: Darren Birkett (<darren.birkett@rackspace.co.uk>)  
 Author:: Evan Callicoat (<evan.callicoat@rackspace.com>)  
+Author:: Matt Thompson (<matt.thompson@rackspace.co.uk>)  
 
 Copyright 2012, Rackspace US, Inc.  
 
