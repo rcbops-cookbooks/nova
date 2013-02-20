@@ -74,7 +74,7 @@ essex-final-volume
 - Installs nova volume service and configures the service and endpoints in keystone  
 - To use you must created a LVM Volume Group named nova-volumes
 
-folsom-volum
+folsom-volume
 ---
 - Includes recipes `cinder::cinder-setup`, `cinder::cinder-api`, `cinder::cinder-scheduler`
 
@@ -121,7 +121,7 @@ vncproxy
 Attributes
 ==========
 
-* `nova["patch_files_on_disk"] - Boolean for patching files on disk
+* `nova["patch_files_on_disk"]` - Boolean for patching files on disk
 * `nova["db"]["name"]` - Name of nova database
 * `nova["db"]["username"]` - Username for nova database access
 * `nova["db"]["password"]` - Password for nova database access
