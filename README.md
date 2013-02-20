@@ -258,15 +258,10 @@ NOTE: The filter scheduler currently does not work with ec2.
 Templates
 =====
 * `21-nova.conf.erb` - Config for rsyslog
-* `collectd-plugin-libvirt.conf.erb` -
-* `collectd-plugin-mysql.conf.erb` -
 * `api-paste.ini.erb` - Paste config for nova API middleware
 * `libvirt-bin.erb` - Initscript for starting libvirtd
 * `libvirtd-ssh-config` - Config file for libvirt SSH auth
-* `libvirtd-ssh-private-key.erb` - Private SSH key for libvirt SSH
-* `libvirtd-ssh-public-key.erb` - Public SSH key for libvirt SSH auth
 * `libvirtd.conf.erb` - Libvirt config file
-* `local_settings.py.erb` - Dashboard (horizon) config file
 * `nova.conf.erb` - Basic nova.conf file
 * `nova-compute.conf.erb` - Config for nova-compute service (folsom only)
 * `nova-logging.conf.erb` - Logging config for nova services
