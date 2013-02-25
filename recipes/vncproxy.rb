@@ -43,7 +43,7 @@ platform_options["nova_vncproxy_consoleauth_packages"].each do |pkg|
   end
 end
 
-service "#{platform_options["nova_vncproxy_service"]}" do
+service platform_options["nova_vncproxy_service"] do
   service_name platform_options["nova_vncproxy_service"]
   supports :status => true, :restart => true
   action [ :enable, :start ]
@@ -51,7 +51,7 @@ service "#{platform_options["nova_vncproxy_service"]}" do
   subscribes :restart, resources(:template => "/etc/nova/logging.conf"), :delayed
 end
 
-monitoring_procmon "#{platform_options["nova_vncproxy_service"]}" do
+monitoring_procmon platform_options["nova_vncproxy_service"] do
   service_name=platform_options["nova_vncproxy_service"]
   process_name "nova-novncproxy"
   script_name service_name
@@ -65,7 +65,7 @@ monitoring_metric "nova-novncproxy-proc" do
   alarms(:failure_min => 2.0)
 end
 
-service "#{platform_options["nova_vncproxy_consoleauth_service"]}" do
+service platform_options["nova_vncproxy_consoleauth_service"] do
   service_name platform_options["nova_vncproxy_consoleauth_service"]
   supports :status => true, :restart => true
   action :enable
