@@ -4,8 +4,8 @@ action :create do
   rabbit_info = get_access_endpoint("rabbitmq-server", "rabbitmq", "queue")
   nova_setup_info = get_settings_by_role("nova-setup", "nova")
   keystone = get_settings_by_role("keystone", "keystone")
-  ks_admin_endpoint = get_access_endpoint("keystone", "keystone", "admin-api")
-  ks_service_endpoint = get_access_endpoint("keystone", "keystone", "service-api")
+  ks_admin_endpoint = get_access_endpoint("keystone-api", "keystone", "admin-api")
+  ks_service_endpoint = get_access_endpoint("keystone-api", "keystone", "service-api")
 
   # NOTE:(mancdaz) we need to account for potentially many glance-api servers here, until
   # https://bugs.launchpad.net/nova/+bug/1084138 is fixed
