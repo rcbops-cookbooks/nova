@@ -68,8 +68,8 @@ monitoring_metric "nova-api-os-volume-proc" do
   alarms(:failure_min => 2.0)
 end
 
-ks_admin_endpoint = get_access_endpoint("keystone", "keystone", "admin-api")
-ks_service_endpoint = get_access_endpoint("keystone", "keystone", "service-api")
+ks_admin_endpoint = get_access_endpoint("keystone-api", "keystone", "admin-api")
+ks_service_endpoint = get_access_endpoint("keystone-api", "keystone", "service-api")
 keystone = get_settings_by_role("keystone","keystone")
 
 template "/etc/nova/api-paste.ini" do
