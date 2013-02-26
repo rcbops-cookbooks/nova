@@ -1,20 +1,16 @@
 action :create do
   log "Creating the nova.conf #{new_resource.version}"
+
+  # do all the searches
   mysql_info = get_access_endpoint("mysql-master", "mysql", "db")
   rabbit_info = get_access_endpoint("rabbitmq-server", "rabbitmq", "queue")
   nova_setup_info = get_settings_by_role("nova-setup", "nova")
   keystone = get_settings_by_role("keystone", "keystone")
   ks_admin_endpoint = get_access_endpoint("keystone-api", "keystone", "admin-api")
   ks_service_endpoint = get_access_endpoint("keystone-api", "keystone", "service-api")
-
-  # NOTE:(mancdaz) we need to account for potentially many glance-api servers here, until
-  # https://bugs.launchpad.net/nova/+bug/1084138 is fixed
-  glance_endpoints = get_realserver_endpoints("glance-api", "glance", "api")
-  glance_servers = glance_endpoints.each.inject([]) {|output, k| output << [k['host'],k['port']].join(":") }
-  glance_serverlist = glance_servers.join(",")
+  glance_endpoint = get_access_endpoint("glance-api", "glance", "api")
   api_bind = get_bind_endpoint("nova", "api")
   ec2_bind = get_bind_endpoint("nova", "ec2-public")
-
   xvpvncproxy_endpoint = get_access_endpoint("nova-vncproxy", "nova", "xvpvnc-proxy")
   novncproxy_endpoint = get_access_endpoint("nova-vncproxy", "nova", "novnc-proxy")
   xvpvncproxy_bind = get_bind_endpoint("nova", "xvpvnc-proxy")
@@ -88,7 +84,7 @@ action :create do
       "rabbit_port" => rabbit_info["port"],
       "keystone_api_ipaddress" => ks_admin_endpoint["host"],
       "keystone_service_port" => ks_service_endpoint["port"],
-      "glance_serverlist" => glance_serverlist,
+      "glance_serverlist" => "#{glance_endpoint["host"]}:#{glance_endpoint["port"]}",
       "iscsi_helper" => platform_options["iscsi_helper"],
       "scheduler_driver" => node["nova"]["scheduler"]["scheduler_driver"],
       "scheduler_default_filters" => platform_options["nova_scheduler_default_filters"].join(","),
