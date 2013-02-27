@@ -67,8 +67,8 @@ monitoring_procmon "nova-compute" do
   only_if { node["nova"]["volumes"]["enabled"] == true }
 end
 
-ks_admin_endpoint = get_access_endpoint("keystone", "keystone", "admin-api")
-ks_service_endpoint = get_access_endpoint("keystone", "keystone", "service-api")
+ks_admin_endpoint = get_access_endpoint("keystone-api", "keystone", "admin-api")
+ks_service_endpoint = get_access_endpoint("keystone-api", "keystone", "service-api")
 keystone = get_settings_by_role("keystone","keystone")
 volume_endpoint = get_access_endpoint("nova-volume", "nova", "volume")
 
