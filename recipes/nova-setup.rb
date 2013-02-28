@@ -31,7 +31,7 @@ include_recipe "mysql::client"
 include_recipe "mysql::ruby"
 include_recipe "monitoring"
 
-ks_service_endpoint = get_access_endpoint("keystone", "keystone","service-api")
+ks_service_endpoint = get_access_endpoint("keystone-api", "keystone","service-api")
 keystone = get_settings_by_role("keystone", "keystone")
 keystone_admin_user = keystone["admin_user"]
 keystone_admin_password = keystone["users"][keystone_admin_user]["password"]
