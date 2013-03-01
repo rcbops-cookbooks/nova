@@ -136,10 +136,10 @@ enabled_apis=ec2,osapi_compute,metadata
 cinder_catalog_info=<%= @cinder_catalog_info %>
 
 ##### API #####
-ec2_workers=<%= node["cpu"]["total"].to_i %>
-osapi_compute_workers=<%= node["cpu"]["total"].to_i %>
-metadata_workers=<%= node["cpu"]["total"].to_i %>
-osapi_volume_workers=<%= node["cpu"]["total"].to_i %>
+ec2_workers=<%= node["nova"]["config"]["ec2_workers"] %>
+osapi_compute_workers=<%= node["nova"]["config"]["osapi_compute_workers"] %>
+metadata_workers=<%= node["nova"]["config"]["metadata_workers"] %>
+osapi_volume_workers=<%= node["nova"]["config"]["osapi_volume_workers"] %>
 osapi_compute_listen=<%= @osapi_compute_listen %>
 osapi_compute_listen_port=<%= @osapi_compute_listen_port %>
 ec2_listen=<%= @ec2_listen %>

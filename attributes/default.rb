@@ -79,6 +79,10 @@ default["nova"]["config"]["ram_allocation_ratio"] = 1.5                         
 default["nova"]["config"]["snapshot_image_format"] = "qcow2"                        # cluster_attribute
 default["nova"]["config"]["start_guests_on_host_boot"] = false                       # node_attribute (inherited from cluster?)
 default["nova"]["config"]["scheduler_max_attempts"] = 3                       # node_attribute (inherited from cluster?)
+default["nova"]["config"]["ec2_workers"] = [8, node["cpu"]["total"].to_i].min       # node_attribute
+default["nova"]["config"]["osapi_compute_workers"] = [8, node["cpu"]["total"].to_i].min # node_attribute
+default["nova"]["config"]["metadata_workers"] = [8, node["cpu"]["total"].to_i].min      # node_attribute
+default["nova"]["config"]["osapi_volume_workers"] = [8, node["cpu"]["total"].to_i].min  # node_attribute
 # requires https://review.openstack.org/#/c/8423/
 default["nova"]["config"]["resume_guests_state_on_host_boot"] = false               # node_attribute (inherited from cluster?)
 
