@@ -59,6 +59,18 @@ action :create do
     network_options["metadata_host"] = metadata_ip
   end
 
+    template node["nova"]["config"]["dnsmasq_config_file"] do
+      source "dnsmasq-nova.conf.erb"
+      owner "root"
+      group "root"
+      mode "0644"
+      cookbook "nova"
+      variables(
+      "hardware_gateway" => node["nova"]["config"]["hardware_gateway"],
+      "dns_servers" => node["nova"]["config"]["dns_servers"]
+      )
+      end
+
   t = template "/etc/nova/nova.conf" do
     source "#{new_resource.version}/nova.conf.erb"
     owner "nova"
@@ -99,6 +111,7 @@ action :create do
       "libvirt_inject_key" => node["nova"]["libvirt"]["libvirt_inject_key"],
       "force_raw_images" => node["nova"]["config"]["force_raw_images"],
       "allow_same_net_traffic" => node["nova"]["config"]["allow_same_net_traffic"],
+      "dnsmasq_config_file" => node["nova"]["config"]["dnsmasq_config_file"],
       "osapi_max_limit" => node["nova"]["config"]["osapi_max_limit"],
       "cpu_allocation_ratio" => node["nova"]["config"]["cpu_allocation_ratio"],
       "ram_allocation_ratio" => node["nova"]["config"]["ram_allocation_ratio"],
