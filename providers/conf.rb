@@ -59,17 +59,17 @@ action :create do
     network_options["metadata_host"] = metadata_ip
   end
 
-    template node["nova"]["config"]["dnsmasq_config_file"] do
-      source "dnsmasq-nova.conf.erb"
-      owner "root"
-      group "root"
-      mode "0644"
-      cookbook "nova"
-      variables(
-      "hardware_gateway" => node["nova"]["config"]["hardware_gateway"],
-      "dns_servers" => node["nova"]["config"]["dns_servers"]
-      )
-      end
+  template node["nova"]["config"]["dnsmasq_config_file"] do
+    source "dnsmasq-nova.conf.erb"
+    owner "root"
+    group "root"
+    mode "0644"
+    cookbook "nova"
+    variables(
+    "hardware_gateway" => node["nova"]["config"]["hardware_gateway"],
+    "dns_servers" => node["nova"]["config"]["dns_servers"]
+    )
+  end
 
   t = template "/etc/nova/nova.conf" do
     source "#{new_resource.version}/nova.conf.erb"
