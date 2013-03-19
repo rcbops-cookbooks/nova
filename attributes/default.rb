@@ -83,9 +83,6 @@ default["nova"]["config"]["ec2_workers"] = [8, node["cpu"]["total"].to_i].min   
 default["nova"]["config"]["osapi_compute_workers"] = [8, node["cpu"]["total"].to_i].min # node_attribute
 default["nova"]["config"]["metadata_workers"] = [8, node["cpu"]["total"].to_i].min      # node_attribute
 default["nova"]["config"]["osapi_volume_workers"] = [8, node["cpu"]["total"].to_i].min  # node_attribute
-default["nova"]["config"]["hardware_gateway"] = nil
-default["nova"]["config"]["dns_servers"] = []
-default["nova"]["config"]["dnsmasq_config_file"] = "/etc/nova/dnsmasq-nova.conf"
 # requires https://review.openstack.org/#/c/8423/
 default["nova"]["config"]["resume_guests_state_on_host_boot"] = false               # node_attribute (inherited from cluster?)
 
