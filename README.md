@@ -202,9 +202,6 @@ NOTE: The filter scheduler currently does not work with ec2.
 * `nova["config"]["scheduler_max_attempts"]` - Max number of attempts to schedule an instance before setting to error status
 * `nova["config"]["resume_guests_state_on_host_boot"]` - Whether to start guests that were running before the host rebooted
 
-* `nova["config"]["hardware_gateway"]` - Specify an external gateway IP for instances
-* `nova["config"]["dns_servers"]` - array of alternate DNS servers that dnsmasq should use when giving DHCP info to instances
-
 * `nova["config"]["log_verbosity"]` - Logging verbosity.  Valid options are DEBUG, INFO, WARNING, ERROR, CRITICAL.  Default is INFO
 
 * `nova["config"]["quota_security_groups"]` - Number of security groups per project, defaults to 50
