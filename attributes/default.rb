@@ -86,6 +86,8 @@ default["nova"]["config"]["osapi_volume_workers"] = [8, node["cpu"]["total"].to_
 default["nova"]["config"]["hardware_gateway"] = nil
 default["nova"]["config"]["dns_servers"] = []
 default["nova"]["config"]["dnsmasq_config_file"] = "/etc/nova/dnsmasq-nova.conf"
+default["nova"]["config"]["quota_fixed_ips"] = "40"
+default["nova"]["config"]["quota_instances"] = "20"
 # requires https://review.openstack.org/#/c/8423/
 default["nova"]["config"]["resume_guests_state_on_host_boot"] = false               # node_attribute (inherited from cluster?)
 
