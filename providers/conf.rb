@@ -111,6 +111,8 @@ action :create do
       "libvirt_inject_key" => node["nova"]["libvirt"]["libvirt_inject_key"],
       "force_raw_images" => node["nova"]["config"]["force_raw_images"],
       "allow_same_net_traffic" => node["nova"]["config"]["allow_same_net_traffic"],
+      "quota_instances" => node["nova"]["config"]["quota_instances"],
+      "quota_fixed_ips" => node["nova"]["config"]["quota_fixed_ips"],
       "dnsmasq_config_file" => node["nova"]["config"]["dnsmasq_config_file"],
       "osapi_max_limit" => node["nova"]["config"]["osapi_max_limit"],
       "cpu_allocation_ratio" => node["nova"]["config"]["cpu_allocation_ratio"],

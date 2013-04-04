@@ -98,6 +98,8 @@ resume_guests_state_on_host_boot=<%= @resume_guests_state_on_host_boot %>
 quota_security_groups=<%= @quota_security_groups %>
 # number of security rules per security group (default: 20)
 quota_security_group_rules=<%= @quota_security_group_rules %>
+quota_fixed_ips=<%= @quota_fixed_ips %>
+quota_instances=<%= @quota_instances %>
 
 <%- if /FilterScheduler/.match(@scheduler_driver) or
        /MultiScheduler/.match(@scheduler_driver) %>
