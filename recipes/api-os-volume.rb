@@ -20,13 +20,7 @@
 include_recipe "nova::nova-common"
 include_recipe "monitoring"
 
-if not node['package_component'].nil?
-  release = node['package_component']
-else
-  release = "folsom"
-end
-
-platform_options = node["nova"]["platform"][release]
+platform_options = node["nova"]["platform"]
 
 directory "/var/lock/nova" do
     owner "nova"
@@ -73,12 +67,11 @@ ks_service_endpoint = get_access_endpoint("keystone-api", "keystone", "service-a
 keystone = get_settings_by_role("keystone","keystone")
 
 template "/etc/nova/api-paste.ini" do
-  source "#{release}/api-paste.ini.erb"
+  source "api-paste.ini.erb"
   owner "nova"
   group "nova"
   mode "0600"
   variables(
-    "component"  => node["package_component"],
     "service_port" => ks_service_endpoint["port"],
     "keystone_api_ipaddress" => ks_service_endpoint["host"],
     "admin_port" => ks_admin_endpoint["port"],

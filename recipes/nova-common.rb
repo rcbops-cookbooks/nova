@@ -20,13 +20,7 @@
 include_recipe "nova::nova-rsyslog"
 include_recipe "osops-utils::autoetchosts"
 
-if not node['package_component'].nil?
-  release = node['package_component']
-else
-  release = "folsom"
-end
-
-platform_options = node["nova"]["platform"][release]
+platform_options = node["nova"]["platform"]
 
 platform_options["common_packages"].each do |pkg|
   package pkg do
@@ -50,7 +44,6 @@ nova_api_endpoint = get_access_endpoint("nova-api-os-compute", "nova", "api")
 ec2_public_endpoint = get_access_endpoint("nova-api-ec2", "nova", "ec2-public")
 
 nova_conf "/etc/nova/nova.conf" do
-    version release
     action :create
 end
 

@@ -20,13 +20,7 @@
 include_recipe "nova::nova-common"
 include_recipe "monitoring"
 
-if not node['package_component'].nil?
-  release = node['package_component']
-else
-  release = "folsom"
-end
-
-platform_options = node["nova"]["platform"][release].dup
+platform_options = node["nova"]["platform"]
 
 nova_compute_packages = platform_options["nova_compute_packages"]
 
@@ -46,7 +40,7 @@ nova_compute_packages.each do |pkg|
 end
 
 template "/etc/nova/nova-compute.conf" do
-  source "#{release}/nova-compute.conf.erb"
+  source "nova-compute.conf.erb"
   owner "nova"
   group "nova"
   mode "0600"
