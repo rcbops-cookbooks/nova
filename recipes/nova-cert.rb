@@ -19,13 +19,7 @@
 include_recipe "nova::nova-common"
 include_recipe "monitoring"
 
-if not node['package_component'].nil?
-  release = node['package_component']
-else
-  release = "folsom"
-end
-
-platform_options=node["nova"]["platform"][release]
+platform_options=node["nova"]["platform"]
 
 platform_options["nova_cert_packages"].each do |pkg|
   package pkg do

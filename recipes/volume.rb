@@ -17,10 +17,4 @@
 # limitations under the License.
 #
 
-if not node['package_component'].nil?
-  release = node['package_component']
-else
-  release = 'folsom'
-end
-
-include_recipe "nova::#{release}-volume"
+include_recipe "nova::volume"

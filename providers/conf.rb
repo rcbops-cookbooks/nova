@@ -1,5 +1,5 @@
 action :create do
-  log "Creating the nova.conf #{new_resource.version}"
+  log "Creating the nova.conf"
 
   # do all the searches
   mysql_info = get_access_endpoint("mysql-master", "mysql", "db")
@@ -25,7 +25,7 @@ action :create do
     metadata_ip = nova_info["host"]
   end
 
-  platform_options = node["nova"]["platform"][new_resource.version]
+  platform_options = node["nova"]["platform"]
 
   # Case nova or quantum
   # network_options assemble hash here
@@ -72,7 +72,7 @@ action :create do
   end
 
   t = template "/etc/nova/nova.conf" do
-    source "#{new_resource.version}/nova.conf.erb"
+    source "nova.conf.erb"
     owner "nova"
     group "nova"
     mode "0600"

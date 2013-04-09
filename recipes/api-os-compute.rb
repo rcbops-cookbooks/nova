@@ -24,13 +24,7 @@ include_recipe "monitoring"
 # Set a secure keystone service password
 node.set_unless['nova']['service_pass'] = secure_password
 
-if not node['package_component'].nil?
-  release = node['package_component']
-else
-  release = "folsom"
-end
-
-platform_options = node["nova"]["platform"][release]
+platform_options = node["nova"]["platform"]
 
 directory "/var/lock/nova" do
   owner "nova"
@@ -87,7 +81,7 @@ keystone_tenant "Register Service Tenant" do
   auth_token keystone["admin_token"]
   tenant_name node["nova"]["service_tenant_name"]
   tenant_description "Service Tenant"
-  tenant_enabled "true" # Not required as this is the default
+  tenant_enabled "1" # Not required as this is the default
   action :create
 end
 
@@ -101,7 +95,7 @@ keystone_user "Register Service User" do
   tenant_name node["nova"]["service_tenant_name"]
   user_name node["nova"]["service_user"]
   user_pass node["nova"]["service_pass"]
-  user_enabled "true" # Not required as this is the default
+  user_enabled "1" # Not required as this is the default
   action :create
 end
 
@@ -132,12 +126,11 @@ keystone_service "Register Compute Service" do
 end
 
 template "/etc/nova/api-paste.ini" do
-  source "#{release}/api-paste.ini.erb"
+  source "api-paste.ini.erb"
   owner "nova"
   group "nova"
   mode "0600"
   variables(
-            "component"  => node["package_component"],
             "keystone_api_ipaddress" => ks_service_endpoint["host"],
             "service_port" => ks_service_endpoint["port"],
             "admin_port" => ks_admin_endpoint["port"],
