@@ -22,13 +22,17 @@ include_recipe "monitoring"
 
 platform_options = node["nova"]["platform"]
 
-nova_compute_packages = platform_options["nova_compute_packages"]
+# NOTE(shep): Copying to a new array
+# this is due to Chef::Exceptions::ImmutableAttributeModification error
+# see http://www.opscode.com/blog/2013/02/05/chef-11-in-depth-attributes-changes/
+nova_compute_packages = platform_options["nova_compute_packages"].each.collect {|x| x}
 
 if platform?(%w(ubuntu))
-  if node["nova"]["libvirt"]["virt_type"] == "kvm"
-    nova_compute_packages << "nova-compute-kvm"
-  elsif node["nova"]["libvirt"]["virt_type"] == "qemu"
-    nova_compute_packages << "nova-compute-qemu"
+  case node["nova"]["libvirt"]["virt_type"]
+  when "kvm"
+    nova_compute_packages.push("nova-compute-kvm")
+  when "qemu"
+    nova_compute_packages.push("nova-compute-qemu")
   end
 end
 
