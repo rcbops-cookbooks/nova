@@ -56,6 +56,7 @@ default["nova"]["syslog"]["config_facility"] = "local1"                     # no
 
 # can this be wedged into the "api" endpoint?                               # node_attribute
 default["nova"]["compute"]["region"] = "RegionOne"                          # node_attribute
+default["nova"]["compute"]["connection_type"] = "libvirt"                          # node_attribute
 
 default["nova"]["scheduler"]["scheduler_driver"] = "nova.scheduler.filter_scheduler.FilterScheduler"           # cluster_attribute
 default["nova"]["scheduler"]["least_cost_functions"] = "nova.scheduler.least_cost.compute_fill_first_cost_fn"   # cluster_attribute
