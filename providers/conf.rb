@@ -103,6 +103,7 @@ action :create do
       "scheduler_least_cost_functions" => node["nova"]["scheduler"]["least_cost_functions"],
       "availability_zone" => node["nova"]["config"]["availability_zone"],
       "default_schedule_zone" => node["nova"]["config"]["default_schedule_zone"],
+      "connection_type" => node["nova"]["compute"]["connection_type"],
       "virt_type" => node["nova"]["libvirt"]["virt_type"],
       "remove_unused_base_images" => node["nova"]["libvirt"]["remove_unused_base_images"],
       "remove_unused_resized_minimum_age_seconds" => node["nova"]["libvirt"]["remove_unused_resized_minimum_age_seconds"],
