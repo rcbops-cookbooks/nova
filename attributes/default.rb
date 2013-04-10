@@ -130,6 +130,8 @@ when "fedora", "redhat", "centos"
     "nova_compute_service" => "openstack-nova-compute",
     "nova_scheduler_packages" => ["openstack-nova-scheduler"],
     "nova_scheduler_service" => "openstack-nova-scheduler",
+    "nova_conductor_packages" => ["openstack-nova-conductor"],
+    "nova_conductor_service" => "openstack-nova-conductor",
     "nova_vncproxy_packages" => ["openstack-nova-novncproxy"], # me thinks this is right?
     "nova_vncproxy_service" => "openstack-nova-novncproxy",
     "nova_vncproxy_consoleauth_packages" => ["openstack-nova-console"],
@@ -171,6 +173,8 @@ when "ubuntu"
     "nova_compute_service" => "nova-compute",
     "nova_scheduler_packages" => ["nova-scheduler"],
     "nova_scheduler_service" => "nova-scheduler",
+    "nova_conductor_packages" => ["nova-conductor"],
+    "nova_conductor_service" => "nova-conductor",
     # Websockify is needed due to https://bugs.launchpad.net/ubuntu/+source/nova/+bug/1076442
     "nova_vncproxy_packages" => ["novnc", "websockify", "nova-novncproxy"],
     "nova_vncproxy_service" => "nova-novncproxy",
