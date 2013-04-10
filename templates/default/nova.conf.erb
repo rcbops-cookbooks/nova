@@ -56,10 +56,14 @@ glance_api_servers=<%= @glance_serverlist %>
 ##### COMPUTE #####
 compute_manager=nova.compute.manager.ComputeManager
 sql_connection=mysql://<%= @user %>:<%= @passwd %>@<%= @db_ipaddress %>/<%= @db_name %>
-connection_type=libvirt
+connection_type=<%= @connection_type %>
+<% case @connection_type -%>
+<% when "libvirt" -%>
+compute_driver=libvirt.LibvirtDriver
 libvirt_type=<%= @virt_type %>
 # Inject the ssh public key at boot time (default: true)
 libvirt_inject_key=<%= @libvirt_inject_key %>
+<% end -%>
 # Command prefix to use for running commands as root (default: sudo)
 rootwrap_config=/etc/nova/rootwrap.conf
 # Should unused base images be removed? (default: false)
