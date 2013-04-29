@@ -19,23 +19,23 @@ state_path=/var/lib/nova
 lock_path=/var/lock/nova
 
 ##### RABBITMQ #####
-<%= render "queue-options.partial.erb" %>
+<%= render "partials/queue-options.partial.erb" %>
 
 ##### SCHEDULER #####
-<%= render "scheduler-options.partial.erb" %>
+<%= render "partials/scheduler-options.partial.erb" %>
 
 ##### NETWORK #####
-<%= render "network-options.partial.erb" %>
+<%= render "partials/network-options.partial.erb" %>
 
 ##### GLANCE #####
 image_service=nova.image.glance.GlanceImageService
 glance_api_servers=<%= @glance_serverlist %>
 
 ##### COMPUTE #####
-<%= render "compute-options.partial.erb" %>
+<%= render "partials/compute-options.partial.erb" %>
 
 ##### VNCPROXY #####
-<%= render "vncproxy-options.partial.erb" %>
+<%= render "partials/vncproxy-options.partial.erb" %>
 
 ##### MISC #####
 # force backing images to raw format
