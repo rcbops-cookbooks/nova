@@ -19,76 +19,23 @@ state_path=/var/lib/nova
 lock_path=/var/lock/nova
 
 ##### RABBITMQ #####
-rabbit_password=guest
-rabbit_port=5672
-rabbit_host=<%= @rabbit_ipaddress %>
+<%= render "queue-options.partial.erb" %>
 
 ##### SCHEDULER #####
-# scheduler_manager=nova.scheduler.manager.SchedulerManager
-compute_scheduler_driver=<%= @scheduler_driver %>
-scheduler_available_filters=nova.scheduler.filters.standard_filters
-# which filter class names to use for filtering hosts when not specified in the request.
-scheduler_max_attempts=<%= @scheduler_max_attempts %>
-scheduler_default_filters=<%= @scheduler_default_filters %>
-least_cost_functions=<%= @scheduler_least_cost_functions %>
-node_availability_zone=<%= @availability_zone %>
-default_schedule_zone=<%= @default_schedule_zone %>
+<%= render "scheduler-options.partial.erb" %>
 
 ##### NETWORK #####
-<% @network_options.each do |key,value| %>
-<%=key%>=<%=value%>
-<% end %>
-<% if @virt_type == "qemu" -%>
-libvirt_use_virtio_for_bridges=false
-<% else -%>
-libvirt_use_virtio_for_bridges=true
-<% end -%>
-<% if not @vpn_image_id.nil? %>
-vpn_image_id=<%= @vpn_image_id %>
-<% end %>
-dnsmasq_config_file=<%= @dnsmasq_config_file %>
-
+<%= render "network-options.partial.erb" %>
 
 ##### GLANCE #####
 image_service=nova.image.glance.GlanceImageService
 glance_api_servers=<%= @glance_serverlist %>
 
 ##### COMPUTE #####
-compute_manager=nova.compute.manager.ComputeManager
-sql_connection=mysql://<%= @user %>:<%= @passwd %>@<%= @db_ipaddress %>/<%= @db_name %>
-connection_type=<%= @connection_type %>
-<% case @connection_type -%>
-<% when "libvirt" -%>
-compute_driver=libvirt.LibvirtDriver
-libvirt_type=<%= @virt_type %>
-# Inject the ssh public key at boot time (default: true)
-libvirt_inject_key=<%= @libvirt_inject_key %>
-<% end -%>
-# Command prefix to use for running commands as root (default: sudo)
-rootwrap_config=/etc/nova/rootwrap.conf
-# Should unused base images be removed? (default: false)
-remove_unused_base_images=<%= @remove_unused_base_images %>
-# Unused resized base images younger than this will not be removed (default: 3600)
-remove_unused_resized_minimum_age_seconds=<%= @remove_unused_resized_minimum_age_seconds %>
-# Unused unresized base images younger than this will not be removed (default: 86400)
-remove_unused_original_minimum_age_seconds=<%= @remove_unused_original_minimum_age_seconds %>
-# Write a checksum for files in _base to disk (default: false)
-checksum_base_images=<%= @checksum_base_images %>
+<%= render "compute-options.partial.erb" %>
 
 ##### VNCPROXY #####
-novncproxy_base_url=<%= @novncproxy_base_url %>
-xvpvncproxy_base_url=<%= @xvpvncproxy_base_url %>
-
-# This is only required on the server running xvpvncproxy
-xvpvncproxy_host=<%= @xvpvncproxy_bind_host %>
-xvpvncproxy_port=<%= @xvpvncproxy_bind_port %>
-
-# This is only required on the server running novncproxy
-novncproxy_host=<%= @novncproxy_bind_host %>
-novncproxy_port=<%= @novncproxy_bind_port %>
-
-vncserver_listen=<%= @vncserver_listen %>
-vncserver_proxyclient_address=<%= @vncserver_proxyclient_address %>
+<%= render "vncproxy-options.partial.erb" %>
 
 ##### MISC #####
 # force backing images to raw format
@@ -105,6 +52,8 @@ quota_security_group_rules=<%= @quota_security_group_rules %>
 quota_fixed_ips=<%= @quota_fixed_ips %>
 quota_instances=<%= @quota_instances %>
 
+# TODO(shep): not sure if this should go in partial scheduler-options
+#             leaving here for now
 <%- if /FilterScheduler/.match(@scheduler_driver) or
        /MultiScheduler/.match(@scheduler_driver) %>
 # FilterScheduler Only Options
@@ -121,12 +70,6 @@ ram_allocation_ratio=<%= @ram_allocation_ratio %>
 # maximum number of instance cores to allow per host
 max_cores=<% @cpu_allocation_ratio.to_i * node["cpu"]["total"].to_i %>
 <%- end %>
-
-<% if %w(fedora redhat centos).include? node.platform -%>
-# Adding support for non-modded euca2ools to display ip address info
-# https://bugs.launchpad.net/nova/+bug/901594
-ec2_private_dns_show_ip=True
-<% end -%>
 
 ##### KEYSTONE #####
 keystone_ec2_url=http://<%= @keystone_api_ipaddress %>:<%= @keystone_service_port %>/v2.0/ec2tokens
@@ -153,3 +96,8 @@ osapi_compute_listen_port=<%= @osapi_compute_listen_port %>
 ec2_listen=<%= @ec2_listen %>
 ec2_listen_port=<%= @ec2_listen_port %>
 ec2_host=<%= @ec2_host %>
+<% if %w(fedora redhat centos).include? node.platform -%>
+# Adding support for non-modded euca2ools to display ip address info
+# https://bugs.launchpad.net/nova/+bug/901594
+ec2_private_dns_show_ip=True
+<% end -%>
