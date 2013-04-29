@@ -49,8 +49,8 @@ service "nova-api-ec2" do
   service_name platform_options["api_ec2_service"]
   supports :status => true, :restart => true
   action :enable
-  subscribes :restart, resources(:nova_conf => "/etc/nova/nova.conf"), :delayed
-  subscribes :restart, resources(:template => "/etc/nova/logging.conf"), :delayed
+  subscribes :restart, "nova_conf[/etc/nova/nova.conf]", :delayed
+  subscribes :restart, "template[/etc/nova/logging.conf]", :delayed
 end
 
 monitoring_procmon "nova-api-ec2" do
@@ -138,7 +138,7 @@ template "/etc/nova/api-paste.ini" do
             :admin_port => ks_admin_endpoint["port"],
             :admin_token => keystone["admin_token"]
   )
-  notifies :restart, resources(:service => "nova-api-ec2"), :delayed
+  notifies :restart, "service[nova-api-ec2]", :delayed
 end
 
 # Register EC2 Endpoint

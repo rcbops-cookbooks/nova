@@ -44,8 +44,8 @@ service "nova-api-metadata" do
   service_name platform_options["nova_api_metadata_service"]
   supports :status => true, :restart => true
   action :enable
-  subscribes :restart, resources(:nova_conf => "/etc/nova/nova.conf"), :delayed
-  subscribes :restart, resources(:template => "/etc/nova/logging.conf"), :delayed
+  subscribes :restart, "nova_conf[/etc/nova/nova.conf]", :delayed
+  subscribes :restart, "template[/etc/nova/logging.conf]", :delayed
 end
 
 monitoring_procmon "nova-api-metadata" do
@@ -77,5 +77,5 @@ template "/etc/nova/api-paste.ini" do
     "service_port" => ks_service_endpoint["port"],
     "admin_token" => keystone["admin_token"]
   )
-  notifies :restart, resources(:service => "nova-api-metadata"), :delayed
+  notifies :restart, "service[nova-api-metadata]", :delayed
 end
