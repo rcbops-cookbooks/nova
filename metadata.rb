@@ -29,4 +29,4 @@ end
   depends dep
 end
 
-depends "keystone", ">= 1.0.17"
+depends "keystone", ">= 1.0.20"
