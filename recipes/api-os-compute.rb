@@ -67,9 +67,14 @@ monitoring_metric "nova-api-os-compute-proc" do
   alarms(:failure_min => 2.0)
 end
 
-keystone = get_settings_by_role("keystone", "keystone")
-ks_admin_endpoint = get_access_endpoint("keystone-api", "keystone", "admin-api")
-ks_service_endpoint = get_access_endpoint("keystone-api", "keystone", "service-api")
+# Search for keystone endpoint info
+ks_api_role = "keystone-api"
+ks_ns = "keystone"
+ks_admin_endpoint = get_access_endpoint(ks_api_role, ks_ns, "admin-api")
+ks_service_endpoint = get_access_endpoint(ks_api_role, ks_ns, "service-api")
+# Get settings from role[keystone-setup]
+keystone = get_settings_by_role("keystone-setup", "keystone")
+# Search for nova-api-os-compute endpoing info
 nova_api_endpoint = get_access_endpoint("nova-api-os-compute", "nova", "api")
 
 # Register Service Tenant
@@ -131,11 +136,11 @@ template "/etc/nova/api-paste.ini" do
   group "nova"
   mode "0600"
   variables(
-            "keystone_api_ipaddress" => ks_service_endpoint["host"],
-            "service_port" => ks_service_endpoint["port"],
-            "admin_port" => ks_admin_endpoint["port"],
-            "admin_token" => keystone["admin_token"]
-            )
+    "keystone_api_ipaddress" => ks_service_endpoint["host"],
+    "service_port" => ks_service_endpoint["port"],
+    "admin_port" => ks_admin_endpoint["port"],
+    "admin_token" => keystone["admin_token"]
+  )
   notifies :restart, "service[nova-api-os-compute]", :delayed
 end
 

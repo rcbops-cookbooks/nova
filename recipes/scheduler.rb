@@ -23,10 +23,10 @@ include_recipe "monitoring"
 platform_options = node["nova"]["platform"]
 
 directory "/var/lock/nova" do
-    owner "nova"
-    group "nova"
-    mode "0700"
-    action :create
+  owner "nova"
+  group "nova"
+  mode "0700"
+  action :create
 end
 
 platform_options["nova_scheduler_packages"].each do |pkg|
@@ -39,7 +39,7 @@ end
 service "nova-scheduler" do
   service_name platform_options["nova_scheduler_service"]
   supports :status => true, :restart => true
-  action [ :enable, :start ]
+  action [:enable, :start]
   subscribes :restart, "nova_conf[/etc/nova/nova.conf]", :delayed
   subscribes :restart, "template[/etc/nova/logging.conf]", :delayed
 end
