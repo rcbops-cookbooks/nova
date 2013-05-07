@@ -27,8 +27,10 @@ template "/usr/share/pyshared/nova/scheduler/filters/affinity_filter.py" do
   group "root"
   mode "0644"
   notifies :restart, "service[nova-scheduler]", :immediately
-  only_if { ::Chef::Recipe::Patch.check_package_version("nova-scheduler","2012.1+stable~20120612-3ee026e-0ubuntu1.2",node) ||
-            ::Chef::Recipe::Patch.check_package_version("nova-scheduler","2012.1+stable~20120612-3ee026e-0ubuntu1.3",node) }
+  only_if {
+    ::Chef::Recipe::Patch.check_package_version("nova-scheduler", "2012.1+stable~20120612-3ee026e-0ubuntu1.2", node) ||
+      ::Chef::Recipe::Patch.check_package_version("nova-scheduler", "2012.1+stable~20120612-3ee026e-0ubuntu1.3", node)
+  }
 end
 
 # lp:bug https://bugs.launchpad.net/nova/+bug/1096719
@@ -39,5 +41,11 @@ template "/usr/share/pyshared/nova/scheduler/host_manager.py" do
   group "root"
   mode "0644"
   notifies :restart, "service[nova-scheduler]", :immediately
-  only_if { ::Chef::Recipe::Patch.check_package_version("nova-scheduler","2012.2.1+stable-20121212-a99a802e-0ubuntu1.1~cloud0",node) }
+  only_if {
+    ::Chef::Recipe::Patch.check_package_version(
+      "nova-scheduler",
+      "2012.2.1+stable-20121212-a99a802e-0ubuntu1.1~cloud0",
+      node
+    )
+  }
 end

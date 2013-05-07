@@ -32,7 +32,7 @@ end
 service "nova-conductor" do
   service_name platform_options["nova_conductor_service"]
   supports :status => true, :restart => true
-  action [ :enable, :start ]
+  action [:enable, :start]
   subscribes :restart, "nova_conf[/etc/nova/nova.conf]", :delayed
   subscribes :restart, "template[/etc/nova/logging.conf]", :delayed
 end
