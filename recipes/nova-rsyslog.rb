@@ -18,14 +18,14 @@
 #
 
 template "/etc/rsyslog.d/21-nova.conf" do
-    source "21-nova.conf.erb"
-    owner "nova"
-    group "nova"
-    mode "0600"
-    variables(
-        "use_syslog" => node["nova"]["syslog"]["use"],
-        "log_facility" => node["nova"]["syslog"]["config_facility"]
-    )
-    only_if { node["nova"]["syslog"]["use"] == true }
-    notifies :restart, "service[rsyslog]", :immediately
+  source "21-nova.conf.erb"
+  owner "nova"
+  group "nova"
+  mode "0600"
+  variables(
+    "use_syslog" => node["nova"]["syslog"]["use"],
+    "log_facility" => node["nova"]["syslog"]["config_facility"]
+  )
+  only_if { node["nova"]["syslog"]["use"] == true }
+  notifies :restart, "service[rsyslog]", :immediately
 end

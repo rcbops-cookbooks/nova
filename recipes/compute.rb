@@ -25,7 +25,8 @@ platform_options = node["nova"]["platform"]
 # NOTE(shep): Copying to a new array
 # this is due to Chef::Exceptions::ImmutableAttributeModification error
 # see http://www.opscode.com/blog/2013/02/05/chef-11-in-depth-attributes-changes/
-nova_compute_packages = platform_options["nova_compute_packages"].each.collect {|x| x}
+nova_compute_packages =
+  platform_options["nova_compute_packages"].each.collect { |x| x }
 
 if platform?(%w(ubuntu))
   case node["nova"]["libvirt"]["virt_type"]
@@ -93,10 +94,10 @@ end
 include_recipe "nova::libvirt"
 
 execute "remove vhost-net module" do
-    command "rmmod vhost_net"
-    notifies :restart, "service[nova-compute]"
-    notifies :restart, "service[libvirt-bin]"
-    only_if "lsmod | grep vhost_net"
+  command "rmmod vhost_net"
+  notifies :restart, "service[nova-compute]"
+  notifies :restart, "service[libvirt-bin]"
+  only_if "lsmod | grep vhost_net"
 end
 
 # Sysctl tunables
