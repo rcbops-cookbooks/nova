@@ -23,10 +23,10 @@ include_recipe "monitoring"
 platform_options = node["nova"]["platform"]
 
 directory "/var/lock/nova" do
-    owner "nova"
-    group "nova"
-    mode "0700"
-    action :create
+  owner "nova"
+  group "nova"
+  mode "0700"
+  action :create
 end
 
 package "python-keystone" do
@@ -62,9 +62,13 @@ monitoring_metric "nova-api-metadata-proc" do
   alarms(:failure_min => 2.0)
 end
 
-ks_admin_endpoint = get_access_endpoint("keystone-api", "keystone", "admin-api")
-ks_service_endpoint = get_access_endpoint("keystone-api", "keystone", "service-api")
-keystone = get_settings_by_role("keystone","keystone")
+# Search for keystone endpoint info
+ks_api_role = "keystone-api"
+ks_ns = "keystone"
+ks_admin_endpoint = get_access_endpoint(ks_api_role, ks_ns, "admin-api")
+ks_service_endpoint = get_access_endpoint(ks_api_role, ks_ns, "service-api")
+# Get settings from role[keystone-setup]
+keystone = get_settings_by_role("keystone-setup", "keystone")
 
 template "/etc/nova/api-paste.ini" do
   source "api-paste.ini.erb"
