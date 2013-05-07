@@ -28,10 +28,10 @@ node.set_unless['nova']['service_pass'] = secure_password
 platform_options=node["nova"]["platform"]
 
 directory "/var/lock/nova" do
-    owner "nova"
-    group "nova"
-    mode "0700"
-    action :create
+  owner "nova"
+  group "nova"
+  mode "0700"
+  action :create
 end
 
 package "python-keystone" do
@@ -68,10 +68,14 @@ monitoring_metric "nova-api-ec2-proc" do
   alarms(:failure_min => 2.0)
 end
 
-
-ks_admin_endpoint = get_access_endpoint("keystone-api", "keystone", "admin-api")
-ks_service_endpoint = get_access_endpoint("keystone-api", "keystone", "service-api")
-keystone = get_settings_by_role("keystone","keystone")
+# Search for keystone endpoint info
+ks_api_role = "keystone-api"
+ks_ns = "keystone"
+ks_admin_endpoint = get_access_endpoint(ks_api_role, ks_ns, "admin-api")
+ks_service_endpoint = get_access_endpoint(ks_api_role, ks_ns, "service-api")
+# Get settings from role[keystone-setup]
+keystone = get_settings_by_role("keystone-setup", "keystone")
+# Get bind info for ec2 apis
 ec2_public_endpoint = get_bind_endpoint("nova", "ec2-public")
 ec2_admin_endpoint = get_bind_endpoint("nova", "ec2-admin")
 
@@ -133,10 +137,11 @@ template "/etc/nova/api-paste.ini" do
   owner "nova"
   group "nova"
   mode "0600"
-  variables(:service_port => ks_service_endpoint["port"],
-            :keystone_api_ipaddress => ks_service_endpoint["host"],
-            :admin_port => ks_admin_endpoint["port"],
-            :admin_token => keystone["admin_token"]
+  variables(
+    :service_port => ks_service_endpoint["port"],
+    :keystone_api_ipaddress => ks_service_endpoint["host"],
+    :admin_port => ks_admin_endpoint["port"],
+    :admin_token => keystone["admin_token"]
   )
   notifies :restart, "service[nova-api-ec2]", :delayed
 end

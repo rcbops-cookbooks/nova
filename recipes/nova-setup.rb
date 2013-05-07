@@ -31,18 +31,24 @@ include_recipe "mysql::client"
 include_recipe "mysql::ruby"
 include_recipe "monitoring"
 
-ks_service_endpoint = get_access_endpoint("keystone-api", "keystone","service-api")
-keystone = get_settings_by_role("keystone", "keystone")
+# Search for keystone endpoint info
+ks_api_role = "keystone-api"
+ks_ns = "keystone"
+ks_service_endpoint = get_access_endpoint(ks_api_role, ks_ns, "service-api")
+# Get settings from role[keystone-setup]
+keystone = get_settings_by_role("keystone-setup", "keystone")
+
 keystone_admin_user = keystone["admin_user"]
 keystone_admin_password = keystone["users"][keystone_admin_user]["password"]
 keystone_admin_tenant = keystone["users"][keystone_admin_user]["default_tenant"]
 
 #creates db and user
 #function defined in osops-utils/libraries
-create_db_and_user("mysql",
-                   node["nova"]["db"]["name"],
-                   node["nova"]["db"]["username"],
-                   node["nova"]["db"]["password"])
+create_db_and_user(
+  "mysql",
+  node["nova"]["db"]["name"],
+  node["nova"]["db"]["username"],
+  node["nova"]["db"]["password"])
 
 execute "nova-manage db sync" do
   command "nova-manage db sync"
@@ -55,8 +61,9 @@ end
 monitoring_metric "nova-plugin" do
   type "pyscript"
   script "nova_plugin.py"
-  options("Username" => keystone_admin_user,
-          "Password" => keystone_admin_password,
-          "TenantName" => keystone_admin_tenant,
-          "AuthURL" => ks_service_endpoint["uri"])
+  options(
+    "Username" => keystone_admin_user,
+    "Password" => keystone_admin_password,
+    "TenantName" => keystone_admin_tenant,
+    "AuthURL" => ks_service_endpoint["uri"])
 end

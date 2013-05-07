@@ -36,26 +36,34 @@ directory "/etc/nova" do
   mode "0700"
 end
 
-keystone = get_settings_by_role("keystone", "keystone")
-ec2_creds = get_settings_by_role("keystone", "credentials")
-ks_admin_endpoint = get_access_endpoint("keystone-api", "keystone", "admin-api")
-ks_service_endpoint = get_access_endpoint("keystone-api", "keystone", "service-api")
+# Search for keystone endpoint info
+ks_api_role = "keystone-api"
+ks_ns = "keystone"
+ks_admin_endpoint = get_access_endpoint(ks_api_role, ks_ns, "admin-api")
+ks_service_endpoint = get_access_endpoint(ks_api_role, ks_ns, "service-api")
+# Get settings from role[keystone-setup]
+keystone = get_settings_by_role("keystone-setup", "keystone")
+# Get credential settings from role[keystone-setup]
+ec2_creds = get_settings_by_role("keystone-setup", "credentials")
+# Search for nova api endpoint info
 nova_api_endpoint = get_access_endpoint("nova-api-os-compute", "nova", "api")
+# Search for nova ec2 api endpoint info
 ec2_public_endpoint = get_access_endpoint("nova-api-ec2", "nova", "ec2-public")
 
 nova_conf "/etc/nova/nova.conf" do
-    action :create
+  action :create
 end
 
 template "/etc/nova/logging.conf" do
-    source "nova-logging.conf.erb"
-    owner "nova"
-    group "nova"
-    mode "0600"
-    variables("use_syslog" => node["nova"]["syslog"]["use"],
-              "log_facility" => node["nova"]["syslog"]["facility"],
-              "log_verbosity" => node["nova"]["config"]["log_verbosity"]
-             )
+  source "nova-logging.conf.erb"
+  owner "nova"
+  group "nova"
+  mode "0600"
+  variables(
+    "use_syslog" => node["nova"]["syslog"]["use"],
+    "log_facility" => node["nova"]["syslog"]["facility"],
+    "log_verbosity" => node["nova"]["config"]["log_verbosity"]
+  )
 end
 
 # TODO: need to re-evaluate this for accuracy
