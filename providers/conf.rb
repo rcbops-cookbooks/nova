@@ -147,7 +147,8 @@ action :create do
       "osapi_compute_listen_port" => api_bind["port"],
       "ec2_listen" => ec2_bind["host"],
       "ec2_host" => ec2_bind["host"],
-      "ec2_listen_port" => ec2_bind["port"]
+      "ec2_listen_port" => ec2_bind["port"],
+      "use_ceilometer" => node.recipe?("ceilometer::ceilometer-compute")
     )
   end
   new_resource.updated_by_last_action(t.updated_by_last_action?)
