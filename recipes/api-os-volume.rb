@@ -18,7 +18,6 @@
 #
 
 include_recipe "nova::nova-common"
-include_recipe "monitoring"
 
 platform_options = node["nova"]["platform"]
 
@@ -46,20 +45,6 @@ service "nova-api-os-volume" do
   action :enable
   subscribes :restart, resources(:nova_conf => "/etc/nova/nova.conf"), :delayed
   subscribes :restart, resources(:template => "/etc/nova/logging.conf"), :delayed
-end
-
-monitoring_procmon "nova-api-os-volume" do
-  service_name=platform_options["api_os_volume_service"]
-  process_name "nova-api-os-volume"
-  script_name service_name
-end
-
-monitoring_metric "nova-api-os-volume-proc" do
-  type "proc"
-  proc_name "nova-api-os-volume"
-  proc_regex platform_options["api_os_volume_service"]
-
-  alarms(:failure_min => 2.0)
 end
 
 ks_admin_endpoint = get_access_endpoint("keystone-api", "keystone", "admin-api")

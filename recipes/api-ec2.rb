@@ -19,8 +19,6 @@
 
 ::Chef::Recipe.send(:include, Opscode::OpenSSL::Password)
 include_recipe "nova::nova-common"
-include_recipe "monitoring"
-
 
 # Set a secure keystone service password
 node.set_unless['nova']['service_pass'] = secure_password
@@ -51,21 +49,6 @@ service "nova-api-ec2" do
   action :enable
   subscribes :restart, "nova_conf[/etc/nova/nova.conf]", :delayed
   subscribes :restart, "template[/etc/nova/logging.conf]", :delayed
-end
-
-monitoring_procmon "nova-api-ec2" do
-  service_name = platform_options["api_ec2_service"]
-  pname = platform_options["api_ec2_process_name"]
-  process_name pname
-  script_name service_name
-end
-
-monitoring_metric "nova-api-ec2-proc" do
-  type "proc"
-  proc_name "nova-api-ec2"
-  proc_regex platform_options["api_ec2_service"]
-
-  alarms(:failure_min => 2.0)
 end
 
 # Search for keystone endpoint info

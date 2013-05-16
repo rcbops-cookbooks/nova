@@ -17,8 +17,6 @@
 # limitations under the License.
 #
 
-include_recipe "monitoring"
-
 platform_options = node["nova"]["platform"]
 
 platform_options["libvirt_packages"].each do |pkg|
@@ -51,21 +49,7 @@ service "libvirt-bin" do
   supports :status => true, :restart => true
   action :enable
 end
-
-monitoring_procmon "libvirt-bin" do
-  service_name=platform_options["libvirt_service"]
-  process_name "libvirtd"
-  script_name service_name
-end
-
-monitoring_metric "libvirtd-proc" do
-  type "proc"
-  proc_name "libvirtd-consoleauth"
-  proc_regex platform_options["libvirt_service"]
-
-  alarms(:failure_min => 1.0)
-end
-
+#
 #
 # TODO(breu): this section needs to be rewritten to support key privisioning
 #
@@ -96,10 +80,6 @@ template "/etc/sysconfig/libvirtd" do
   mode "0600"
   notifies :restart, "service[libvirt-bin]", :immediately
   only_if { platform?(%w{fedora redhat centos}) }
-end
-
-monitoring_metric "libvirt" do
-  type "libvirt"
 end
 
 # remove default libvirt network

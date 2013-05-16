@@ -17,7 +17,6 @@
 # limitations under the License.
 
 include_recipe "nova::nova-common"
-include_recipe "monitoring"
 
 platform_options=node["nova"]["platform"]
 
@@ -34,10 +33,4 @@ service "nova-cert" do
   action :enable
   subscribes :restart, "nova_conf[/etc/nova/nova.conf]", :delayed
   subscribes :restart, "template[/etc/nova/logging.conf]", :delayed
-end
-
-monitoring_procmon "nova-cert" do
-  service_name = platform_options["nova_cert_service"]
-  process_name "nova-cert"
-  script_name service_name
 end

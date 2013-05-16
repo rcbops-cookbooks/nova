@@ -18,7 +18,6 @@
 #
 
 include_recipe "nova::nova-common"
-include_recipe "monitoring"
 
 platform_options = node["nova"]["platform"]
 
@@ -43,20 +42,5 @@ service "nova-scheduler" do
   subscribes :restart, "nova_conf[/etc/nova/nova.conf]", :delayed
   subscribes :restart, "template[/etc/nova/logging.conf]", :delayed
 end
-
-monitoring_procmon "nova-scheduler" do
-  service_name=platform_options["nova_scheduler_service"]
-  process_name "nova-scheduler"
-  script_name service_name
-end
-
-monitoring_metric "nova-scheduler-proc" do
-  type "proc"
-  proc_name "nova-scheduler"
-  proc_regex platform_options["nova_scheduler_service"]
-
-  alarms(:failure_min => 2.0)
-end
-
 
 include_recipe "nova::nova-scheduler-patch"
