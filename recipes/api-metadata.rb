@@ -18,7 +18,6 @@
 #
 
 include_recipe "nova::nova-common"
-include_recipe "monitoring"
 
 platform_options = node["nova"]["platform"]
 
@@ -46,20 +45,6 @@ service "nova-api-metadata" do
   action :enable
   subscribes :restart, "nova_conf[/etc/nova/nova.conf]", :delayed
   subscribes :restart, "template[/etc/nova/logging.conf]", :delayed
-end
-
-monitoring_procmon "nova-api-metadata" do
-  service_name = platform_options["nova_api_metadata_service"]
-  process_name "nova-api-metadata"
-  script_name service_name
-end
-
-monitoring_metric "nova-api-metadata-proc" do
-  type "proc"
-  proc_name "nova-api-metadata"
-  proc_regex platform_options["nova_api_metadata_service"]
-
-  alarms(:failure_min => 2.0)
 end
 
 # Search for keystone endpoint info

@@ -18,8 +18,6 @@
 #
 
 include_recipe "nova::nova-common"
-include_recipe "monitoring"
-
 
 platform_options = node["nova"]["platform"]
 
@@ -45,39 +43,10 @@ service platform_options["nova_vncproxy_service"] do
   subscribes :restart, "template[/etc/nova/logging.conf]", :delayed
 end
 
-monitoring_procmon platform_options["nova_vncproxy_service"] do
-  service_name=platform_options["nova_vncproxy_service"]
-  process_name "nova-novncproxy"
-  script_name service_name
-end
-
-monitoring_metric "nova-novncproxy-proc" do
-  type "proc"
-  proc_name "nova-novncproxy"
-  proc_regex platform_options["nova_vncproxy_service"]
-
-  alarms(:failure_min => 2.0)
-end
-
 service platform_options["nova_vncproxy_consoleauth_service"] do
   service_name platform_options["nova_vncproxy_consoleauth_service"]
   supports :status => true, :restart => true
   action :enable
   subscribes :restart, "nova_conf[/etc/nova/nova.conf]", :delayed
   subscribes :restart, "template[/etc/nova/logging.conf]", :delayed
-end
-
-monitoring_procmon "nova-consoleauth" do
-  service_name=platform_options["nova_vncproxy_consoleauth_service"]
-  pname=platform_options["nova_vncproxy_consoleauth_process_name"]
-  process_name pname
-  script_name service_name
-end
-
-monitoring_metric "nova-consoleauth-proc" do
-  type "proc"
-  proc_name "nova-consoleauth"
-  proc_regex platform_options["nova_vncproxy_consoleauth_service"]
-
-  alarms(:failure_min => 1.0)
 end

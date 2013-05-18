@@ -41,7 +41,6 @@ The following cookbooks are dependencies:
 * database
 * dsh
 * keystone
-* monitoring
 * mysql
 * nova-network
 * openssl

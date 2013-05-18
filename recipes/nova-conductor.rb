@@ -18,7 +18,6 @@
 #
 
 include_recipe "nova::nova-common"
-include_recipe "monitoring"
 
 platform_options = node["nova"]["platform"]
 
@@ -35,18 +34,4 @@ service "nova-conductor" do
   action [:enable, :start]
   subscribes :restart, "nova_conf[/etc/nova/nova.conf]", :delayed
   subscribes :restart, "template[/etc/nova/logging.conf]", :delayed
-end
-
-monitoring_procmon "nova-conductor" do
-  service_name=platform_options["nova_conductor_service"]
-  process_name "nova-conductor"
-  script_name service_name
-end
-
-monitoring_metric "nova-conductor-proc" do
-  type "proc"
-  proc_name "nova-conductor"
-  proc_regex platform_options["nova_conductor_service"]
-
-  alarms(:failure_min => 2.0)
 end

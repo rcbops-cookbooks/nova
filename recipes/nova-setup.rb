@@ -29,7 +29,6 @@ end
 include_recipe "nova::nova-common"
 include_recipe "mysql::client"
 include_recipe "mysql::ruby"
-include_recipe "monitoring"
 
 # Search for keystone endpoint info
 ks_api_role = "keystone-api"
@@ -56,14 +55,4 @@ execute "nova-manage db sync" do
   group "nova"
   action :run
 #  not_if "nova-manage db version && test $(nova-manage db version) -gt 0"
-end
-
-monitoring_metric "nova-plugin" do
-  type "pyscript"
-  script "nova_plugin.py"
-  options(
-    "Username" => keystone_admin_user,
-    "Password" => keystone_admin_password,
-    "TenantName" => keystone_admin_tenant,
-    "AuthURL" => ks_service_endpoint["uri"])
 end
