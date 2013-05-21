@@ -17,7 +17,6 @@
 # limitations under the License.
 #
 
-include_recipe "nova::nova-rsyslog"
 include_recipe "osops-utils::autoetchosts"
 
 platform_options = node["nova"]["platform"]
@@ -52,18 +51,6 @@ ec2_public_endpoint = get_access_endpoint("nova-api-ec2", "nova", "ec2-public")
 
 nova_conf "/etc/nova/nova.conf" do
   action :create
-end
-
-template "/etc/nova/logging.conf" do
-  source "nova-logging.conf.erb"
-  owner "nova"
-  group "nova"
-  mode "0600"
-  variables(
-    "use_syslog" => node["nova"]["syslog"]["use"],
-    "log_facility" => node["nova"]["syslog"]["facility"],
-    "log_verbosity" => node["nova"]["config"]["log_verbosity"]
-  )
 end
 
 # TODO: need to re-evaluate this for accuracy
