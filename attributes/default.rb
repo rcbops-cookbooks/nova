@@ -49,11 +49,6 @@ default["nova"]["services"]["volume"]["port"] = 8776                        # no
 default["nova"]["services"]["volume"]["path"] = "/v1/%(tenant_id)s"         # node_attribute
 default["nova"]["services"]["volume"]["cinder_catalog_info"] = "volume:cinder:publicURL" #nod_ attribute
 
-# Logging stuff
-default["nova"]["syslog"]["use"] = true                                     # node_attribute
-default["nova"]["syslog"]["facility"] = "LOG_LOCAL1"                        # node_attribute
-default["nova"]["syslog"]["config_facility"] = "local1"                     # node_attribute
-
 # can this be wedged into the "api" endpoint?                               # node_attribute
 default["nova"]["compute"]["region"] = "RegionOne"                          # node_attribute
 default["nova"]["compute"]["connection_type"] = "libvirt"                          # node_attribute

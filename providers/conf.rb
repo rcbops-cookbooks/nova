@@ -93,8 +93,6 @@ action :create do
     mode "0600"
     cookbook "nova"
     variables(
-      "use_syslog" => node["nova"]["syslog"]["use"],
-      "log_facility" => node["nova"]["syslog"]["facility"],
       "db_ipaddress" => mysql_info["host"],
       "user" => node["nova"]["db"]["username"],
       "passwd" => nova_setup_info["db"]["password"],

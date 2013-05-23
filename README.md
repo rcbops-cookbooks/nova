@@ -104,13 +104,9 @@ nova-cert
 
 nova-common
 ----
-- Includes recipe `nova-rsyslog` and `osops-utils::autoetchosts`
+- Includes recipe `osops-utils::autoetchosts`
 - Builds the basic nova.conf config file with details of the rabbitmq, mysql, glance and keystone servers  
 - Builds a openrc file for root with appropriate environment variables to interact with the nova client CLI  
-
-nova-rsyslog
-----
-- Creates rsyslog config file for nova
 
 nova-scheduler-patch
 ----
@@ -185,10 +181,6 @@ NOTE: service password is no longer set statically in the attributes file, but s
 * `nova["services"]["volume"]["port"]` - Port to bind service to
 * `nova["services"]["volume"]["path"]` - URI to use
 * `nova["services"]["volume"]["cinder_catalog_info"]` - URL used for cinder
-
-* `nova["syslog"]["use"]` - Should nova log to syslog? 
-* `nova["syslog"]["facility"]` - Which facility nova should use when logging in python style (for example, LOG_LOCAL1)
-* `nova["syslog"]["config_facility"]` - Which facility nova should use when logging in rsyslog style (for example, local1)
 
 * `nova["compute"]["region"]` - Region name, defaults to RegionOne
 
@@ -275,7 +267,6 @@ NOTE: The filter scheduler currently does not work with ec2.
 
 Templates
 =====
-* `21-nova.conf.erb` - Config for rsyslog
 * `api-paste.ini.erb` - Paste config for nova API middleware
 * `libvirt-bin.erb` - Initscript for starting libvirtd
 * `libvirtd-ssh-config` - Config file for libvirt SSH auth
