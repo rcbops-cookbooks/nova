@@ -33,12 +33,13 @@ directory "/var/lock/nova" do
 end
 
 package "python-keystone" do
-  action :install
+  action node["osops"]["do_package_upgrades"] == true ? :upgrade : :install
+  options platform_options["package_overrides"]
 end
 
 platform_options["api_os_compute_packages"].each do |pkg|
   package pkg do
-    action :install
+    action node["osops"]["do_package_upgrades"] == true ? :upgrade : :install
     options platform_options["package_overrides"]
   end
 end
