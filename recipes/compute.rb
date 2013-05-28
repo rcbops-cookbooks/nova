@@ -38,7 +38,7 @@ end
 
 nova_compute_packages.each do |pkg|
   package pkg do
-    action :install
+    action node["osops"]["do_package_upgrades"] == true ? :upgrade : :install
     options platform_options["package_overrides"]
   end
 end
@@ -78,11 +78,15 @@ end
 
 include_recipe "nova::libvirt"
 
+# The bridge checksum issue is fixed with a fill-checksum
+# rule in grizzly (also fixed in upstream libvirt), at least
+# in ubuntu
+
 execute "remove vhost-net module" do
   command "rmmod vhost_net"
   notifies :restart, "service[nova-compute]"
   notifies :restart, "service[libvirt-bin]"
-  only_if "lsmod | grep vhost_net"
+  only_if { node["kernel"]["modules"].has_key?('vhost_net') and node["platform_family"] == "rhel" }
 end
 
 # Sysctl tunables
