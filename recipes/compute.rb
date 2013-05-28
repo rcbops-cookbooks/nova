@@ -79,15 +79,15 @@ end
 include_recipe "nova::libvirt"
 
 # The bridge checksum issue is fixed with a fill-checksum
-# rule in grizzly (also fixed in upstream libvirt)
-# TODO(rp): remove this block once we hit havana
+# rule in grizzly (also fixed in upstream libvirt), at least
+# in ubuntu
 
-# execute "remove vhost-net module" do
-#   command "rmmod vhost_net"
-#   notifies :restart, "service[nova-compute]"
-#   notifies :restart, "service[libvirt-bin]"
-#   only_if "lsmod | grep vhost_net"
-# end
+execute "remove vhost-net module" do
+  command "rmmod vhost_net"
+  notifies :restart, "service[nova-compute]"
+  notifies :restart, "service[libvirt-bin]"
+  only_if { node["kernel"]["modules"].has_key?('vhost_net') and node["platform_family"] == "rhel" }
+end
 
 # Sysctl tunables
 sysctl_multi "nova" do
