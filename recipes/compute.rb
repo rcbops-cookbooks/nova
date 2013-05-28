@@ -62,7 +62,7 @@ cookbook_file "/etc/nova/nova-compute.conf" do
 end
 
 template "/var/lib/nova/.ssh/config" do
-  source "libvirtd-ssh-config"
+  source "libvirtd-ssh-config.erb"
   owner "nova"
   group "nova"
   mode "0600"
