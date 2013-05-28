@@ -22,7 +22,7 @@ include_recipe "osops-utils"
 # lp:bug https://bugs.launchpad.net/nova/+bug/1007573
 # affinity filters don't work if scheduler_hints is None
 template "/usr/share/pyshared/nova/scheduler/filters/affinity_filter.py" do
-  source "patches/affinity_filter.py.2012.1+stable~20120612-3ee026e-0ubuntu1.2"
+  source "patches/affinity_filter.py.2012.1+stable~20120612-3ee026e-0ubuntu1.2.erb"
   owner "root"
   group "root"
   mode "0644"
@@ -36,7 +36,7 @@ end
 # lp:bug https://bugs.launchpad.net/nova/+bug/1096719
 # comparing datetime to None in update-time handling
 template "/usr/share/pyshared/nova/scheduler/host_manager.py" do
-  source "patches/host_manager.py.2012.2.1+stable-20121212-a99a802e-0ubuntu1.1~cloud0"
+  source "patches/host_manager.py.2012.2.1+stable-20121212-a99a802e-0ubuntu1.1~cloud0.erb"
   owner "root"
   group "root"
   mode "0644"
