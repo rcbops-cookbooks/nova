@@ -27,11 +27,14 @@ action :create do
   novncserver_bind = get_bind_endpoint("nova", "novnc-server")
   novncproxy_bind = get_bind_endpoint("nova", "novnc-proxy")
 
-  x = search(:node, "chef_environment:#{node.chef_environment} AND recipes:memcached-openstack")
-  if x.empty?
+  memcached_result = search(:node, "chef_environment:#{node.chef_environment} AND recipes:memcached-openstack")
+
+  if memcached_result.empty?
     memcached_servers = "None"
   else
-    memcached_servers  = x.map { |n| get_ip_for_net("nova", n) + ":11211" }.join(",")
+    memcached_network = node["memcached"]["services"]["cache"]["network"]
+    memcached_port = node["memcached"]["services"]["cache"]["port"]
+    memcached_servers  = memcached_result.map { |n| get_ip_for_net(memcached_network, n) + memcached_port.to_s }.join(",")
   end
 
   net_provider = node["nova"]["network"]["provider"]
