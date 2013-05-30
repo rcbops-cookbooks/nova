@@ -107,3 +107,5 @@ instance_usage_audit=<%= @use_ceilometer.to_s.capitalize() %>
 instance_usage_audit_period=hour
 notification_driver=nova.openstack.common.notifier.rpc_notifier
 notification_driver=ceilometer.compute.nova_notifier
+
+memcached_servers=<%= @memcached_servers %>

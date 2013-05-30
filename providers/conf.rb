@@ -27,6 +27,13 @@ action :create do
   novncserver_bind = get_bind_endpoint("nova", "novnc-server")
   novncproxy_bind = get_bind_endpoint("nova", "novnc-proxy")
 
+  x = search(:node, "chef_environment:#{node.chef_environment} AND recipes:memcached-openstack")
+  if x.empty?
+    memcached_servers = "None"
+  else
+    memcached_servers  = x.map { |n| get_ip_for_net("nova", n) + ":11211" }.join(",")
+  end
+
   net_provider = node["nova"]["network"]["provider"]
   if net_provider == "quantum"
     # Get settings from recipe[nova-network::nova-controller]
@@ -146,7 +153,8 @@ action :create do
       "ec2_listen" => ec2_bind["host"],
       "ec2_host" => ec2_bind["host"],
       "ec2_listen_port" => ec2_bind["port"],
-      "use_ceilometer" => node.recipe?("ceilometer::ceilometer-compute")
+      "use_ceilometer" => node.recipe?("ceilometer::ceilometer-compute"),
+      "memcached_servers" => memcached_servers
     )
   end
   new_resource.updated_by_last_action(t.updated_by_last_action?)
