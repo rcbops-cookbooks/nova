@@ -34,7 +34,7 @@ action :create do
   else
     memcached_network = node["memcached"]["services"]["cache"]["network"]
     memcached_port = node["memcached"]["services"]["cache"]["port"]
-    memcached_servers  = memcached_result.map { |n| get_ip_for_net(memcached_network, n) + memcached_port.to_s }.join(",")
+    memcached_servers  = memcached_result.map { |n| "#{get_ip_for_net(memcached_network, n)}:#{memcached_port.to_s}" }.join(",")
   end
 
   net_provider = node["nova"]["network"]["provider"]
