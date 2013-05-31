@@ -27,14 +27,14 @@ action :create do
   novncserver_bind = get_bind_endpoint("nova", "novnc-server")
   novncproxy_bind = get_bind_endpoint("nova", "novnc-proxy")
 
-  memcached_result = search(:node, "chef_environment:#{node.chef_environment} AND recipes:memcached-openstack")
+  memcache_endpoints = get_realserver_endpoints("memcached", "memcached", "cache")
 
-  if memcached_result.empty?
-    memcached_servers = "None"
+  if memcache_endpoints.empty?
+    memcache_servers = "None"
   else
-    memcached_network = node["memcached"]["services"]["cache"]["network"]
-    memcached_port = node["memcached"]["services"]["cache"]["port"]
-    memcached_servers  = memcached_result.map { |n| "#{get_ip_for_net(memcached_network, n)}:#{memcached_port.to_s}" }.join(",")
+    memcache_servers = memcache_endpoints.collect do |endpoint|
+        "#{endpoint["host"]}:#{endpoint["port"]}"
+    end.join(",")
   end
 
   net_provider = node["nova"]["network"]["provider"]
@@ -157,7 +157,7 @@ action :create do
       "ec2_host" => ec2_bind["host"],
       "ec2_listen_port" => ec2_bind["port"],
       "use_ceilometer" => node.recipe?("ceilometer::ceilometer-compute"),
-      "memcached_servers" => memcached_servers
+      "memcache_servers" => memcache_servers
     )
   end
   new_resource.updated_by_last_action(t.updated_by_last_action?)
