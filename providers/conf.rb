@@ -69,8 +69,12 @@ action :create do
     network_options["network_api_class"] = node[net_provider]["network_api_class"]
     network_options["quantum_auth_strategy"] = node[net_provider]["auth_strategy"]
     network_options["libvirt_vif_driver"] = node[net_provider]["libvirt_vif_driver"]
+    network_options["libvirt_vif_type"] = node[net_provider]["libvirt_vif_type"]
     network_options["linuxnet_interface_driver"] = node[net_provider]["linuxnet_interface_driver"]
     network_options["firewall_driver"] = node[net_provider]["firewall_driver"]
+    network_options["security_group_api"] = node[net_provider]["security_group_api"]
+    network_options["service_quantum_metadata_proxy"] = node[net_provider]["service_quantum_metadata_proxy"]
+    network_options["quantum_metadata_proxy_shared_secret"] = quantum_info["quantum_metadata_proxy_shared_secret"]
     network_options["metadata_host"] = metadata_ip
   end
 
