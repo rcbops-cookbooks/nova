@@ -177,7 +177,8 @@ when "ubuntu"
     "nova_vncproxy_consoleauth_packages" => ["nova-consoleauth"],
     "nova_vncproxy_consoleauth_service" => "nova-consoleauth",
     "nova_vncproxy_consoleauth_process_name" => "nova-consoleauth",
-    "libvirt_packages" => ["libvirt-bin", "pm-utils"],
+    # README(shep): python-libvirt does not get automatically upgraded
+    "libvirt_packages" => ["libvirt-bin", "python-libvirt", "pm-utils"],
     "libvirt_service" => "libvirt-bin",
     "nova_cert_packages" => ["nova-cert"],
     "nova_cert_service" => "nova-cert",
