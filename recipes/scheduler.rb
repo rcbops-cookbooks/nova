@@ -39,7 +39,7 @@ service "nova-scheduler" do
   service_name platform_options["nova_scheduler_service"]
   supports :status => true, :restart => true
   action [:enable, :start]
-  subscribes :restart, "template[/etc/nova/nova.conf]", :delayed
+  subscribes :restart, "nova_conf[/etc/nova/nova.conf]", :delayed
 end
 
 include_recipe "nova::nova-scheduler-patch"

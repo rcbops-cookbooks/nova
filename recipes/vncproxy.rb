@@ -40,12 +40,12 @@ service platform_options["nova_vncproxy_service"] do
   service_name platform_options["nova_vncproxy_service"]
   supports :status => true, :restart => true
   action [:enable, :start]
-  subscribes :restart, "template[/etc/nova/nova.conf]", :delayed
+  subscribes :restart, "nova_conf[/etc/nova/nova.conf]", :delayed
 end
 
 service platform_options["nova_vncproxy_consoleauth_service"] do
   service_name platform_options["nova_vncproxy_consoleauth_service"]
   supports :status => true, :restart => true
   action :enable
-  subscribes :restart, "template[/etc/nova/nova.conf]", :delayed
+  subscribes :restart, "nova_conf[/etc/nova/nova.conf]", :delayed
 end

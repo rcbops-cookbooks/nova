@@ -1,5 +1,10 @@
+use_inline_resources if Gem::Version.new(Chef::VERSION) >= Gem::Version.new('11')
+
 action :create do
-  log "Creating the nova.conf"
+  # Don't log during converge phase in LWP because it unconditionally marks the
+  # LWR as "updated," which subsequently restarts subscribed services (even if
+  # the template contents haven't changed).
+  Chef::Log.info("Creating #{new_resource.name}")
 
   # Search for mysql endpoint info
   mysql_info = get_access_endpoint("mysql-master", "mysql", "db")
@@ -108,7 +113,7 @@ action :create do
     iscsi_use_multipath = true
   end
 
-  t = template "/etc/nova/nova.conf" do
+  t = template new_resource.name do
     source "nova.conf.erb"
     owner "nova"
     group "nova"
