@@ -7,6 +7,7 @@
 
 # LOGS/STATE
 verbose=true
+debug=<%= @debug %>
 <% if node["nova"]["ratelimit"]["api"]["enabled"] %>
 auth_strategy=keystone
 <% else %>

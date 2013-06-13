@@ -4,6 +4,9 @@ default["enable_monit"] = false  # OS provides packages                     # cl
 default["developer_mode"] = false  # we want secure passwords by default    # cluster_attribute
 ########################################################################
 
+# set to true to enable debugging output in the logs
+default["nova"]["debug"] = false
+
 default["nova"]["db"]["name"] = "nova"                                      # node_attribute
 default["nova"]["db"]["username"] = "nova"                                  # node_attribute
 
