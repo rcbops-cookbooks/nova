@@ -103,9 +103,13 @@ ec2_private_dns_show_ip=True
 <% end -%>
 
 ##### CEILOMETER #####
+<% if @use_ceilometer.to_s.capitalize() == "True" -%>
 instance_usage_audit=<%= @use_ceilometer.to_s.capitalize() %>
 instance_usage_audit_period=hour
 notification_driver=nova.openstack.common.notifier.rpc_notifier
 notification_driver=ceilometer.compute.nova_notifier
+<% else -%>
+# disabled because ceilometer::ceilometer-compute is not in the run_list
+<% end -%>
 
 memcached_servers=<%= @memcache_servers %>

@@ -48,8 +48,7 @@ service "nova-api-os-compute" do
   service_name platform_options["api_os_compute_service"]
   supports :status => true, :restart => true
   action :enable
-  subscribes :restart, "nova_conf[/etc/nova/nova.conf]", :delayed
-  subscribes :restart, "template[/etc/nova/logging.conf]", :delayed
+  subscribes :restart, "template[/etc/nova/nova.conf]", :delayed
 end
 
 # Search for keystone endpoint info

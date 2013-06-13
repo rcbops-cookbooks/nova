@@ -43,22 +43,12 @@ nova_compute_packages.each do |pkg|
   end
 end
 
-template "/etc/nova/nova-compute.conf" do
-  source "nova-compute.conf.erb"
-  owner "nova"
-  group "nova"
-  mode "0600"
-  action :create
-  only_if { node["nova"]["network"]["provider"] == "quantum" }
-end
-
 cookbook_file "/etc/nova/nova-compute.conf" do
   source "nova-compute.conf"
   mode "0600"
   owner "nova"
   group "nova"
   action :create
-  not_if { node["nova"]["network"]["provider"] == "quantum" }
 end
 
 template "/var/lib/nova/.ssh/config" do
@@ -72,8 +62,7 @@ service "nova-compute" do
   service_name platform_options["nova_compute_service"]
   supports :status => true, :restart => true
   action :enable
-  subscribes :restart, "nova_conf[/etc/nova/nova.conf]", :delayed
-  subscribes :restart, "template[/etc/nova/logging.conf]", :delayed
+  subscribes :restart, "template[/etc/nova/nova.conf]", :delayed
 end
 
 include_recipe "nova::libvirt"
