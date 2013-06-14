@@ -27,12 +27,14 @@ action :create do
   novncserver_bind = get_bind_endpoint("nova", "novnc-server")
   novncproxy_bind = get_bind_endpoint("nova", "novnc-proxy")
 
-  memcache_endpoints = get_realserver_endpoints("memcached", "memcached", "cache")
+  memcached_endpoints = get_realserver_endpoints("memcached", "memcached", "cache")
 
-  if memcache_endpoints.empty?
-    memcache_servers = "None"
+  Chef::Log.info("#### #{memcached_endpoints}")
+
+  if memcached_endpoints.empty?
+    memcached_servers = nil
   else
-    memcache_servers = memcache_endpoints.collect do |endpoint|
+    memcached_servers = memcached_endpoints.collect do |endpoint|
         "#{endpoint["host"]}:#{endpoint["port"]}"
     end.join(",")
   end
@@ -161,7 +163,7 @@ action :create do
       "ec2_host" => ec2_bind["host"],
       "ec2_listen_port" => ec2_bind["port"],
       "use_ceilometer" => node.recipe?("ceilometer::ceilometer-compute"),
-      "memcache_servers" => memcache_servers
+      "memcached_servers" => memcached_servers
     )
   end
   new_resource.updated_by_last_action(t.updated_by_last_action?)

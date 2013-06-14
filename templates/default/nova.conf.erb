@@ -51,6 +51,9 @@ quota_security_groups=<%= @quota_security_groups %>
 quota_security_group_rules=<%= @quota_security_group_rules %>
 quota_fixed_ips=<%= @quota_fixed_ips %>
 quota_instances=<%= @quota_instances %>
+<% unless @memcached_servers.nil? -%>
+memcached_servers=<%= @memcached_servers %>
+<% end -%>
 
 # TODO(shep): not sure if this should go in partial scheduler-options
 #             leaving here for now
@@ -111,5 +114,3 @@ notification_driver=ceilometer.compute.nova_notifier
 <% else -%>
 # disabled because ceilometer::ceilometer-compute is not in the run_list
 <% end -%>
-
-memcached_servers=<%= @memcache_servers %>
