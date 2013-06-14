@@ -4,6 +4,9 @@ default["enable_monit"] = false  # OS provides packages                     # cl
 default["developer_mode"] = false  # we want secure passwords by default    # cluster_attribute
 ########################################################################
 
+# set to true to enable debugging output in the logs
+default["nova"]["debug"] = false
+
 default["nova"]["db"]["name"] = "nova"                                      # node_attribute
 default["nova"]["db"]["username"] = "nova"                                  # node_attribute
 
@@ -184,7 +187,8 @@ when "ubuntu"
     "nova_cert_packages" => ["nova-cert"],
     "nova_cert_service" => "nova-cert",
     "mysql_service" => "mysql",
-    "common_packages" => ["nova-common", "python-nova", "python-novaclient"],
+    "common_packages" => ["nova-common", "python-nova", 
+      "python-novaclient", "python-eventlet"],
     "iscsi_helper" => "tgtadm",
     "iscsi_service" => "tgt",
     "package_overrides" => "-o Dpkg::Options::='--force-confold' -o Dpkg::Options::='--force-confdef'",

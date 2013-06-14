@@ -39,7 +39,8 @@ end
 ks_api_role = "keystone-api"
 ks_ns = "keystone"
 ks_admin_endpoint = get_access_endpoint(ks_api_role, ks_ns, "admin-api")
-ks_service_endpoint = get_access_endpoint(ks_api_role, ks_ns, "service-api")
+# DE153 replacing public endpoint default for openrc with internal endpoint
+ks_internal_endpoint = get_access_endpoint(ks_api_role, ks_ns, "internal-api")
 # Get settings from role[keystone-setup]
 keystone = get_settings_by_role("keystone-setup", "keystone")
 # Get credential settings from role[keystone-setup]
@@ -63,8 +64,8 @@ template "/root/openrc" do
     "user" => keystone["admin_user"],
     "tenant" => keystone["users"][keystone["admin_user"]]["default_tenant"],
     "password" => keystone["users"][keystone["admin_user"]]["password"],
-    "keystone_api_ipaddress" => ks_service_endpoint["host"],
-    "keystone_service_port" => ks_service_endpoint["port"],
+    "keystone_api_ipaddress" => ks_internal_endpoint["host"],
+    "keystone_service_port" => ks_internal_endpoint["port"],
     "nova_api_ipaddress" => nova_api_endpoint["host"],
     "nova_api_version" => "1.1",
     "keystone_region" => node["nova"]["compute"]["region"],

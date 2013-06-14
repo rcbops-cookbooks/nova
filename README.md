@@ -132,6 +132,7 @@ vncproxy
 Attributes
 ==========
 
+* `nova["debug"]` - Boolean to enable nova debug output
 * `nova["patch_files_on_disk"]` - Boolean for patching files on disk
 * `nova["db"]["name"]` - Name of nova database
 * `nova["db"]["username"]` - Username for nova database access

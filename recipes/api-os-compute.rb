@@ -142,11 +142,3 @@ keystone_endpoint "Register Compute Endpoint" do
   endpoint_publicurl nova_api_endpoint["uri"]
   action :create
 end
-
-# Replace default policy file
-template "/etc/nova/policy.json" do
-  source "policy.json.erb"
-  owner "nova"
-  group "nova"
-  mode "0640"
-end
