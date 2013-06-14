@@ -21,6 +21,20 @@ include_recipe "osops-utils::autoetchosts"
 
 platform_options = node["nova"]["platform"]
 
+# fix ownership of /var/log/nova/nova.log
+file "/var/log/nova/nova.log" do
+  owner "nova"
+  group "nova"
+  mode "0600"
+  only_if { ::File.exists?("/var/log/nova/nova.log") }
+end
+
+# remove openstack-nova-volume on RHEL to cleanup package dependencies
+package "openstack-nova-volume" do
+  action :remove
+  only_if { node["platform_family"] == "rhel" }
+end
+
 platform_options["common_packages"].each do |pkg|
   package pkg do
     action node["osops"]["do_package_upgrades"] == true ? :upgrade : :install
