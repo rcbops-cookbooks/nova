@@ -217,6 +217,7 @@ NOTE: The filter scheduler currently does not work with ec2.
 
 * `nova["config"]["quota_security_groups"]` - Number of security groups per project, defaults to 50
 * `nova["config"]["quota_security_group_rules"]` - Number of security rules per security group, defaults to 20
+* `nova["config"]["force_config_drive"]` - Force attachment of config drive, defaults to false
 
 * `nova["ratelimit"]["settings"]` - Tune OpenStack Compute API rate limits.  For Example:
 "override_attribute": {
