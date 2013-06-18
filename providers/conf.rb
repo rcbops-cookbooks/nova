@@ -107,6 +107,7 @@ action :create do
     use_emc_multipath = true
   else
     use_emc_multipath = false
+  end
 
   t = template "/etc/nova/nova.conf" do
     source "nova.conf.erb"
