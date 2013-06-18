@@ -1,0 +1,37 @@
+# This is the /etc/multipath.conf file recommended for
+# EMC storage devices.
+#
+# Arrays: CLARiiON/VNX
+#
+# The blacklist is the enumeration of all devices that are to be
+# excluded from multipath control
+blacklist {
+    devnode "^(ram|raw|loop|fd|md|dm-|sr|scd|st)[0-9]*"
+    devnode "^hd[a-z][0-9]*"
+    devnode "^cciss!c[0-9]d[0-9]*[p[0-9]*]"
+    device {
+        vendor "DGC"
+        product "LUNZ"
+    }
+}
+# Use user friendly names, instead of using WWIDs as names.
+defaults {
+    user_friendly_names yes
+}
+devices {
+# Device attributes for EMC CLARiiON and VNX series PNR
+    device {
+        vendor "DGC"
+        product "*"
+        path_grouping_policy group_by_prio
+        getuid_callout "/sbin/scsi_id -g -u -s /block/%n"
+        prio emc
+        path_checker emc_clariion
+        path_selector "round-robin 0"
+        features "1 queue_if_no_path"
+        no_path_retry 300
+        hardware_handler "1 emc"
+        failback immediate
+    }
+}
+
