@@ -103,7 +103,7 @@ action :create do
   end
 
   cinder_setup_info = get_settings_by_role("cinder-setup", "cinder")
-  if cinder_setup_info["storage"]["provider"] == "emc" && cinder_setup_info["storage"]["multipath"] == true
+  if not cinder_setup_info.nil? and cinder_setup_info["storage"]["provider"] == "emc" and cinder_setup_info["storage"]["multipath"] == true
     use_emc_multipath = true
   else
     use_emc_multipath = false
