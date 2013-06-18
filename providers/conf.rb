@@ -103,10 +103,9 @@ action :create do
   end
 
   cinder_setup_info = get_settings_by_role("cinder-setup", "cinder")
+  iscsi_use_multipath = false
   if not cinder_setup_info.nil? and cinder_setup_info["storage"]["provider"] == "emc" and cinder_setup_info["storage"]["multipath"] == true
-    use_emc_multipath = true
-  else
-    use_emc_multipath = false
+    iscsi_use_multipath = true
   end
 
   t = template "/etc/nova/nova.conf" do
@@ -172,7 +171,7 @@ action :create do
       "ec2_host" => ec2_bind["host"],
       "ec2_listen_port" => ec2_bind["port"],
       "use_ceilometer" => node.recipe?("ceilometer::ceilometer-compute"),
-      "use_emc_multipath" => use_emc_multipath,
+      "iscsi_use_multipath" => iscsi_use_multipath,
       "memcached_servers" => memcached_servers
     )
   end

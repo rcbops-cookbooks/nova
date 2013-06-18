@@ -108,7 +108,7 @@ ec2_private_dns_show_ip=True
 <% end -%>
 
 ##### EMC Multi-Path ####
-<% if @use_emc_multipath == true -%>
+<% if @iscsi_use_multipath == true -%>
 libvirt_iscsi_use_multipath = "True"
 <% end %>
 
