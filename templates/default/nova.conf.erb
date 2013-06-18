@@ -107,6 +107,11 @@ ec2_host=<%= @ec2_host %>
 ec2_private_dns_show_ip=True
 <% end -%>
 
+##### EMC Multi-Path ####
+<% if @use_emc_multipath == true -%>
+libvirt_iscsi_use_multipath = "True"
+<% end %>
+
 ##### CEILOMETER #####
 <% if @use_ceilometer.to_s.capitalize() == "True" -%>
 instance_usage_audit=<%= @use_ceilometer.to_s.capitalize() %>

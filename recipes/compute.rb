@@ -43,6 +43,23 @@ nova_compute_packages.each do |pkg|
   end
 end
 
+cinder_setup_info = get_settings_by_role("cinder-setup", "cinder")
+if cinder_setup_info["storage"]["provider"] == "emc" && cinder_setup_info["storage"]["multipath"] == true
+  cinder_multipath_packages do |pkg|
+    package pkg do
+      action node["osops"]["do_package_upgrades"] == true ? :upgrade : :install
+      options platform_options["package_overrides"]
+    end
+  end
+  template "/etc/multipath.conf" do
+    source "emc_multipath.conf.erb"
+    owner "root"
+    group "root"
+    mode "700"
+  end
+  include_recipe "nova-volume-multipath-patches"
+end
+
 cookbook_file "/etc/nova/nova-compute.conf" do
   source "nova-compute.conf"
   mode "0600"
