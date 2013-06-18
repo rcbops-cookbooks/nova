@@ -57,7 +57,7 @@ if cinder_setup_info["storage"]["provider"] == "emc" && cinder_setup_info["stora
     group "root"
     mode "700"
   end
-  include_recipe "nova-volume-multipath-patches"
+  include_recipe "nova::nova-volume-multipath-patches"
 end
 
 cookbook_file "/etc/nova/nova-compute.conf" do
