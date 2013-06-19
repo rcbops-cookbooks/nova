@@ -75,7 +75,7 @@ service "nova-compute" do
   supports :status => true, :restart => true
   action :enable
   subscribes :restart, "template[/etc/nova/nova.conf]", :delayed
-  subscribes :restart, resources(:template => "/etc/nova/logging.conf"), :delayed
+  subscribes :restart, "template[/etc/nova/logging.conf]", :delayed
 end
 
 monitoring_procmon "nova-compute" do

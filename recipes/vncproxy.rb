@@ -48,7 +48,7 @@ service platform_options["nova_vncproxy_service"] do
   supports :status => true, :restart => true
   action [ :enable, :start ]
   subscribes :restart, "template[/etc/nova/nova.conf]", :delayed
-  subscribes :restart, resources(:template => "/etc/nova/logging.conf"), :delayed
+  subscribes :restart, "template[/etc/nova/logging.conf]", :delayed
 end
 
 monitoring_procmon platform_options["nova_vncproxy_service"] do
@@ -70,7 +70,7 @@ service platform_options["nova_vncproxy_consoleauth_service"] do
   supports :status => true, :restart => true
   action :enable
   subscribes :restart, "template[/etc/nova/nova.conf]", :delayed
-  subscribes :restart, resources(:template => "/etc/nova/logging.conf"), :delayed
+  subscribes :restart, "template[/etc/nova/logging.conf]", :delayed
 end
 
 monitoring_procmon "nova-consoleauth" do
