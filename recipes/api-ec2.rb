@@ -55,7 +55,7 @@ service "nova-api-ec2" do
   service_name platform_options["api_ec2_service"]
   supports :status => true, :restart => true
   action :enable
-  subscribes :restart, resources(:nova_conf => "/etc/nova/nova.conf"), :delayed
+  subscribes :restart, "template[/etc/nova/nova.conf]", :delayed
   subscribes :restart, resources(:template => "/etc/nova/logging.conf"), :delayed
 end
 
