@@ -44,8 +44,15 @@ nova_compute_packages.each do |pkg|
 end
 
 cinder_setup_info = get_settings_by_role("cinder-setup", "cinder")
+
+# NOTE(wilk): Copying to a new array
+# this is due to Chef::Exceptions::ImmutableAttributeModification error
+# see http://www.opscode.com/blog/2013/02/05/chef-11-in-depth-attributes-changes/
+cinder_multipath_packages =
+  platform_options["cinder_multipath_packages"].each.collect { |x| x }
+
 if not cinder_setup_info.nil? and cinder_setup_info["storage"]["provider"] == "emc" and cinder_setup_info["storage"]["enable_multipath"] == true
-  cinder_multipath_packages do |pkg|
+  cinder_multipath_packages.each do |pkg|
     package pkg do
       action node["osops"]["do_package_upgrades"] == true ? :upgrade : :install
       options platform_options["package_overrides"]
