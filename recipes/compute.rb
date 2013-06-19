@@ -64,7 +64,7 @@ cookbook_file "/etc/nova/nova-compute.conf" do
 end
 
 template "/var/lib/nova/.ssh/config" do
-  source "libvirtd-ssh-config"
+  source "libvirtd-ssh-config.erb"
   owner "nova"
   group "nova"
   mode "0600"
@@ -74,8 +74,8 @@ service "nova-compute" do
   service_name platform_options["nova_compute_service"]
   supports :status => true, :restart => true
   action :enable
-  subscribes :restart, resources(:nova_conf => "/etc/nova/nova.conf"), :delayed
-  subscribes :restart, resources(:template => "/etc/nova/logging.conf"), :delayed
+  subscribes :restart, "template[/etc/nova/nova.conf]", :delayed
+  subscribes :restart, "template[/etc/nova/logging.conf]", :delayed
 end
 
 monitoring_procmon "nova-compute" do

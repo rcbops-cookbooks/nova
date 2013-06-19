@@ -38,8 +38,8 @@ service "nova-cert" do
   service_name platform_options["nova_cert_service"]
   supports :status => true, :restart => true
   action :enable
-  subscribes :restart, resources(:nova_conf => "/etc/nova/nova.conf"), :delayed
-  subscribes :restart, resources(:template => "/etc/nova/logging.conf"), :delayed
+  subscribes :restart, "template[/etc/nova/nova.conf]", :delayed
+  subscribes :restart, "template[/etc/nova/logging.conf]", :delayed
 end
 
 monitoring_procmon "nova-cert" do
