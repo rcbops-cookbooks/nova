@@ -44,7 +44,7 @@ nova_compute_packages.each do |pkg|
 end
 
 cinder_setup_info = get_settings_by_role("cinder-setup", "cinder")
-if cinder_setup_info["storage"]["provider"] == "emc" && cinder_setup_info["storage"]["multipath"] == true
+if not cinder_setup_info.nil? and cinder_setup_info["storage"]["provider"] == "emc" and cinder_setup_info["storage"]["enable_multipath"] == true
   cinder_multipath_packages do |pkg|
     package pkg do
       action node["osops"]["do_package_upgrades"] == true ? :upgrade : :install
