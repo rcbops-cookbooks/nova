@@ -84,5 +84,5 @@ template "/etc/nova/api-paste.ini" do
     "service_port" => ks_service_endpoint["port"],
     "admin_token" => keystone["admin_token"]
   )
-  notifies :restart, resources(:service => "nova-api-metadata"), :delayed
+  notifies :restart, "service[nova-api-metadata]", :delayed
 end

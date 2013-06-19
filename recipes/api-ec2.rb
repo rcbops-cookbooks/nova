@@ -145,7 +145,7 @@ template "/etc/nova/api-paste.ini" do
             :admin_port => ks_admin_endpoint["port"],
             :admin_token => keystone["admin_token"]
   )
-  notifies :restart, resources(:service => "nova-api-ec2"), :delayed
+  notifies :restart, "service[nova-api-ec2]", :delayed
 end
 
 # Register EC2 Endpoint
