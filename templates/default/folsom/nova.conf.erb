@@ -100,6 +100,9 @@ quota_security_groups=<%= @quota_security_groups %>
 quota_security_group_rules=<%= @quota_security_group_rules %>
 quota_fixed_ips=<%= @quota_fixed_ips %>
 quota_instances=<%= @quota_instances %>
+<% unless @memcached_servers.nil? -%>
+memcached_servers=<%= @memcached_servers %>
+<% end -%>
 
 <%- if /FilterScheduler/.match(@scheduler_driver) or
        /MultiScheduler/.match(@scheduler_driver) %>
