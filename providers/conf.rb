@@ -154,6 +154,7 @@ action :create do
       "osapi_max_limit" => node["nova"]["config"]["osapi_max_limit"],
       "cpu_allocation_ratio" => node["nova"]["config"]["cpu_allocation_ratio"],
       "ram_allocation_ratio" => node["nova"]["config"]["ram_allocation_ratio"],
+      "disk_allocation_ratio" => node["nova"]["config"]["disk_allocation_ratio"],
       "snapshot_image_format" => node["nova"]["config"]["snapshot_image_format"],
       "start_guests_on_host_boot" => node["nova"]["config"]["start_guests_on_host_boot"],
       "resume_guests_state_on_host_boot" => node["nova"]["config"]["resume_guests_state_on_host_boot"],

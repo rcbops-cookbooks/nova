@@ -70,6 +70,9 @@ cpu_allocation_ratio=<%= @cpu_allocation_ratio %>
 # virtual ram to physical ram allocation ratio (default: 1.5)
 ram_allocation_ratio=<%= @ram_allocation_ratio %>
 <%- end %>
+<%- if /DiskFilter/.match(@scheduler_default_filters) -%>
+disk_allocation_ratio=<%= @disk_allocation_ratio %>
+<%- end -%>
 <%- elsif /SimpleScheduler/.match(@scheduler_driver) %>
 # SimpleScheduler Only Options
 # maximum number of instance cores to allow per host
