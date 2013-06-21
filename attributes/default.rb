@@ -75,6 +75,7 @@ default["nova"]["config"]["allow_same_net_traffic"] = true                      
 default["nova"]["config"]["osapi_max_limit"] = 1000                                 # cluster_attribute
 default["nova"]["config"]["cpu_allocation_ratio"] = 16.0                            # node_attribute (inherited from cluster?)
 default["nova"]["config"]["ram_allocation_ratio"] = 1.5                             # node_attribute (inherited from cluster?)
+default["nova"]["config"]["disk_allocation_ratio"] = 1.0                            # node_attribute (inherited from cluster?)
 default["nova"]["config"]["snapshot_image_format"] = "qcow2"                        # cluster_attribute
 default["nova"]["config"]["start_guests_on_host_boot"] = false                       # node_attribute (inherited from cluster?)
 default["nova"]["config"]["scheduler_max_attempts"] = 3                       # node_attribute (inherited from cluster?)
