@@ -80,7 +80,7 @@ max_cores=<% @cpu_allocation_ratio.to_i * node["cpu"]["total"].to_i %>
 <%- end %>
 
 ##### KEYSTONE #####
-keystone_ec2_url=http://<%= @keystone_api_ipaddress %>:<%= @keystone_service_port %>/v2.0/ec2tokens
+keystone_ec2_url=<%= @keystone_service_protocol %>://<%= @keystone_api_ipaddress %>:<%= @keystone_service_port %>/v2.0/ec2tokens
 
 ##### VOLUMES #####
 # iscsi target user-land tool to use

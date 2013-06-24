@@ -137,6 +137,7 @@ action :create do
       "rabbit_port" => rabbit_info["port"],
       "keystone_api_ipaddress" => ks_admin_endpoint["host"],
       "keystone_service_port" => ks_service_endpoint["port"],
+      "keystone_service_protocol" => ks_service_endpoint["scheme"],
       "glance_serverlist" => "#{glance_endpoint["host"]}:#{glance_endpoint["port"]}",
       "iscsi_helper" => platform_options["iscsi_helper"],
       "scheduler_driver" => node["nova"]["scheduler"]["scheduler_driver"],
