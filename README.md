@@ -291,6 +291,7 @@ Author:: William Kelly (<william.kelly@rackspace.com>)
 Author:: Darren Birkett (<darren.birkett@rackspace.co.uk>)  
 Author:: Evan Callicoat (<evan.callicoat@rackspace.com>)  
 Author:: Matt Thompson (<matt.thompson@rackspace.co.uk>)  
+Author:: Andy McCrae (<andrew.mccrae@rackspace.co.uk>)  
 
 Copyright 2012, Rackspace US, Inc.  
 

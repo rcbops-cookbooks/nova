@@ -122,7 +122,9 @@ template "/etc/nova/api-paste.ini" do
   variables(
     "keystone_api_ipaddress" => ks_service_endpoint["host"],
     "service_port" => ks_service_endpoint["port"],
+    "service_protocol" => ks_service_endpoint["scheme"],
     "admin_port" => ks_admin_endpoint["port"],
+    "admin_protocol" => ks_admin_endpoint["scheme"],
     "admin_token" => keystone["admin_token"]
   )
   notifies :restart, "service[nova-api-os-compute]", :delayed

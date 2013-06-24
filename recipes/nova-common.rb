@@ -80,6 +80,7 @@ template "/root/openrc" do
     "password" => keystone["users"][keystone["admin_user"]]["password"],
     "keystone_api_ipaddress" => ks_internal_endpoint["host"],
     "keystone_service_port" => ks_internal_endpoint["port"],
+    "keystone_service_protocol" => ks_internal_endpoint["scheme"],
     "nova_api_ipaddress" => nova_api_endpoint["host"],
     "nova_api_version" => "1.1",
     "keystone_region" => node["nova"]["compute"]["region"],

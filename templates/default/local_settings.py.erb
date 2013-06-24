@@ -53,10 +53,10 @@ HORIZON_CONFIG = {
 # ]
 
 OPENSTACK_HOST = "<%= @ip_address %>"
-OPENSTACK_KEYSTONE_URL = "http://%s:<%= @service_port %>/v2.0/" % OPENSTACK_HOST
+OPENSTACK_KEYSTONE_URL = "<%= @service_protocol %>://%s:<%= @service_port %>/v2.0/" % OPENSTACK_HOST
 # FIXME: this is only needed until keystone fixes its GET /tenants call
 # so that it doesn't return everything for admins
-OPENSTACK_KEYSTONE_ADMIN_URL = "http://%s:<%= @admin_port %>/v2.0" % OPENSTACK_HOST
+OPENSTACK_KEYSTONE_ADMIN_URL = "<%= @admin_protocol %>://%s:<%= @admin_port %>/v2.0" % OPENSTACK_HOST
 OPENSTACK_KEYSTONE_DEFAULT_ROLE = "Member"
 # Looks like Horizon no longer needs a Long-Lived Token
 # OPENSTACK_ADMIN_TOKEN = "<%= @admin_token %>"
