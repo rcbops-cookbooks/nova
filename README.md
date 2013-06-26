@@ -282,7 +282,6 @@ Templates
 
 License and Author
 ==================
-
 Author:: Justin Shepherd (<justin.shepherd@rackspace.com>)  
 Author:: Jason Cannavale (<jason.cannavale@rackspace.com>)  
 Author:: Ron Pedde (<ron.pedde@rackspace.com>)  
