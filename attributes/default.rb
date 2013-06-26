@@ -1,7 +1,6 @@
 ########################################################################
 # Toggles - These can be overridden at the environment level
 default["enable_monit"] = false  # OS provides packages                     # cluster_attribute
-default["developer_mode"] = false  # we want secure passwords by default    # cluster_attribute
 ########################################################################
 
 default["nova"]["db"]["name"] = "nova"                                      # node_attribute
