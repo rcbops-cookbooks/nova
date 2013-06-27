@@ -75,6 +75,8 @@ action :create do
     network_options["dhcp_domain"] = node[net_provider]["network"]["dhcp_domain"]
     network_options["dhcpbridge_flagfile"] = "/etc/nova/nova.conf"
     network_options["dhcpbridge"] = "/usr/bin/nova-dhcpbridge"
+    network_options["dhcp_lease_time"] = node[net_provider]["network"]["dhcp_lease_time"]
+    network_options["fixed_ip_disassociate_timeout"] = node[net_provider]["network"]["fixed_ip_disassociate_timeout"]
     #network_options["use_single_default_gateway"] = node[net_provider]["config"]["use_single_default_gateway"]
     #network_options["virt_type"] = node[net_provider]["libvirt"]["virt_type"]
   when "quantum"
