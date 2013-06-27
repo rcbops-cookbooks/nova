@@ -267,6 +267,7 @@ NOTE: The filter scheduler currently does not work with ec2.
 
 * `nova["platform"]` - Hash of platform specific package/service names and options
 
+
 Templates
 =====
 * `api-paste.ini.erb` - Paste config for nova API middleware
@@ -282,7 +283,6 @@ Templates
 
 License and Author
 ==================
-
 Author:: Justin Shepherd (<justin.shepherd@rackspace.com>)  
 Author:: Jason Cannavale (<jason.cannavale@rackspace.com>)  
 Author:: Ron Pedde (<ron.pedde@rackspace.com>)  
