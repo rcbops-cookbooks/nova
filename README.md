@@ -267,6 +267,7 @@ NOTE: The filter scheduler currently does not work with ec2.
 
 * `nova["platform"]` - Hash of platform specific package/service names and options
 
+
 Templates
 =====
 * `api-paste.ini.erb` - Paste config for nova API middleware
