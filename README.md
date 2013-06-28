@@ -264,7 +264,6 @@ NOTE: The filter scheduler currently does not work with ec2.
     }
 * `nova["ratelimit"]["api"]["enabled"]` - Enable API ratelimiting?
 * `nova["ratelimit"]["volume"]["enabled"]` - Enable volume service ratelimiting?
-
 * `nova["platform"]` - Hash of platform specific package/service names and options
 
 
