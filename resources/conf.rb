@@ -18,8 +18,8 @@
 actions :create
 
 def initialize(*args)
-    super
-    @action = :create
+  super
+  @action = :create
 end
 
 attribute :options, :kind_of => Hash

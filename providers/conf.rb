@@ -40,7 +40,7 @@ action :create do
     memcached_servers = nil
   else
     memcached_servers = memcached_endpoints.collect do |endpoint|
-        "#{endpoint["host"]}:#{endpoint["port"]}"
+      "#{endpoint["host"]}:#{endpoint["port"]}"
     end.join(",")
   end
 
@@ -111,7 +111,9 @@ action :create do
 
   cinder_setup_info = get_settings_by_role("cinder-setup", "cinder")
   iscsi_use_multipath = false
-  if not cinder_setup_info.nil? and cinder_setup_info["storage"]["provider"] == "emc" and cinder_setup_info["storage"]["enable_multipath"] == true
+  if not cinder_setup_info.nil? and
+    cinder_setup_info["storage"]["provider"] == "emc" and
+    cinder_setup_info["storage"]["enable_multipath"] == true
     iscsi_use_multipath = true
   end
 

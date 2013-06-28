@@ -51,7 +51,9 @@ cinder_setup_info = get_settings_by_role("cinder-setup", "cinder")
 cinder_multipath_packages =
   platform_options["cinder_multipath_packages"].each.collect { |x| x }
 
-if not cinder_setup_info.nil? and cinder_setup_info["storage"]["provider"] == "emc" and cinder_setup_info["storage"]["enable_multipath"] == true
+if not cinder_setup_info.nil? and
+  cinder_setup_info["storage"]["provider"] == "emc" and
+  cinder_setup_info["storage"]["enable_multipath"] == true
   cinder_multipath_packages.each do |pkg|
     package pkg do
       action node["osops"]["do_package_upgrades"] == true ? :upgrade : :install

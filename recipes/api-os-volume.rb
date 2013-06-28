@@ -22,10 +22,10 @@ include_recipe "nova::nova-common"
 platform_options = node["nova"]["platform"]
 
 directory "/var/lock/nova" do
-    owner "nova"
-    group "nova"
-    mode "0700"
-    action :create
+  owner "nova"
+  group "nova"
+  mode "0700"
+  action :create
 end
 
 package "python-keystone" do
@@ -49,7 +49,7 @@ end
 
 ks_admin_endpoint = get_access_endpoint("keystone-api", "keystone", "admin-api")
 ks_service_endpoint = get_access_endpoint("keystone-api", "keystone", "service-api")
-keystone = get_settings_by_role("keystone-setup","keystone")
+keystone = get_settings_by_role("keystone-setup", "keystone")
 
 template "/etc/nova/api-paste.ini" do
   source "api-paste.ini.erb"
