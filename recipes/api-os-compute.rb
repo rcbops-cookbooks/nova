@@ -44,11 +44,31 @@ platform_options["api_os_compute_packages"].each do |pkg|
   end
 end
 
+nova_api_endpoint = get_access_endpoint("nova-api-os-compute", "nova", "api")
+
 service "nova-api-os-compute" do
   service_name platform_options["api_os_compute_service"]
   supports :status => true, :restart => true
-  action :enable
-  subscribes :restart, "nova_conf[/etc/nova/nova.conf]", :delayed
+  unless nova_api_endpoint["scheme"] == "https"
+    action :enable
+    subscribes :restart, "nova_conf[/etc/nova/nova.conf]", :delayed
+  else
+    action [ :disable, :stop ]
+  end
+end
+
+# Setup SSL
+if nova_api_endpoint["scheme"] == "https"
+  include_recipe "nova::api-os-compute-ssl"
+else
+  apache_site "openstack-nova-osapi" do
+    enable false
+    notifies :run, "execute[restore-selinux-context]", :immediately
+    notifies :restart, "service[apache2]", :immediately
+  end
+  service "nova-api-os-compute" do
+    action [ :enable, :restart ]
+  end
 end
 
 # Search for keystone endpoint info
@@ -58,8 +78,6 @@ ks_admin_endpoint = get_access_endpoint(ks_api_role, ks_ns, "admin-api")
 ks_service_endpoint = get_access_endpoint(ks_api_role, ks_ns, "service-api")
 # Get settings from role[keystone-setup]
 keystone = get_settings_by_role("keystone-setup", "keystone")
-# Search for nova-api-os-compute endpoing info
-nova_api_endpoint = get_access_endpoint("nova-api-os-compute", "nova", "api")
 
 # Register Service Tenant
 keystone_tenant "Register Service Tenant" do
@@ -112,20 +130,6 @@ keystone_service "Register Compute Service" do
   service_type "compute"
   service_description "Nova Compute Service"
   action :create
-end
-
-# Setup SSL
-if nova_api_endpoint["scheme"] == "https"
-  include_recipe "nova::api-os-compute-ssl"
-else
-  apache_site "openstack-nova-osapi" do
-    enable false
-    notifies :run, "execute[restore-selinux-context]", :immediately
-    notifies :restart, "service[apache2]", :immediately
-  end
-  service "nova-api-os-compute" do
-    action [ :enable, :restart ]
-  end
 end
 
 template "/etc/nova/api-paste.ini" do

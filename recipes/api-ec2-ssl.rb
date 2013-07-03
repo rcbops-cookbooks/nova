@@ -22,10 +22,6 @@ include_recipe "apache2::mod_wsgi"
 include_recipe "apache2::mod_rewrite"
 include_recipe "osops-utils::mod_ssl"
 
-service "nova-api-ec2" do
-  action [ :disable, :stop ]
-end
-
 # setup cert files
 case node["platform"]
 when "ubuntu", "debian"
