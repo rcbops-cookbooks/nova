@@ -165,7 +165,7 @@ when "fedora", "redhat", "centos"
                                           "DifferentHostFilter",
                                           "RetryFilter"]
   }
-  default["keystone"]["ssl"]["dir"] = "/etc/pki/tls"
+  default["nova"]["ssl"]["dir"] = "/etc/pki/tls"
 when "ubuntu"
   default["nova"]["platform"] = {                                                   # node_attribute
     "api_ec2_packages" => ["nova-api-ec2"],
