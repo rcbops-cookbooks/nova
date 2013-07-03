@@ -197,6 +197,7 @@ NOTE: The filter scheduler currently does not work with ec2.
 * `nova["libvirt"]["remove_unused_original_minimum_age_seconds"]` - Defaults to 3600 seconds
 * `nova["libvirt"]["checksum_base_images"]` - Record and validate image checksums?
 * `nova["libvirt"]["libvirt_inject_key"]` - Inject ssh public key at boot?
+* `nova["libvirt"]["disk_cachemodes"]` - KVM disk caching modes.  Defaults to "file=none".  To set writeback mode use "file=writeback".  To set multiple modes use "file=writeback,block=none"
 * `nova["config"]["use_single_default_gateway"]` - Use single default gateway?
 * `nova["config"]["availability_zone"]` - Nova availability zone.  Usually set at the node level to place a compute node in another az
 * `nova["config"]["default_schedule_zone"]` - The availability zone to schedule instances in when no az is specified in the request
