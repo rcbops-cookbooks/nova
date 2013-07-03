@@ -44,11 +44,33 @@ platform_options["api_ec2_packages"].each do |pkg|
   end
 end
 
+# Get bind info for ec2 apis
+ec2_public_endpoint = get_bind_endpoint("nova", "ec2-public")
+ec2_admin_endpoint = get_bind_endpoint("nova", "ec2-admin")
+
 service "nova-api-ec2" do
   service_name platform_options["api_ec2_service"]
   supports :status => true, :restart => true
-  action :enable
-  subscribes :restart, "nova_conf[/etc/nova/nova.conf]", :delayed
+  unless ec2_public_endpoint["scheme"] == "https" or ec2_admin_endpoint["scheme"] == "https"
+    action :enable
+    subscribes :restart, "nova_conf[/etc/nova/nova.conf]", :delayed
+  else
+    action [ :disable, :stop ]
+  end
+end
+
+# Setup SSL
+if ec2_public_endpoint["scheme"] == "https" or ec2_public_endpoint["scheme"] == "https"
+  include_recipe "nova::api-ec2-ssl"
+else
+  apache_site "openstack-nova-ec2api" do
+    enable false
+    notifies :run, "execute[restore-selinux-context]", :immediately
+    notifies :restart, "service[apache2]", :immediately
+  end
+  service "nova-api-ec2" do
+      action [ :enable, :restart ]
+  end
 end
 
 # Search for keystone endpoint info
@@ -58,9 +80,6 @@ ks_admin_endpoint = get_access_endpoint(ks_api_role, ks_ns, "admin-api")
 ks_service_endpoint = get_access_endpoint(ks_api_role, ks_ns, "service-api")
 # Get settings from role[keystone-setup]
 keystone = get_settings_by_role("keystone-setup", "keystone")
-# Get bind info for ec2 apis
-ec2_public_endpoint = get_bind_endpoint("nova", "ec2-public")
-ec2_admin_endpoint = get_bind_endpoint("nova", "ec2-admin")
 
 # Register Service Tenant
 keystone_tenant "Register Service Tenant" do
@@ -113,20 +132,6 @@ keystone_service "Register EC2 Service" do
   service_type "ec2"
   service_description "EC2 Compatibility Layer"
   action :create
-end
-
-# Setup SSL
-if ec2_public_endpoint["scheme"] == "https" or ec2_public_endpoint["scheme"] == "https"
-  include_recipe "nova::api-ec2-ssl"
-else
-  apache_site "openstack-nova-ec2api" do
-    enable false
-    notifies :run, "execute[restore-selinux-context]", :immediately
-    notifies :restart, "service[apache2]", :immediately
-  end
-  service "nova-api-ec2" do
-    action [ :enable, :restart ]
-  end
 end
 
 template "/etc/nova/api-paste.ini" do
