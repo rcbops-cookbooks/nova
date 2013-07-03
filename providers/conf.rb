@@ -151,6 +151,7 @@ action :create do
       "default_schedule_zone" => node["nova"]["config"]["default_schedule_zone"],
       "connection_type" => node["nova"]["compute"]["connection_type"],
       "virt_type" => node["nova"]["libvirt"]["virt_type"],
+      "disk_cachemodes" => node["nova"]["libvirt"]["disk_cachemodes"],
       "remove_unused_base_images" => node["nova"]["libvirt"]["remove_unused_base_images"],
       "remove_unused_resized_minimum_age_seconds" => node["nova"]["libvirt"]["remove_unused_resized_minimum_age_seconds"],
       "remove_unused_original_minimum_age_seconds" => node["nova"]["libvirt"]["remove_unused_original_minimum_age_seconds"],
