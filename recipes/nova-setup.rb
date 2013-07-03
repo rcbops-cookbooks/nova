@@ -70,7 +70,7 @@ execute "nova reservations_index_deleted" do
   not_if <<-EOH
     mysql -s -N -u#{node["nova"]["db"]["username"]} \
     -p#{node["nova"]["db"]["password"]} \
-    -e "show index from token where key_name = 'rax_ix_reservations_deleted'" \
+    -e "show index from reservations where key_name = 'rax_ix_reservations_deleted'" \
     #{node["nova"]["db"]["name"]} | grep -o rax_ix_reservations_deleted
     EOH
   action :nothing
@@ -90,7 +90,7 @@ execute "nova instances_index_deleted" do
   not_if <<-EOH
     mysql -s -N -u#{node["nova"]["db"]["username"]} \
     -p#{node["nova"]["db"]["password"]} \
-    -e "show index from token where key_name = 'rax_ix_instances_deleted'" \
+    -e "show index from instances where key_name = 'rax_ix_instances_deleted'" \
     #{node["nova"]["db"]["name"]} | grep -o rax_ix_instances_deleted
     EOH
   action :nothing
