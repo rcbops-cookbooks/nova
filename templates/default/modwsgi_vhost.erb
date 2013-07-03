@@ -1,0 +1,22 @@
+Listen <%= @listen_ip %>:<%= @service_port %>
+<VirtualHost <%= @listen_ip %>:<%= @service_port %>>
+    WSGIScriptAlias / <%= @wsgi_file %>
+    WSGIDaemonProcess <%= @proc_group %> user=nova group=nogroup processes=3 threads=10 python-path=/usr/share/pyshared/nova
+    WSGIProcessGroup <%= @proc_group %>
+
+    # SSL Config
+
+    SSLEngine on
+    SSLCertificateFile <%= @cert_file %>
+    SSLCertificateKeyFile <%= @key_file %>
+
+    SSLVerifyClient optional
+    SSLVerifyDepth 10
+    SSLProtocol all -SSLv2
+    SSLCipherSuite ALL:!ADH:!EXPORT:!SSLv2:RC4+RSA:+HIGH:+MEDIUM:+LOW
+    SSLOptions +StdEnvVars +ExportCertData
+
+    ErrorLog <%= @log_file %>
+    LogLevel debug
+    CustomLog <%= @log_file %> combined
+</VirtualHost>

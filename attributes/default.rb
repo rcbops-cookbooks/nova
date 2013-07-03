@@ -19,16 +19,25 @@ default["nova"]["services"]["api"]["scheme"] = "http"                       # no
 default["nova"]["services"]["api"]["network"] = "public"                    # node_attribute
 default["nova"]["services"]["api"]["port"] = 8774                           # node_attribute
 default["nova"]["services"]["api"]["path"] = "/v2/%(tenant_id)s"            # node_attribute
+default["nova"]["services"]["api"]["cert_file"] = "nova.pem"
+default["nova"]["services"]["api"]["key_file"] = "nova.key"
+default["nova"]["services"]["api"]["wsgi_file"] = "nova-api-os-compute"
 
 default["nova"]["services"]["ec2-admin"]["scheme"] = "http"                 # node_attribute
 default["nova"]["services"]["ec2-admin"]["network"] = "public"              # node_attribute
 default["nova"]["services"]["ec2-admin"]["port"] = 8773                     # node_attribute
 default["nova"]["services"]["ec2-admin"]["path"] = "/services/Admin"        # node_attribute
+default["nova"]["services"]["ec2-admin"]["cert_file"] = "nova.pem"
+default["nova"]["services"]["ec2-admin"]["key_file"] = "nova.key"
+default["nova"]["services"]["ec2-admin"]["wsgi_file"] = "nova-api-ec2"
 
 default["nova"]["services"]["ec2-public"]["scheme"] = "http"                # node_attribute
 default["nova"]["services"]["ec2-public"]["network"] = "public"             # node_attribute
 default["nova"]["services"]["ec2-public"]["port"] = 8773                    # node_attribute
 default["nova"]["services"]["ec2-public"]["path"] = "/services/Cloud"       # node_attribute
+default["nova"]["services"]["ec2-public"]["cert_file"] = "nova.pem"
+default["nova"]["services"]["ec2-public"]["key_file"] = "nova.key"
+default["nova"]["services"]["ec2-public"]["wsgi_file"] = "nova-api-ec2"
 
 default["nova"]["services"]["xvpvnc-proxy"]["scheme"] = "http"                    # node_attribute
 default["nova"]["services"]["xvpvnc-proxy"]["network"] = "nova"                   # node_attribute
@@ -155,6 +164,7 @@ when "fedora", "redhat", "centos"
                                           "DifferentHostFilter",
                                           "RetryFilter"]
   }
+  default["keystone"]["ssl"]["dir"] = "/etc/pki/tls"
 when "ubuntu"
   default["nova"]["platform"] = {                                                   # node_attribute
     "api_ec2_packages" => ["nova-api-ec2"],
@@ -202,4 +212,5 @@ when "ubuntu"
                                           "DifferentHostFilter",
                                           "RetryFilter"]
   }
+  default["nova"]["ssl"]["dir"] = "/etc/ssl"
 end

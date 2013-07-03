@@ -9,7 +9,7 @@ version           "1.0.21"
   supports os
 end
 
-%w{ cinder database dsh mysql nova-network openssl osops-utils sysctl }.each do |dep|
+%w{ cinder database dsh mysql nova-network openssl osops-utils sysctl apache2 }.each do |dep|
   depends dep
 end
 

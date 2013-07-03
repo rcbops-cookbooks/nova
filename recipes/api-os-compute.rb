@@ -114,6 +114,20 @@ keystone_service "Register Compute Service" do
   action :create
 end
 
+# Setup SSL
+if nova_api_endpoint["scheme"] == "https"
+  include_recipe "nova::api-os-compute-ssl"
+else
+  apache_site "openstack-nova-osapi" do
+    enable false
+    notifies :run, "execute[restore-selinux-context]", :immediately
+    notifies :restart, "service[apache2]", :immediately
+  end
+  service "nova-api-os-compute" do
+    action [ :enable, :restart ]
+  end
+end
+
 template "/etc/nova/api-paste.ini" do
   source "api-paste.ini.erb"
   owner "nova"
@@ -127,7 +141,11 @@ template "/etc/nova/api-paste.ini" do
     "admin_protocol" => ks_admin_endpoint["scheme"],
     "admin_token" => keystone["admin_token"]
   )
-  notifies :restart, "service[nova-api-os-compute]", :delayed
+  unless nova_api_endpoint["scheme"] == "https"
+    notifies :restart, "service[nova-api-os-compute]", :delayed
+  else
+    notifies :restart, "service[apache2]", :immediately
+  end
 end
 
 # Register Compute Endpoing

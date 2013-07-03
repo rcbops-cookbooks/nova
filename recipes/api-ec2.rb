@@ -115,6 +115,20 @@ keystone_service "Register EC2 Service" do
   action :create
 end
 
+# Setup SSL
+if ec2_public_endpoint["scheme"] == "https" or ec2_public_endpoint["scheme"] == "https"
+  include_recipe "nova::api-ec2-ssl"
+else
+  apache_site "openstack-nova-ec2api" do
+    enable false
+    notifies :run, "execute[restore-selinux-context]", :immediately
+    notifies :restart, "service[apache2]", :immediately
+  end
+  service "nova-api-ec2" do
+    action [ :enable, :restart ]
+  end
+end
+
 template "/etc/nova/api-paste.ini" do
   source "api-paste.ini.erb"
   owner "nova"
@@ -128,7 +142,11 @@ template "/etc/nova/api-paste.ini" do
     :admin_protocol => ks_admin_endpoint["scheme"],
     :admin_token => keystone["admin_token"]
   )
-  notifies :restart, "service[nova-api-ec2]", :delayed
+  unless ec2_public_endpoint["scheme"] == "https" or ec2_public_endpoint["scheme"] = "https"
+    notifies :restart, "service[nova-api-ec2]", :delayed
+  else
+    notifies :restart, "service[apache2]", :immediately
+  end
 end
 
 # Register EC2 Endpoint
