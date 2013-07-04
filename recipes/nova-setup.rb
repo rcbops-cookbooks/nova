@@ -75,7 +75,7 @@ add_index_stopgap(
   node["nova"]["db"]["name"],
   node["nova"]["db"]["username"],
   node["nova"]["db"]["password"],
-  "rax_ix_reservations_deleted",
+  "rax_ix_instances_deleted",
   "instances",
   "deleted") do
   action :nothing
