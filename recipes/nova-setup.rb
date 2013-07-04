@@ -57,42 +57,27 @@ execute "nova-manage db sync" do
   #  not_if "nova-manage db version && test $(nova-manage db version) -gt 0"
 end
 
-execute "nova reservations_index_deleted" do
-  user "nova"
-  group "nova"
-  environment ({'PATH' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'})
-  command <<-EOH
-    mysql -u #{node["nova"]["db"]["username"]} \
-    -p#{node["nova"]["db"]["password"]} \
-    -e "create index \"rax_ix_reservations_deleted\" on reservations (deleted);" \
-    #{node["nova"]["db"]["name"]}
-  EOH
-  not_if <<-EOH
-    mysql -s -N -u#{node["nova"]["db"]["username"]} \
-    -p#{node["nova"]["db"]["password"]} \
-    -e "show index from reservations where key_name = 'rax_ix_reservations_deleted'" \
-    #{node["nova"]["db"]["name"]} | grep -o rax_ix_reservations_deleted
-    EOH
+# Adding Indexing to deleted instances in Nova.
+add_index_stopgap(
+  "mysql",
+  node["nova"]["db"]["name"],
+  node["nova"]["db"]["username"],
+  node["nova"]["db"]["password"],
+  "rax_ix_reservations_deleted",
+  "reservations",
+  "deleted") do
   action :nothing
   subscribes :run, "execute[nova-manage db sync]", :immediately
-end
+  end
 
-execute "nova instances_index_deleted" do
-  user "nova"
-  group "nova"
-  environment ({'PATH' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'})
-  command <<-EOH
-    mysql -u #{node["nova"]["db"]["username"]} \
-    -p#{node["nova"]["db"]["password"]} \
-    -e "create index \"rax_ix_instances_deleted\" on instances (deleted);" \
-    #{node["nova"]["db"]["name"]}
-  EOH
-  not_if <<-EOH
-    mysql -s -N -u#{node["nova"]["db"]["username"]} \
-    -p#{node["nova"]["db"]["password"]} \
-    -e "show index from instances where key_name = 'rax_ix_instances_deleted'" \
-    #{node["nova"]["db"]["name"]} | grep -o rax_ix_instances_deleted
-    EOH
+add_index_stopgap(
+  "mysql",
+  node["nova"]["db"]["name"],
+  node["nova"]["db"]["username"],
+  node["nova"]["db"]["password"],
+  "rax_ix_reservations_deleted",
+  "instances",
+  "deleted") do
   action :nothing
   subscribes :run, "execute[nova-manage db sync]", :immediately
 end
