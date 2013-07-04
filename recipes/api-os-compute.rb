@@ -44,7 +44,9 @@ platform_options["api_os_compute_packages"].each do |pkg|
   end
 end
 
-nova_api_endpoint = get_access_endpoint("nova-api-os-compute", "nova", "api")
+api_endpoint = get_access_endpoint("nova-api-os-compute", "nova", "api")
+api_internal_endpoint = get_access_endpoint("nova-api-os-compute", "nova", "internal-api")
+api_admin_endpoint = get_access_endpoint("nova-api-os-compute", "nova", "admin-api")
 
 service "nova-api-os-compute" do
   service_name platform_options["api_os_compute_service"]
@@ -151,7 +153,7 @@ template "/etc/nova/api-paste.ini" do
   end
 end
 
-# Register Compute Endpoing
+# Register Compute Endpoint
 keystone_endpoint "Register Compute Endpoint" do
   auth_host ks_admin_endpoint["host"]
   auth_port ks_admin_endpoint["port"]
@@ -160,8 +162,8 @@ keystone_endpoint "Register Compute Endpoint" do
   auth_token keystone["admin_token"]
   service_type "compute"
   endpoint_region node["nova"]["compute"]["region"]
-  endpoint_adminurl nova_api_endpoint["uri"]
-  endpoint_internalurl nova_api_endpoint["uri"]
-  endpoint_publicurl nova_api_endpoint["uri"]
+  endpoint_adminurl api_admin_endpoint["uri"]
+  endpoint_internalurl api_internal_endpoint["uri"]
+  endpoint_publicurl api_endpoint["uri"]
   action :create
 end
