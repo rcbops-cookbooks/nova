@@ -68,7 +68,7 @@ add_index_stopgap(
   "deleted") do
   action :nothing
   subscribes :run, "execute[nova-manage db sync]", :immediately
-  end
+end
 
 add_index_stopgap(
   "mysql",
