@@ -68,9 +68,6 @@ else
     notifies :run, "execute[restore-selinux-context]", :immediately
     notifies :restart, "service[apache2]", :immediately
   end
-  service "nova-api-ec2" do
-      action [ :enable, :restart ]
-  end
 end
 
 # Search for keystone endpoint info
