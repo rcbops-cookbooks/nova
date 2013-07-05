@@ -54,5 +54,27 @@ execute "nova-manage db sync" do
   user "nova"
   group "nova"
   action :run
-#  not_if "nova-manage db version && test $(nova-manage db version) -gt 0"
+  #  not_if "nova-manage db version && test $(nova-manage db version) -gt 0"
 end
+
+# Adds db Indexing for the hosts as found in the agents table.
+# Defined in osops-utils/libraries
+add_index_stopgap("mysql",
+                  node["nova"]["db"]["name"],
+                  node["nova"]["db"]["username"],
+                  node["nova"]["db"]["password"],
+                  "rax_ix_reservations_deleted",
+                  "reservations",
+                  "deleted",
+                  "execute[nova-manage db sync]",
+                  :run)
+
+add_index_stopgap("mysql",
+                  node["nova"]["db"]["name"],
+                  node["nova"]["db"]["username"],
+                  node["nova"]["db"]["password"],
+                  "rax_ix_instances_deleted",
+                  "instances",
+                  "deleted",
+                  "execute[nova-manage db sync]",
+                  :run)
