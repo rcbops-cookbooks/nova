@@ -22,6 +22,15 @@ include_recipe "apache2::mod_wsgi"
 include_recipe "apache2::mod_rewrite"
 include_recipe "osops-utils::mod_ssl"
 
+# Remove monit file if it exists
+if node.attribute?"monit"
+  if node["monit"].attribute?"conf.d_dir"
+    file "#{node['monit']['conf.d_dir']}/nova-api-ec2.conf" do
+      action :delete
+    end
+  end
+end
+
 # setup cert files
 case node["platform"]
 when "ubuntu", "debian"
