@@ -51,7 +51,7 @@ api_admin_endpoint = get_bind_endpoint("nova", "admin-api")
 service "nova-api-os-compute" do
   service_name platform_options["api_os_compute_service"]
   supports :status => true, :restart => true
-  unless nova_api_endpoint["scheme"] == "https"
+  unless api_endpoint["scheme"] == "https"
     action :enable
     subscribes :restart, "nova_conf[/etc/nova/nova.conf]", :delayed
   else
@@ -60,7 +60,7 @@ service "nova-api-os-compute" do
 end
 
 # Setup SSL
-if nova_api_endpoint["scheme"] == "https"
+if api_endpoint["scheme"] == "https"
   include_recipe "nova::api-os-compute-ssl"
 else
   if node.recipe?"apache2"
@@ -146,7 +146,7 @@ template "/etc/nova/api-paste.ini" do
     "admin_protocol" => ks_admin_endpoint["scheme"],
     "admin_token" => keystone["admin_token"]
   )
-  unless nova_api_endpoint["scheme"] == "https"
+  unless api_endpoint["scheme"] == "https"
     notifies :restart, "service[nova-api-os-compute]", :delayed
   else
     notifies :restart, "service[apache2]", :immediately
