@@ -44,12 +44,14 @@ platform_options["api_os_compute_packages"].each do |pkg|
   end
 end
 
-nova_api_endpoint = get_access_endpoint("nova-api-os-compute", "nova", "api")
+api_endpoint = get_bind_endpoint("nova", "api")
+api_internal_endpoint = get_bind_endpoint("nova", "internal-api")
+api_admin_endpoint = get_bind_endpoint("nova", "admin-api")
 
 service "nova-api-os-compute" do
   service_name platform_options["api_os_compute_service"]
   supports :status => true, :restart => true
-  unless nova_api_endpoint["scheme"] == "https"
+  unless api_endpoint["scheme"] == "https"
     action :enable
     subscribes :restart, "nova_conf[/etc/nova/nova.conf]", :delayed
   else
@@ -58,7 +60,7 @@ service "nova-api-os-compute" do
 end
 
 # Setup SSL
-if nova_api_endpoint["scheme"] == "https"
+if api_endpoint["scheme"] == "https"
   include_recipe "nova::api-os-compute-ssl"
 else
   if node.recipe?"apache2"
@@ -144,14 +146,14 @@ template "/etc/nova/api-paste.ini" do
     "admin_protocol" => ks_admin_endpoint["scheme"],
     "admin_token" => keystone["admin_token"]
   )
-  unless nova_api_endpoint["scheme"] == "https"
+  unless api_endpoint["scheme"] == "https"
     notifies :restart, "service[nova-api-os-compute]", :delayed
   else
     notifies :restart, "service[apache2]", :immediately
   end
 end
 
-# Register Compute Endpoing
+# Register Compute Endpoint
 keystone_endpoint "Register Compute Endpoint" do
   auth_host ks_admin_endpoint["host"]
   auth_port ks_admin_endpoint["port"]
@@ -160,8 +162,8 @@ keystone_endpoint "Register Compute Endpoint" do
   auth_token keystone["admin_token"]
   service_type "compute"
   endpoint_region node["nova"]["compute"]["region"]
-  endpoint_adminurl nova_api_endpoint["uri"]
-  endpoint_internalurl nova_api_endpoint["uri"]
-  endpoint_publicurl nova_api_endpoint["uri"]
+  endpoint_adminurl api_admin_endpoint["uri"]
+  endpoint_internalurl api_internal_endpoint["uri"]
+  endpoint_publicurl api_endpoint["uri"]
   action :create
 end
