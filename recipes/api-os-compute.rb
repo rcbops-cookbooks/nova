@@ -61,10 +61,12 @@ end
 if nova_api_endpoint["scheme"] == "https"
   include_recipe "nova::api-os-compute-ssl"
 else
-  apache_site "openstack-nova-osapi" do
-    enable false
-    notifies :run, "execute[restore-selinux-context]", :immediately
-    notifies :restart, "service[apache2]", :immediately
+  if node.recipe?"apache2"
+    apache_site "openstack-nova-osapi" do
+      enable false
+      notifies :run, "execute[restore-selinux-context]", :immediately
+      notifies :restart, "service[apache2]", :immediately
+    end
   end
 end
 
