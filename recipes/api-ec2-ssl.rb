@@ -27,6 +27,7 @@ if node.attribute?"monit"
   if node["monit"].attribute?"conf.d_dir"
     file "#{node['monit']['conf.d_dir']}/nova-api-ec2.conf" do
       action :delete
+      notifies :reload, "service[monit]", :immediately
     end
   end
 end
