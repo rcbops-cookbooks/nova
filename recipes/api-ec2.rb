@@ -60,13 +60,15 @@ service "nova-api-ec2" do
 end
 
 # Setup SSL
-if ec2_public_endpoint["scheme"] == "https" or ec2_public_endpoint["scheme"] == "https"
+if ec2_public_endpoint["scheme"] == "https" or ec2_admin_endpoint["scheme"] == "https"
   include_recipe "nova::api-ec2-ssl"
 else
-  apache_site "openstack-nova-ec2api" do
-    enable false
-    notifies :run, "execute[restore-selinux-context]", :immediately
-    notifies :restart, "service[apache2]", :immediately
+  if node.recipe?"apache2"
+    apache_site "openstack-nova-ec2api" do
+      enable false
+      notifies :run, "execute[restore-selinux-context]", :immediately
+      notifies :restart, "service[apache2]", :immediately
+    end
   end
 end
 
@@ -144,7 +146,7 @@ template "/etc/nova/api-paste.ini" do
     :admin_protocol => ks_admin_endpoint["scheme"],
     :admin_token => keystone["admin_token"]
   )
-  unless ec2_public_endpoint["scheme"] == "https" or ec2_public_endpoint["scheme"] = "https"
+  unless ec2_public_endpoint["scheme"] == "https" or ec2_admin_endpoint["scheme"] == "https"
     notifies :restart, "service[nova-api-ec2]", :delayed
   else
     notifies :restart, "service[apache2]", :immediately
