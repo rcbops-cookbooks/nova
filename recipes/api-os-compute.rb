@@ -44,9 +44,9 @@ platform_options["api_os_compute_packages"].each do |pkg|
   end
 end
 
-api_endpoint = get_access_endpoint("nova-api-os-compute", "nova", "api")
-api_internal_endpoint = get_access_endpoint("nova-api-os-compute", "nova", "internal-api")
-api_admin_endpoint = get_access_endpoint("nova-api-os-compute", "nova", "admin-api")
+api_endpoint = get_bind_endpoint("nova-api-os-compute", "nova", "api")
+api_internal_endpoint = get_bind_endpoint("nova-api-os-compute", "nova", "internal-api")
+api_admin_endpoint = get_bind_endpoint("nova-api-os-compute", "nova", "admin-api")
 
 service "nova-api-os-compute" do
   service_name platform_options["api_os_compute_service"]
