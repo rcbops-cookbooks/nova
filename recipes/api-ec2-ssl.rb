@@ -21,6 +21,7 @@ include_recipe "apache2"
 include_recipe "apache2::mod_wsgi"
 include_recipe "apache2::mod_rewrite"
 include_recipe "osops-utils::mod_ssl"
+include_recipe "osops-utils::ssl_packages"
 
 # Remove monit file if it exists
 if node.attribute?"monit"

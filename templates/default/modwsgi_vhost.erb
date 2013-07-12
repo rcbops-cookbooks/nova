@@ -1,7 +1,7 @@
 Listen <%= @listen_ip %>:<%= @service_port %>
 <VirtualHost <%= @listen_ip %>:<%= @service_port %>>
     WSGIScriptAlias / <%= @wsgi_file %>
-    WSGIDaemonProcess <%= @proc_group %> user=nova group=nogroup processes=3 threads=10 python-path=/usr/share/pyshared/nova
+    WSGIDaemonProcess <%= @proc_group %> user=nova group=nova processes=3 threads=10 python-path=/usr/share/pyshared/nova
     WSGIProcessGroup <%= @proc_group %>
 
     # SSL Config
