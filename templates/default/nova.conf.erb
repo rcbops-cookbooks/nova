@@ -78,6 +78,7 @@ disk_allocation_ratio=<%= @disk_allocation_ratio %>
 # maximum number of instance cores to allow per host
 max_cores=<% @cpu_allocation_ratio.to_i * node["cpu"]["total"].to_i %>
 <%- end %>
+image_cache_manager_interval=<%= @image_cache_manager_interval %>
 
 ##### KEYSTONE #####
 keystone_ec2_url=<%= @keystone_service_protocol %>://<%= @keystone_api_ipaddress %>:<%= @keystone_service_port %>/v2.0/ec2tokens
