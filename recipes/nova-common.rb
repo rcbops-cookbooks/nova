@@ -36,10 +36,7 @@ package "openstack-nova-volume" do
 end
 
 platform_options["common_packages"].each do |pkg|
-  package pkg do
-    action node["osops"]["do_package_upgrades"] == true ? :upgrade : :install
-    options platform_options["package_overrides"]
-  end
+  include_recipe "osops-utils::#{pkg}"
 end
 
 directory "/etc/nova" do
