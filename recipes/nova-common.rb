@@ -17,7 +17,6 @@
 # limitations under the License.
 #
 
-include_recipe "nova::nova-rsyslog"
 include_recipe "osops-utils::autoetchosts"
 
 if not node['package_component'].nil?
@@ -41,6 +40,8 @@ directory "/etc/nova" do
   group "nova"
   mode "0700"
 end
+
+include_recipe "nova::nova-rsyslog"
 
 keystone = get_settings_by_role("keystone", "keystone")
 ec2_creds = get_settings_by_role("keystone", "credentials")
