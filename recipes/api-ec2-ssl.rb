@@ -75,6 +75,18 @@ end
 
 ec2_bind = get_bind_endpoint("nova", "ec2-public")
 
+unless node["nova"]["services"]["ec2-public"].attribute?"cert_override"
+  cert_location = "#{node["nova"]["ssl"]["dir"]}/certs/#{node["nova"]["services"]["ec2-public"]["cert_file"]}"
+else
+  cert_location = node["nova"]["services"]["ec2-public"]["cert_override"]
+end
+
+unless node["nova"]["services"]["ec2-public"].attribute?"key_override"
+  key_location = "#{node["nova"]["ssl"]["dir"]}/private/#{node["nova"]["services"]["ec2-public"]["key_file"]}"
+else
+  key_location = node["nova"]["services"]["ec2-public"]["key_override"]
+end
+
 template value_for_platform(
   ["ubuntu", "debian", "fedora"] => {
     "default" => "#{node["apache"]["dir"]}/sites-available/openstack-nova-ec2api"
@@ -96,8 +108,8 @@ template value_for_platform(
   variables(
     :listen_ip => ec2_bind["host"],
     :service_port => ec2_bind["port"],
-    :cert_file => "#{node["nova"]["ssl"]["dir"]}/certs/#{node["nova"]["services"]["ec2-public"]["cert_file"]}",
-    :key_file => "#{node["nova"]["ssl"]["dir"]}/private/#{node["nova"]["services"]["ec2-public"]["key_file"]}",
+    :cert_file => cert_location,
+    :key_file => key_location,
     :wsgi_file  => "#{node["apache"]["dir"]}/wsgi/#{node["nova"]["services"]["ec2-public"]["wsgi_file"]}",
     :proc_group => "nova-ec2api",
     :log_file => "/var/log/nova/ec2api.log"

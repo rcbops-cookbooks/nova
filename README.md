@@ -151,6 +151,8 @@ NOTE: service password is no longer set statically in the attributes file, but s
 * `nova["services"]["api"]["network"]` - `osops_networks` network name which service operates on
 * `nova["services"]["api"]["port"]` - Port to bind service to
 * `nova["services"]["api"]["path"]` - URI to use
+* `nova["services"]["api"]["cert_override"]` - For SSL - specify location of custom Cert file
+* `nova["services"]["api"]["key_override"]` - For SSL - specify location of custom Key file
 
 * `nova["services"]["ec2-admin"]["scheme"]` - Scheme for EC2-compatible admin service (http/https)
 * `nova["services"]["ec2-admin"]["network"]` - `osops_networks` network name which service operates on
@@ -161,6 +163,8 @@ NOTE: service password is no longer set statically in the attributes file, but s
 * `nova["services"]["ec2-public"]["network"]` - `osops_networks` network name which service operates on
 * `nova["services"]["ec2-public"]["port"]` - Port to bind service to
 * `nova["services"]["ec2-public"]["path"]` - URI to use
+* `nova["services"]["ec2-public"]["cert_override"]` - For SSL - specify location of custom Cert file
+* `nova["services"]["ec2-public"]["key_override"]` - For SSL - specify location of custom Key file
 
 * `nova["services"]["xvpvnc-proxy"]["scheme"]` - Scheme for xvpvncproxy service service (http/https)
 * `nova["services"]["xvpvnc-proxy"]["network"]` - `osops_networks` network name which service operates on

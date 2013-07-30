@@ -75,6 +75,18 @@ end
 
 api_bind = get_bind_endpoint("nova", "api")
 
+unless node["nova"]["services"]["api"].attribute?"cert_override"
+  cert_location = "#{node["nova"]["ssl"]["dir"]}/certs/#{node["nova"]["services"]["api"]["cert_file"]}"
+else
+  cert_location = node["nova"]["services"]["api"]["cert_override"]
+end
+
+unless node["nova"]["services"]["api"].attribute?"key_override"
+  key_location = "#{node["nova"]["ssl"]["dir"]}/private/#{node["nova"]["services"]["api"]["key_file"]}"
+else
+  key_location = node["nova"]["services"]["api"]["key_override"]
+end
+
 template value_for_platform(
   ["ubuntu", "debian", "fedora"] => {
     "default" => "#{node["apache"]["dir"]}/sites-available/openstack-nova-osapi"
@@ -96,8 +108,8 @@ template value_for_platform(
   variables(
     :listen_ip => api_bind["host"],
     :service_port => api_bind["port"],
-    :cert_file => "#{node["nova"]["ssl"]["dir"]}/certs/#{node["nova"]["services"]["api"]["cert_file"]}",
-    :key_file => "#{node["nova"]["ssl"]["dir"]}/private/#{node["nova"]["services"]["api"]["key_file"]}",
+    :cert_file => cert_location,
+    :key_file => key_location,
     :wsgi_file  => "#{node["apache"]["dir"]}/wsgi/#{node["nova"]["services"]["api"]["wsgi_file"]}",
     :proc_group => "nova-osapi",
     :log_file => "/var/log/nova/osapi.log"
