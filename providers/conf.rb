@@ -47,7 +47,7 @@ action :create do
   net_provider = node["nova"]["network"]["provider"]
   if net_provider == "quantum"
     # Get settings from recipe[nova-network::nova-controller]
-    recipe = "nova-network\\:\\:nova-controller"
+    recipe = "nova-network::nova-controller"
     quantum_info = get_settings_by_recipe(recipe, "quantum")
     # Search for quantum enpoint info
     nova_net_role = "nova-network-controller"
