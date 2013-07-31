@@ -3,6 +3,9 @@
 default["enable_monit"] = false  # OS provides packages
 ########################################################################
 
+default["nova"]["rabbitmq"]["use_durable_queues"] = true
+default["nova"]["rabbitmq"]["use_ha_queues"] = true
+
 # set to true to enable debugging output in the logs
 default["nova"]["debug"] = false
 

@@ -139,6 +139,8 @@ action :create do
       "xvpvncproxy_base_url" => xvpvncproxy_endpoint["uri"],
       "rabbit_ipaddress" => rabbit_info["host"],
       "rabbit_port" => rabbit_info["port"],
+      "rabbit_durable_queues" => node['nova']['rabbitmq']['use_durable_queues'] ? "True" : "False",
+      "rabbit_ha_queues" => node['nova']['rabbitmq']['use_ha_queues'] ? "True" : "False",
       "keystone_api_ipaddress" => ks_admin_endpoint["host"],
       "keystone_service_port" => ks_service_endpoint["port"],
       "keystone_service_protocol" => ks_service_endpoint["scheme"],
