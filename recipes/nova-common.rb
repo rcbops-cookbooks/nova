@@ -95,6 +95,7 @@ end
 
 execute "enable nova login" do
   command "usermod -s /bin/sh nova"
+  not_if 'test $(getent passwd nova |cut -f7 -d:) = /bin/sh'
 end
 
 dsh_group "nova" do
