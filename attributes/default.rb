@@ -3,6 +3,13 @@
 default["enable_monit"] = false  # OS provides packages
 ########################################################################
 
+# Define the ha policy for queues.  If you change this to true
+# after you have already deployed you will need to wipe the RabbitMQ
+# database by stopping rabbitmq, removing /var/lib/rabbitmq/mnesia
+# and starting rabbitmq back up.  Failure to do so will cause the
+# OpenStack services to fail to connect to RabbitMQ.
+default["nova"]["rabbitmq"]["use_ha_queues"] = false
+
 # set to true to enable debugging output in the logs
 default["nova"]["debug"] = false
 
