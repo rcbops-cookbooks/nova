@@ -10,6 +10,7 @@ action :create do
   mysql_info = get_access_endpoint("mysql-master", "mysql", "db")
   # Search for rabbit endpoint info
   rabbit_info = get_access_endpoint("rabbitmq-server", "rabbitmq", "queue")
+  rabbit_settings = get_settings_by_role("rabbitmq-server", "rabbitmq")
   # Get settings from role[nova-setup]
   nova_setup_info = get_settings_by_role("nova-setup", "nova")
   # Search for keystone endpoint info
@@ -139,7 +140,7 @@ action :create do
       "xvpvncproxy_base_url" => xvpvncproxy_endpoint["uri"],
       "rabbit_ipaddress" => rabbit_info["host"],
       "rabbit_port" => rabbit_info["port"],
-      "rabbit_ha_queues" => node['nova']['rabbitmq']['use_ha_queues'] ? "True" : "False",
+      "rabbit_ha_queues" => rabbit_settings["cluster"] ? "True" : "False",
       "keystone_api_ipaddress" => ks_admin_endpoint["host"],
       "keystone_service_port" => ks_service_endpoint["port"],
       "keystone_service_protocol" => ks_service_endpoint["scheme"],
