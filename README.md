@@ -192,7 +192,7 @@ NOTE: service password is no longer set statically in the attributes file, but s
 
 * `nova["scheduler"]["scheduler_driver"]` - The scheduler driver to use
 NOTE: The filter scheduler currently does not work with ec2.
-* `nova["scheduler"]["least_cost_functions"]` - A list of scheduler cost functions separated by commas, defaults to nova.scheduler.least_cost.compute_fill_first_cost_fn
+* `nova["scheduler"]["scheduler_weight_classes"]` - A list of weight class names (separated by commas) to use for weighing hosts, defaults to nova.scheduler.weights.ram.RAMWeigher
 * `nova["libvirt"]["virt_type"]` - What hypervisor software layer to use with libvirt (e.g., kvm, qemu)
 * `nova["libvirt"]["vncserver_listen"]` - IP address on the hypervisor that libvirt listens for VNC requests on
 * `nova["libvirt"]["vncserver_proxyclient_address"]` - IP address on the hypervisor that libvirt exposes for VNC requests on (should be the same as vncserver_listen)
