@@ -84,6 +84,16 @@ default["nova"]["compute"]["connection_type"] = "libvirt"
 default["nova"]["scheduler"]["scheduler_driver"] = "nova.scheduler.filter_scheduler.FilterScheduler"
 default["nova"]["scheduler"]["scheduler_weight_classes"] = "nova.scheduler.weights.ram.RAMWeigher"
 default["nova"]["scheduler"]["ram_weight_multiplier"] = 1.0
+default["nova"]["scheduler"]["default_filters"] = [
+  "AvailabilityZoneFilter",
+  "RamFilter",
+  "ComputeFilter",
+  "CoreFilter",
+  "SameHostFilter",
+  "DifferentHostFilter",
+  "RetryFilter"
+]
+
 default["nova"]["libvirt"]["virt_type"] = "kvm"
 default["nova"]["libvirt"]["vncserver_listen"] = node["ipaddress"]
 default["nova"]["libvirt"]["vncserver_proxyclient_address"] = node["ipaddress"]
@@ -175,14 +185,7 @@ when "fedora", "redhat", "centos"
     "cinder_multipath_packages" => ["device-mapper-multipath", "sysfsutils", "sg3_utils"],
     "iscsi_helper" => "tgtadm",
     "iscsi_service" => "tgtd",
-    "package_overrides" => "",
-    "nova_scheduler_default_filters" => [ "AvailabilityZoneFilter",
-                                          "RamFilter",
-                                          "ComputeFilter",
-                                          "CoreFilter",
-                                          "SameHostFilter",
-                                          "DifferentHostFilter",
-                                          "RetryFilter"]
+    "package_overrides" => ""
   }
   default["nova"]["ssl"]["dir"] = "/etc/pki/tls"
 when "ubuntu"
@@ -223,14 +226,7 @@ when "ubuntu"
     "cinder_multipath_packages" => ["multipath-tools", "sysfsutil", "sg3-utils"],
     "iscsi_helper" => "tgtadm",
     "iscsi_service" => "tgt",
-    "package_overrides" => "-o Dpkg::Options::='--force-confold' -o Dpkg::Options::='--force-confdef'",
-    "nova_scheduler_default_filters" => [ "AvailabilityZoneFilter",
-                                          "RamFilter",
-                                          "ComputeFilter",
-                                          "CoreFilter",
-                                          "SameHostFilter",
-                                          "DifferentHostFilter",
-                                          "RetryFilter"]
+    "package_overrides" => "-o Dpkg::Options::='--force-confold' -o Dpkg::Options::='--force-confdef'"
   }
   default["nova"]["ssl"]["dir"] = "/etc/ssl"
 end
