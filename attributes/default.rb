@@ -82,7 +82,8 @@ default["nova"]["compute"]["region"] = "RegionOne"
 default["nova"]["compute"]["connection_type"] = "libvirt"
 
 default["nova"]["scheduler"]["scheduler_driver"] = "nova.scheduler.filter_scheduler.FilterScheduler"
-default["nova"]["scheduler"]["least_cost_functions"] = "nova.scheduler.least_cost.compute_fill_first_cost_fn"
+default["nova"]["scheduler"]["scheduler_weight_classes"] = "nova.scheduler.weights.ram.RAMWeigher"
+default["nova"]["scheduler"]["ram_weight_multiplier"] = 1.0
 default["nova"]["libvirt"]["virt_type"] = "kvm"
 default["nova"]["libvirt"]["vncserver_listen"] = node["ipaddress"]
 default["nova"]["libvirt"]["vncserver_proxyclient_address"] = node["ipaddress"]

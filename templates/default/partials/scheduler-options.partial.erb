@@ -4,6 +4,10 @@ scheduler_available_filters=nova.scheduler.filters.all_filters
 # which filter class names to use for filtering hosts when not specified in the request.
 scheduler_max_attempts=<%= @scheduler_max_attempts %>
 scheduler_default_filters=<%= @scheduler_default_filters %>
-least_cost_functions=<%= @scheduler_least_cost_functions %>
+scheduler_weight_classes=<%= @scheduler_weight_classes %>
+<%- if /RAMWeigher/.match(@scheduler_weight_classes) or
+       /all_weighers/.match(@scheduler_weight_classes) %>
+ram_weight_multiplier=<%= @scheduler_ram_weight_multiplier %>
+<%- end %>
 default_availability_zone=<%= @availability_zone %>
 default_schedule_zone=<%= @default_schedule_zone %>
