@@ -147,7 +147,7 @@ action :create do
       "glance_serverlist" => "#{glance_endpoint["host"]}:#{glance_endpoint["port"]}",
       "iscsi_helper" => platform_options["iscsi_helper"],
       "scheduler_driver" => node["nova"]["scheduler"]["scheduler_driver"],
-      "scheduler_default_filters" => platform_options["nova_scheduler_default_filters"].join(","),
+      "scheduler_default_filters" => node["nova"]["scheduler"]["default_filters"].join(","),
       "scheduler_weight_classes" => node["nova"]["scheduler"]["scheduler_weight_classes"],
       "scheduler_ram_weight_multiplier" => node["nova"]["scheduler"]["ram_weight_multiplier"],
       "availability_zone" => node["nova"]["config"]["availability_zone"],
