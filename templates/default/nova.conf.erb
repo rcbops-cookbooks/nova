@@ -78,10 +78,6 @@ disk_allocation_ratio=<%= @disk_allocation_ratio %>
 # maximum number of instance cores to allow per host
 max_cores=<% @cpu_allocation_ratio.to_i * node["cpu"]["total"].to_i %>
 <%- end %>
-<%- if /RAMWeigher/.match(@scheduler_weight_classes) or
-       /all_weighers/.match(@scheduler_weight_classes) %>
-ram_weight_multiplier=<%= @scheduler_ram_weight_multiplier %>
-<%- end %>
 image_cache_manager_interval=<%= @image_cache_manager_interval %>
 
 ##### KEYSTONE #####
