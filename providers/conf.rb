@@ -40,8 +40,10 @@ action :create do
   if memcached_endpoints.empty?
     memcached_servers = nil
   else
-    memcached_servers = memcached_endpoints.collect do |endpoint|
-      "#{endpoint["host"]}:#{endpoint["port"]}"
+    # sort array of hash objects by 'host' key and join into string
+    memcached_servers =
+      memcached_endpoints.sort {|a,b| a['host'] <=> b['host']}.collect do |ep|
+      "#{ep["host"]}:#{ep["port"]}"
     end.join(",")
   end
 
