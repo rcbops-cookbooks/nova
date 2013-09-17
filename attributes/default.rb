@@ -103,6 +103,8 @@ default["nova"]["libvirt"]["remove_unused_resized_minimum_age_seconds"] = 3600
 default["nova"]["libvirt"]["remove_unused_original_minimum_age_seconds"] = 3600
 default["nova"]["libvirt"]["checksum_base_images"] = false
 default["nova"]["libvirt"]["libvirt_inject_key"] = false
+default["nova"]["libvirt"]["libvirt_inject_password"] = false
+default["nova"]["libvirt"]["libvirt_inject_partition"] = 1
 default["nova"]["libvirt"]["disk_cachemodes"] = "file=none"
 default["nova"]["config"]["use_single_default_gateway"] = false
 default["nova"]["config"]["availability_zone"] = "nova"

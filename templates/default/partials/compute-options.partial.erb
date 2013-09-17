@@ -7,6 +7,8 @@ compute_driver=libvirt.LibvirtDriver
 libvirt_type=<%= @virt_type %>
 # Inject the ssh public key at boot time (default: true)
 libvirt_inject_key=<%= @libvirt_inject_key %>
+libvirt_inject_password=<%= @libvirt_inject_password %>
+libvirt_inject_partition=<%= @libvirt_inject_partition %>
 disk_cachemodes="<%= @disk_cachemodes %>"
 <% end -%>
 # Command prefix to use for running commands as root (default: sudo)
