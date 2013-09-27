@@ -46,7 +46,6 @@ cookbook_file "#{node["nova"]["ssl"]["dir"]}/certs/#{node["nova"]["services"]["e
   mode 0644
   owner "root"
   group "root"
-  notifies :run, "execute[restore-selinux-context]", :immediately
 end
 
 cookbook_file "#{node["nova"]["ssl"]["dir"]}/private/#{node["nova"]["services"]["ec2-public"]["key_file"]}" do
@@ -54,7 +53,6 @@ cookbook_file "#{node["nova"]["ssl"]["dir"]}/private/#{node["nova"]["services"][
   mode 0644
   owner "root"
   group grp
-  notifies :run, "execute[restore-selinux-context]", :immediately
 end
 
 # setup wsgi file
@@ -114,12 +112,10 @@ template value_for_platform(
     :proc_group => "nova-ec2api",
     :log_file => "/var/log/nova/ec2api.log"
   )
-  notifies :run, "execute[restore-selinux-context]", :immediately
   notifies :reload, "service[apache2]", :delayed
 end
 
 apache_site "openstack-nova-ec2api" do
   enable true
-  notifies :run, "execute[restore-selinux-context]", :immediately
   notifies :restart, "service[apache2]", :immediately
 end
