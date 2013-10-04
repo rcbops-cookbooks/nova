@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: nova
-# Recipe:: nova-scheduler-patch
+# Recipe:: nova-osapi-patch
 #
 # Copyright 2012-2013, Rackspace US, Inc.
 #
