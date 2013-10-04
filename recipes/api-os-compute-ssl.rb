@@ -55,6 +55,15 @@ cookbook_file "#{node["nova"]["ssl"]["dir"]}/private/#{node["nova"]["services"][
   group grp
 end
 
+unless node["nova"]["services"]["api"]["chain_file"].nil?
+  cookbook_file "#{node["nova"]["ssl"]["dir"]}/certs/#{node["nova"]["services"]["api"]["chain_file"]}" do
+    source node["nova"]["services"]["api"]["chain_file"]
+    mode 0644
+    owner "root"
+    group "root"
+  end
+end
+
 # setup wsgi file
 
 directory "#{node["apache"]["dir"]}/wsgi" do
@@ -85,6 +94,12 @@ else
   key_location = node["nova"]["services"]["api"]["key_override"]
 end
 
+unless node["nova"]["services"]["api"]["chain_file"].nil?
+  chain_location = "#{node["nova"]["ssl"]["dir"]}/certs/#{node["nova"]["services"]["api"]["chain_file"]}"
+else
+  chain_location = "donotset"
+end
+
 template value_for_platform(
   ["ubuntu", "debian", "fedora"] => {
     "default" => "#{node["apache"]["dir"]}/sites-available/openstack-nova-osapi"
@@ -108,6 +123,7 @@ template value_for_platform(
     :service_port => api_bind["port"],
     :cert_file => cert_location,
     :key_file => key_location,
+    :chain_file => chain_location,
     :wsgi_file  => "#{node["apache"]["dir"]}/wsgi/#{node["nova"]["services"]["api"]["wsgi_file"]}",
     :proc_group => "nova-osapi",
     :log_file => "/var/log/nova/osapi.log"

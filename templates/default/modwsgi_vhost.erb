@@ -9,6 +9,9 @@ Listen <%= @listen_ip %>:<%= @service_port %>
     SSLEngine on
     SSLCertificateFile <%= @cert_file %>
     SSLCertificateKeyFile <%= @key_file %>
+    <% unless @chain_file == "donotset" %>
+    SSLCertificateChainFile <%= @chain_file %>
+    <%end %>
 
     SSLVerifyClient optional
     SSLVerifyDepth 10
