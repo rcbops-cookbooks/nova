@@ -46,7 +46,6 @@ cookbook_file "#{node["nova"]["ssl"]["dir"]}/certs/#{node["nova"]["services"]["e
   mode 0644
   owner "root"
   group "root"
-  notifies :run, "execute[restore-selinux-context]", :immediately
 end
 
 cookbook_file "#{node["nova"]["ssl"]["dir"]}/private/#{node["nova"]["services"]["ec2-public"]["key_file"]}" do
@@ -54,7 +53,15 @@ cookbook_file "#{node["nova"]["ssl"]["dir"]}/private/#{node["nova"]["services"][
   mode 0644
   owner "root"
   group grp
-  notifies :run, "execute[restore-selinux-context]", :immediately
+end
+
+unless node["nova"]["services"]["ec2-public"]["chain_file"].nil?
+  cookbook_file "#{node["nova"]["ssl"]["dir"]}/certs/#{node["nova"]["services"]["ec2-public"]["chain_file"]}" do
+    source node["nova"]["services"]["ec2-public"]["chain_file"]
+    mode 0644
+    owner "root"
+    group "root"
+  end
 end
 
 # setup wsgi file
@@ -87,6 +94,12 @@ else
   key_location = node["nova"]["services"]["ec2-public"]["key_override"]
 end
 
+unless node["nova"]["services"]["ec2-public"]["chain_file"].nil?
+  chain_location = "#{node["nova"]["ssl"]["dir"]}/certs/#{node["nova"]["services"]["ec2-public"]["chain_file"]}"
+else
+  chain_location = "donotset"
+end
+
 template value_for_platform(
   ["ubuntu", "debian", "fedora"] => {
     "default" => "#{node["apache"]["dir"]}/sites-available/openstack-nova-ec2api"
@@ -110,16 +123,15 @@ template value_for_platform(
     :service_port => ec2_bind["port"],
     :cert_file => cert_location,
     :key_file => key_location,
+    :chain_file => chain_location,
     :wsgi_file  => "#{node["apache"]["dir"]}/wsgi/#{node["nova"]["services"]["ec2-public"]["wsgi_file"]}",
     :proc_group => "nova-ec2api",
     :log_file => "/var/log/nova/ec2api.log"
   )
-  notifies :run, "execute[restore-selinux-context]", :immediately
   notifies :reload, "service[apache2]", :delayed
 end
 
 apache_site "openstack-nova-ec2api" do
   enable true
-  notifies :run, "execute[restore-selinux-context]", :immediately
   notifies :restart, "service[apache2]", :immediately
 end
