@@ -134,6 +134,7 @@ default["nova"]["config"]["quota_instances"] = "20"
 default["nova"]["config"]["resume_guests_state_on_host_boot"] = false
 default["nova"]["config"]["force_config_drive"] = false
 default['nova']['config']['image_cache_manager_interval'] = 2400
+default["nova"]["config"]["max_age"] = 0
 
 # LOGGING VERBOSITY
 # in order of verbosity (most to least)
