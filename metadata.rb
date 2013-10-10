@@ -3,7 +3,7 @@ maintainer        "Rackspace US, Inc."
 license           "Apache 2.0"
 description       "Installs and configures Openstack"
 long_description  IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version           "1.0.21"
+version           "4.1.3"
 
 %w{ centos ubuntu }.each do |os|
   supports os
