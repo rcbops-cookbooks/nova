@@ -49,3 +49,18 @@ service platform_options["nova_vncproxy_consoleauth_service"] do
   action :enable
   subscribes :restart, "nova_conf[/etc/nova/nova.conf]", :delayed
 end
+
+# Workaround to ensure that novnc web server doesn't show file listings
+# https://github.com/kanaka/noVNC/issues/226
+cookbook_file "/usr/share/novnc/index.html" do
+  source "blank.html"
+  mode 0644
+  owner "root"
+  group "root"
+end
+cookbook_file "/usr/share/novnc/include/index.html" do
+  source "blank.html"
+  mode 0644
+  owner "root"
+  group "root"
+end
