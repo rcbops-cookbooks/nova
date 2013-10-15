@@ -8,6 +8,11 @@ xvpvncproxy_port=<%= @xvpvncproxy_bind_port %>
 # This is only required on the server running novncproxy
 novncproxy_host=<%= @novncproxy_bind_host %>
 novncproxy_port=<%= @novncproxy_bind_port %>
+<% if @novnc_proxy_cert != "donotset" -%>
+cert=<%= @novnc_proxy_cert %>
+key=<%= @novnc_proxy_key %>
+ssl_only=True
+<% end -%>
 
 vncserver_listen=<%= @vncserver_listen %>
 vncserver_proxyclient_address=<%= @vncserver_proxyclient_address %>

@@ -68,6 +68,8 @@ default["nova"]["services"]["novnc-proxy"]["scheme"] = "http"
 default["nova"]["services"]["novnc-proxy"]["network"] = "nova"
 default["nova"]["services"]["novnc-proxy"]["port"] = 6080
 default["nova"]["services"]["novnc-proxy"]["path"] = "/vnc_auto.html"
+default["nova"]["services"]["novnc-proxy"]["cert_file"] = "novnc.pem"
+default["nova"]["services"]["novnc-proxy"]["key_file"] = "novnc.key"
 
 default["nova"]["services"]["novnc-server"]["scheme"] = "http"
 default["nova"]["services"]["novnc-server"]["network"] = "nova"
