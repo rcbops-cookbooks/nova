@@ -60,6 +60,7 @@ force_config_drive=<%= @force_config_drive %>
 memcached_servers=<%= @memcached_servers %>
 <% end -%>
 
+reserved_host_disk_mb = <%= @reserved_host_disk_mb %>
 # TODO(shep): not sure if this should go in partial scheduler-options
 #             leaving here for now
 <%- if /FilterScheduler/.match(@scheduler_driver) or

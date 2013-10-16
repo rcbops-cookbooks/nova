@@ -192,8 +192,9 @@ action :create do
       "use_ceilometer" => node.recipe?("ceilometer::ceilometer-compute"),
       "iscsi_use_multipath" => iscsi_use_multipath,
       "memcached_servers" => memcached_servers,
-      'image_cache_manager_interval' => node['nova']['config']['image_cache_manager_interval'],
-      'max_age' => node["nova"]["config"]["max_age"]
+      "image_cache_manager_interval" => node["nova"]["config"]["image_cache_manager_interval"],
+      "max_age" => node["nova"]["config"]["max_age"],
+      "reserved_host_disk_mb" => node["nova"]["config"]["reserved_host_disk_mb"]
     )
   end
   new_resource.updated_by_last_action(t.updated_by_last_action?)
