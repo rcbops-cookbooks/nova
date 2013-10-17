@@ -48,13 +48,13 @@ action :create do
   end
 
   net_provider = node["nova"]["network"]["provider"]
-  if net_provider == "quantum"
+  if net_provider == "neutron"
     # Get settings from recipe[nova-network::nova-controller]
     recipe = "nova-network::nova-controller"
-    quantum_info = get_settings_by_recipe(recipe, "quantum")
-    # Search for quantum enpoint info
+    neutron_info = get_settings_by_recipe(recipe, "neutron")
+    # Search for neutron enpoint info
     nova_net_role = "nova-network-controller"
-    quantum_endpoint = get_access_endpoint(nova_net_role, "quantum", "api")
+    neutron_endpoint = get_access_endpoint(nova_net_role, "neutron", "api")
     # Search for nova api endpoint info
     nova_info = get_access_endpoint("nova-api-os-compute", "nova", "api")
     metadata_ip = nova_info["host"]
@@ -62,7 +62,7 @@ action :create do
 
   platform_options = node["nova"]["platform"]
 
-  # Case nova or quantum
+  # Case nova or neutron
   # network_options assemble hash here
   network_options = {}
   case net_provider
@@ -82,21 +82,21 @@ action :create do
     network_options["fixed_ip_disassociate_timeout"] = node[net_provider]["network"]["fixed_ip_disassociate_timeout"]
     #network_options["use_single_default_gateway"] = node[net_provider]["config"]["use_single_default_gateway"]
     #network_options["virt_type"] = node[net_provider]["libvirt"]["virt_type"]
-  when "quantum"
-    network_options["quantum_url"] = quantum_endpoint["uri"]
-    network_options["quantum_admin_tenant_name"] = quantum_info["service_tenant_name"]
-    network_options["quantum_admin_username"] = quantum_info["service_user"]
-    network_options["quantum_admin_password"] = quantum_info["service_pass"]
-    network_options["quantum_admin_auth_url"] = ks_admin_endpoint["uri"]
+  when "neutron"
+    network_options["neutron_url"] = neutron_endpoint["uri"]
+    network_options["neutron_admin_tenant_name"] = neutron_info["service_tenant_name"]
+    network_options["neutron_admin_username"] = neutron_info["service_user"]
+    network_options["neutron_admin_password"] = neutron_info["service_pass"]
+    network_options["neutron_admin_auth_url"] = ks_admin_endpoint["uri"]
     network_options["network_api_class"] = node[net_provider]["network_api_class"]
-    network_options["quantum_auth_strategy"] = node[net_provider]["auth_strategy"]
+    network_options["neutron_auth_strategy"] = node[net_provider]["auth_strategy"]
     network_options["libvirt_vif_driver"] = node[net_provider]["libvirt_vif_driver"]
     network_options["libvirt_vif_type"] = node[net_provider]["libvirt_vif_type"]
     network_options["linuxnet_interface_driver"] = node[net_provider]["linuxnet_interface_driver"]
     network_options["firewall_driver"] = node[net_provider]["firewall_driver"]
     network_options["security_group_api"] = node[net_provider]["security_group_api"]
-    network_options["service_quantum_metadata_proxy"] = node[net_provider]["service_quantum_metadata_proxy"]
-    network_options["quantum_metadata_proxy_shared_secret"] = quantum_info["quantum_metadata_proxy_shared_secret"]
+    network_options["service_neutron_metadata_proxy"] = node[net_provider]["service_neutron_metadata_proxy"]
+    network_options["neutron_metadata_proxy_shared_secret"] = neutron_info["neutron_metadata_proxy_shared_secret"]
     network_options["metadata_host"] = metadata_ip
   end
 
