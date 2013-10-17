@@ -79,4 +79,18 @@ if node["nova"]["services"]["novnc-proxy"]["scheme"] == "https"
     owner "root"
     group key_grp
   end
+  #
+# Workaround to ensure that novnc web server doesn't show file listings
+# https://github.com/kanaka/noVNC/issues/226
+cookbook_file "/usr/share/novnc/index.html" do
+  source "blank.html"
+  mode 0644
+  owner "root"
+  group "root"
+end
+cookbook_file "/usr/share/novnc/include/index.html" do
+  source "blank.html"
+  mode 0644
+  owner "root"
+  group "root"
 end
