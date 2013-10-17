@@ -28,6 +28,14 @@ action :create do
   vnc_role = "nova-vncproxy"
   xvpvncproxy_endpoint = get_access_endpoint(vnc_role, "nova", "xvpvnc-proxy")
   novncproxy_endpoint = get_access_endpoint(vnc_role, "nova", "novnc-proxy")
+  # Check novnc-proxy ssl config
+  if node["nova"]["services"]["novnc-proxy"]["scheme"] == "https"
+    novnc_proxy_cert = "#{node["nova"]["ssl"]["dir"]}/certs/#{node["nova"]["services"]["novnc-proxy"]["cert_file"]}"
+    novnc_proxy_key  = "#{node["nova"]["ssl"]["dir"]}/private/#{node["nova"]["services"]["novnc-proxy"]["key_file"]}"
+  else
+    novnc_proxy_cert = "donotset"
+    novnc_proxy_key  = "donotset"
+  end
   # Get bind info for vnc
   xvpvncproxy_bind = get_bind_endpoint("nova", "xvpvnc-proxy")
   novncserver_bind = get_bind_endpoint("nova", "novnc-server")
@@ -134,6 +142,8 @@ action :create do
       "db_name" => node["nova"]["db"]["name"],
       "vncserver_listen" => node["nova"]["libvirt"]["vncserver_listen"] || novncserver_bind["host"],
       "vncserver_proxyclient_address" => novncserver_bind["host"],
+      "novnc_proxy_cert" => novnc_proxy_cert,
+      "novnc_proxy_key" => novnc_proxy_key,
       "novncproxy_base_url" => novncproxy_endpoint["uri"],
       "xvpvncproxy_bind_host" => xvpvncproxy_bind["host"],
       "xvpvncproxy_bind_port" => xvpvncproxy_bind["port"],

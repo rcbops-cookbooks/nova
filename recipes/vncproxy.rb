@@ -49,3 +49,34 @@ service platform_options["nova_vncproxy_consoleauth_service"] do
   action :enable
   subscribes :restart, "nova_conf[/etc/nova/nova.conf]", :delayed
 end
+
+if node["nova"]["services"]["novnc-proxy"]["scheme"] == "https"
+  cert_file = "#{node["nova"]["ssl"]["dir"]}/certs/#{node["nova"]["services"]["novnc-proxy"]["cert_file"]}"
+  key_file = "#{node["nova"]["ssl"]["dir"]}/private/#{node["nova"]["services"]["novnc-proxy"]["key_file"]}"
+
+  cookbook_file cert_file do
+    source node["nova"]["services"]["novnc-proxy"]["cert_file"]
+    mode 0644
+    owner "root"
+    group "root"
+  end
+
+  case node["platform"]
+  when "ubuntu", "debian"
+    key_grp = "ssl-cert"
+    group "ssl-cert" do
+      action :modify
+      members "nova"
+      append true
+    end
+  else
+    key_grp = "root"
+  end
+
+  cookbook_file key_file do
+    source node["nova"]["services"]["novnc-proxy"]["key_file"]
+    mode 0640
+    owner "root"
+    group key_grp
+  end
+end
