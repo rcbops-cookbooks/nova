@@ -3,6 +3,10 @@
 default["enable_monit"] = false  # OS provides packages
 ########################################################################
 
+# Generic regex for process pattern matching (to be used as a base pattern).
+# Works for both Grizzly and Havana packages on Ubuntu and CentOS.
+procmatch_base = '^((/usr/bin/)?python\d? )?(/usr/bin/)?'
+
 # Define the ha policy for queues.  If you change this to true
 # after you have already deployed you will need to wipe the RabbitMQ
 # database by stopping rabbitmq, removing /var/lib/rabbitmq/mnesia
@@ -157,81 +161,144 @@ default["nova"]["ratelimit"]["volume"]["enabled"] = true
 case platform
 when "fedora", "redhat", "centos"
   default["nova"]["platform"] = {
-    "api_ec2_packages" => ["openstack-nova-api"],
-    "api_ec2_service" => "openstack-nova-api",
-    "api_ec2_process_name" => "openstack-nova-api",
-    "api_os_compute_packages" => ["openstack-nova-api"],
-    "api_os_compute_service" => "openstack-nova-api",
-    "api_os_compute_process_name" => "nova-api",
+    "common_packages" => [
+      "openstack-nova-common",
+      "python-cinderclient",
+      "python-keystoneclient"
+    ],
+    "cinder_multipath_packages" => [
+      "device-mapper-multipath",
+      "sysfsutils",
+      "sg3_utils"
+    ],
+    #
+    # Nova services
+    #
+    "api_ec2_packages"  => ["openstack-nova-api"],
+    "api_ec2_service"   => "openstack-nova-api",
+    "api_ec2_procmatch" => procmatch_base + 'nova-api\b',
+
+    "api_metadata_packages"  => ["python-memcached", "openstack-nova-api"],
+    "api_metadata_service"   => "openstack-nova-api",
+    "api_metadata_procmatch" => procmatch_base + 'nova-api\b',
+
+    "api_os_compute_packages"  => ["openstack-nova-api"],
+    "api_os_compute_service"   => "openstack-nova-api",
+    "api_os_compute_procmatch" => procmatch_base + 'nova-api\b',
+
     "api_os_volume_packages" => ["openstack-nova-api"],
-    "api_os_volume_service" => "openstack-nova-api",
-    "nova_volume_packages" => ["openstack-nova-volume"],
-    "nova_volume_service" => "openstack-nova-volume",
-    "nova_api_metadata_packages" => ["python-memcached", "openstack-nova-api"],
-    "nova_api_metadata_process_name" => "nova-api",
-    "nova_api_metadata_service" => "openstack-nova-api",
-    "nova_compute_packages" => ["openstack-nova-compute", "dnsmasq-utils", "python-libguestfs"],
-    "nova_compute_service" => "openstack-nova-compute",
-    "nova_scheduler_packages" => ["openstack-nova-scheduler"],
-    "nova_scheduler_service" => "openstack-nova-scheduler",
-    "nova_conductor_packages" => ["openstack-nova-conductor"],
-    "nova_conductor_service" => "openstack-nova-conductor",
-    "nova_vncproxy_packages" => ["openstack-nova-novncproxy"],
-    "nova_vncproxy_service" => "openstack-nova-novncproxy",
-    "nova_vncproxy_consoleauth_packages" => ["python-memcached", "openstack-nova-console"],
-    "nova_vncproxy_consoleauth_service" => "openstack-nova-consoleauth",
-    "nova_vncproxy_consoleauth_process_name" => "nova-consoleauth",
-    "libvirt_packages" => ["libvirt"],
-    "libvirt_service" => "libvirtd",
-    "nova_cert_packages" => ["openstack-nova-cert"],
-    "nova_cert_service" => "openstack-nova-cert",
-    "mysql_service" => "mysqld",
-    "common_packages" => ["openstack-nova-common", "python-cinderclient", "python-keystoneclient"],
-    "cinder_multipath_packages" => ["device-mapper-multipath", "sysfsutils", "sg3_utils"],
+    "api_os_volume_service"  => "openstack-nova-api",
+    # FIXME(brett): is there an executable for this on rhel?
+
+    "nova_cert_packages"  => ["openstack-nova-cert"],
+    "nova_cert_service"   => "openstack-nova-cert",
+    "nova_cert_procmatch" => procmatch_base + 'nova-cert\b',
+
+    "nova_compute_packages"  => [ "openstack-nova-compute", "dnsmasq-utils", "python-libguestfs" ],
+    "nova_compute_service"   => "openstack-nova-compute",
+    "nova_compute_procmatch" => procmatch_base + 'nova-compute\b',
+
+    "nova_conductor_packages"  => ["openstack-nova-conductor"],
+    "nova_conductor_service"   => "openstack-nova-conductor",
+    "nova_conductor_procmatch" => procmatch_base + 'nova-conductor\b',
+
+    "nova_scheduler_packages"  => ["openstack-nova-scheduler"],
+    "nova_scheduler_service"   => "openstack-nova-scheduler",
+    "nova_scheduler_procmatch" => procmatch_base + 'nova-scheduler\b',
+
+    "nova_vncproxy_packages"  => ["openstack-nova-novncproxy"],
+    "nova_vncproxy_service"   => "openstack-nova-novncproxy",
+    "nova_vncproxy_procmatch" => procmatch_base + 'nova-novncproxy\b',
+
+    "nova_vncproxy_consoleauth_packages"  => ["python-memcached", "openstack-nova-console"],
+    "nova_vncproxy_consoleauth_service"   => "openstack-nova-consoleauth",
+    "nova_vncproxy_consoleauth_procmatch" => procmatch_base + 'nova-consoleauth\b',
+
+    "nova_volume_packages"  => ["openstack-nova-volume"],
+    "nova_volume_service"   => "openstack-nova-volume",
+    "nova_volume_procmatch" => procmatch_base + 'nova-volume\b',
+
+    # Misc
     "iscsi_helper" => "tgtadm",
     "iscsi_service" => "tgtd",
+    "libvirt_packages" => ["libvirt"],
+    "libvirt_service" => "libvirtd",
+    "mysql_service" => "mysqld",
     "package_options" => ""
   }
   default["nova"]["ssl"]["dir"] = "/etc/pki/tls"
+
 when "ubuntu"
   default["nova"]["platform"] = {
-    "api_ec2_packages" => ["nova-api-ec2"],
-    "api_ec2_service" => "nova-api-ec2",
-    "api_ec2_process_name" => "nova-api-ec2",
-    "api_os_compute_packages" => ["nova-api-os-compute"],
-    "api_os_compute_process_name" => "nova-api-os-compute",
-    "api_os_compute_service" => "nova-api-os-compute",
-    "api_os_volume_packages" => ["nova-api-os-volume"],
-    "api_os_volume_service" => "nova-api-os-volume",
-    "nova_api_metadata_packages" => ["python-memcache", "nova-api-metadata"],
-    "nova_api_metadata_service" => "nova-api-metadata",
-    "nova_api_metadata_process_name" => "nova-api-metadata",
-    "nova_volume_packages" => ["nova-volume", "tgt"],
-    "nova_volume_service" => "nova-volume",
-    "nova_compute_packages" => ["nova-compute", "python-guestfs"],
-    "nova_compute_service" => "nova-compute",
-    "nova_scheduler_packages" => ["nova-scheduler"],
-    "nova_scheduler_service" => "nova-scheduler",
-    "nova_conductor_packages" => ["nova-conductor"],
-    "nova_conductor_service" => "nova-conductor",
-    # Websockify is needed due to https://bugs.launchpad.net/ubuntu/+source/nova/+bug/1076442
-    "nova_vncproxy_packages" => ["novnc", "websockify", "nova-novncproxy"],
-    "nova_vncproxy_service" => "nova-novncproxy",
-    "nova_vncproxy_consoleauth_packages" => ["python-memcache", "nova-consoleauth"],
-    "nova_vncproxy_consoleauth_service" => "nova-consoleauth",
-    "nova_vncproxy_consoleauth_process_name" => "nova-consoleauth",
+    "common_packages" => [
+      "nova-common",
+      "python-nova",
+      "python-novaclient",
+      "python-eventlet"
+    ],
+    "cinder_multipath_packages" => [
+      "multipath-tools",
+      "sysfsutils",
+      "sg3-utils"
+    ],
+    #
+    # Nova services
+    #
+    "api_ec2_packages"  => ["nova-api-ec2"],
+    "api_ec2_service"   => "nova-api-ec2",
+    "api_ec2_procmatch" => procmatch_base + 'nova-api-ec2\b',
+
+    "api_metadata_packages"  => ["python-memcache", "nova-api-metadata"],
+    "api_metadata_service"   => "nova-api-metadata",
+    "api_metadata_procmatch" => procmatch_base + 'nova-api-metadata\b',
+
+    "api_os_compute_packages"  => ["nova-api-os-compute"],
+    "api_os_compute_service"   => "nova-api-os-compute",
+    "api_os_compute_procmatch" => procmatch_base + 'nova-api-os-compute\b',
+
+    "api_os_volume_packages"  => ["nova-api-os-volume"],
+    "api_os_volume_service"   => "nova-api-os-volume",
+    "api_os_volume_procmatch" => procmatch_base + 'nova-api-os-volume\b',
+
+    "nova_cert_packages"  => ["nova-cert"],
+    "nova_cert_service"   => "nova-cert",
+    "nova_cert_procmatch" => procmatch_base + 'nova-cert\b',
+
+    "nova_compute_packages"  => ["nova-compute", "python-guestfs"],
+    "nova_compute_service"   => "nova-compute",
+    "nova_compute_procmatch" => procmatch_base + 'nova-compute\b',
+
+    "nova_conductor_packages"  => ["nova-conductor"],
+    "nova_conductor_service"   => "nova-conductor",
+    "nova_conductor_procmatch" => procmatch_base + 'nova-conductor\b',
+
+    "nova_scheduler_packages"  => ["nova-scheduler"],
+    "nova_scheduler_service"   => "nova-scheduler",
+    "nova_scheduler_procmatch" => procmatch_base + 'nova-scheduler\b',
+
+    # websockify needed for https://bugs.launchpad.net/ubuntu/+source/nova/+bug/1076442
+    "nova_vncproxy_packages"  => ["novnc", "websockify", "nova-novncproxy"],
+    "nova_vncproxy_service"   => "nova-novncproxy",
+    "nova_vncproxy_procmatch" => procmatch_base + 'nova-novncproxy\b',
+
+    "nova_vncproxy_consoleauth_packages"  => ["python-memcache", "nova-consoleauth"],
+    "nova_vncproxy_consoleauth_service"   => "nova-consoleauth",
+    "nova_vncproxy_consoleauth_procmatch" => procmatch_base + 'nova-consoleauth\b',
+
+    "nova_volume_packages"  => ["nova-volume", "tgt"],
+    "nova_volume_service"   => "nova-volume",
+    "nova_volume_procmatch" => procmatch_base + 'nova-volume\b',
+
+    # Misc
+    #
+    "iscsi_helper" => "tgtadm",
+    "iscsi_service" => "tgt",
     # README(shep): python-libvirt does not get automatically upgraded
     "libvirt_packages" => ["libvirt-bin", "python-libvirt", "pm-utils"],
     "libvirt_service" => "libvirt-bin",
-    "nova_cert_packages" => ["nova-cert"],
-    "nova_cert_service" => "nova-cert",
     "mysql_service" => "mysql",
-    "common_packages" => ["nova-common", "python-nova",
-      "python-novaclient", "python-eventlet"],
-    "cinder_multipath_packages" => ["multipath-tools", "sysfsutil", "sg3-utils"],
-    "iscsi_helper" => "tgtadm",
-    "iscsi_service" => "tgt",
-    "package_options" => "-o Dpkg::Options::='--force-confold' -o Dpkg::Options::='--force-confdef'"
+    "package_options" => 
+      "-o Dpkg::Options::='--force-confold' -o Dpkg::Options::='--force-confdef'"
   }
   default["nova"]["ssl"]["dir"] = "/etc/ssl"
 end

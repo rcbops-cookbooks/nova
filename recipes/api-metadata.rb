@@ -30,7 +30,7 @@ end
 
 include_recipe "osops-utils::python-keystone"
 
-platform_options["nova_api_metadata_packages"].each do |pkg|
+platform_options["api_metadata_packages"].each do |pkg|
   package pkg do
     action node["osops"]["do_package_upgrades"] == true ? :upgrade : :install
     options platform_options["package_options"]
@@ -38,7 +38,7 @@ platform_options["nova_api_metadata_packages"].each do |pkg|
 end
 
 service "nova-api-metadata" do
-  service_name platform_options["nova_api_metadata_service"]
+  service_name platform_options["api_metadata_service"]
   supports :status => true, :restart => true
   action :enable
   subscribes :restart, "nova_conf[/etc/nova/nova.conf]", :delayed
