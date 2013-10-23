@@ -198,7 +198,7 @@ when "fedora", "redhat", "centos"
     "nova_cert_service"   => "openstack-nova-cert",
     "nova_cert_procmatch" => procmatch_base + 'nova-cert\b',
 
-    "nova_compute_packages"  => [ "openstack-nova-compute", "dnsmasq-utils" ],
+    "nova_compute_packages"  => [ "openstack-nova-compute", "dnsmasq-utils", "python-libguestfs" ],
     "nova_compute_service"   => "openstack-nova-compute",
     "nova_compute_procmatch" => procmatch_base + 'nova-compute\b',
 
@@ -228,7 +228,7 @@ when "fedora", "redhat", "centos"
     "libvirt_packages" => ["libvirt"],
     "libvirt_service" => "libvirtd",
     "mysql_service" => "mysqld",
-    "package_overrides" => ""
+    "package_options" => ""
   }
   default["nova"]["ssl"]["dir"] = "/etc/pki/tls"
 
@@ -268,7 +268,7 @@ when "ubuntu"
     "nova_cert_service"   => "nova-cert",
     "nova_cert_procmatch" => procmatch_base + 'nova-cert\b',
 
-    "nova_compute_packages"  => ["nova-compute"],
+    "nova_compute_packages"  => ["nova-compute", "python-guestfs"],
     "nova_compute_service"   => "nova-compute",
     "nova_compute_procmatch" => procmatch_base + 'nova-compute\b',
 
@@ -301,7 +301,7 @@ when "ubuntu"
     "libvirt_packages" => ["libvirt-bin", "python-libvirt", "pm-utils"],
     "libvirt_service" => "libvirt-bin",
     "mysql_service" => "mysql",
-    "package_overrides" =>
+    "package_options" => 
       "-o Dpkg::Options::='--force-confold' -o Dpkg::Options::='--force-confdef'"
   }
   default["nova"]["ssl"]["dir"] = "/etc/ssl"

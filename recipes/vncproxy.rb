@@ -24,7 +24,7 @@ platform_options = node["nova"]["platform"]
 platform_options["nova_vncproxy_packages"].each do |pkg|
   package pkg do
     action node["osops"]["do_package_upgrades"] == true ? :upgrade : :install
-    options platform_options["package_overrides"]
+    options platform_options["package_options"]
   end
 end
 
@@ -32,7 +32,7 @@ end
 platform_options["nova_vncproxy_consoleauth_packages"].each do |pkg|
   package pkg do
     action node["osops"]["do_package_upgrades"] == true ? :upgrade : :install
-    options platform_options["package_overrides"]
+    options platform_options["package_options"]
   end
 end
 

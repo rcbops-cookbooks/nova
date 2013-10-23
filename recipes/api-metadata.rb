@@ -33,7 +33,7 @@ include_recipe "osops-utils::python-keystone"
 platform_options["api_metadata_packages"].each do |pkg|
   package pkg do
     action node["osops"]["do_package_upgrades"] == true ? :upgrade : :install
-    options platform_options["package_overrides"]
+    options platform_options["package_options"]
   end
 end
 

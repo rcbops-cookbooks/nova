@@ -53,6 +53,7 @@ quota_security_group_rules=<%= @quota_security_group_rules %>
 quota_fixed_ips=<%= @quota_fixed_ips %>
 quota_instances=<%= @quota_instances %>
 max_age=<%= @max_age %>
+rpc_backend=nova.openstack.common.rpc.impl_kombu
 <% if @force_config_drive -%>
 force_config_drive=<%= @force_config_drive %>
 <% end -%>

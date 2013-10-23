@@ -39,7 +39,7 @@ end
 nova_compute_packages.each do |pkg|
   package pkg do
     action node["osops"]["do_package_upgrades"] == true ? :upgrade : :install
-    options platform_options["package_overrides"]
+    options platform_options["package_options"]
   end
 end
 
@@ -57,7 +57,7 @@ if not cinder_setup_info.nil? and
   cinder_multipath_packages.each do |pkg|
     package pkg do
       action node["osops"]["do_package_upgrades"] == true ? :upgrade : :install
-      options platform_options["package_overrides"]
+      options platform_options["package_options"]
     end
   end
   template "/etc/multipath.conf" do
