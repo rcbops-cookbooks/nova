@@ -20,6 +20,6 @@ Listen <%= @listen_ip %>:<%= @service_port %>
     SSLOptions +StdEnvVars +ExportCertData
 
     ErrorLog <%= @log_file %>
-    LogLevel debug
+    LogLevel warn
     CustomLog <%= @log_file %> combined
 </VirtualHost>
