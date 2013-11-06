@@ -163,3 +163,5 @@ keystone_endpoint "Register Compute Endpoint" do
   endpoint_publicurl api_endpoint["uri"]
   action :create
 end
+
+include_recipe "nova::nova-osapi-patch"
