@@ -14,6 +14,11 @@ procmatch_base = '^((/usr/bin/)?python\d? )?(/usr/bin/)?'
 # OpenStack services to fail to connect to RabbitMQ.
 default["nova"]["rabbitmq"]["use_ha_queues"] = false
 
+# Set the notification Driver
+# Options are no_op, rpc, log, rabbit
+default["nova"]["notification"]["driver"] = "rabbit"
+default["nova"]["notification"]["topics"] = "notifications"
+
 # set to true to enable debugging output in the logs
 default["nova"]["debug"] = false
 
