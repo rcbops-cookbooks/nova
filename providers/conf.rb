@@ -180,7 +180,7 @@ action :create do
       "rabbit_port" => rabbit_info["port"],
       "rabbit_ha_queues" => rabbit_settings["cluster"] ? "True" : "False",
       "notification_driver" => notification_driver,
-      "notification_topics" => default["nova"]["notification"]["topics"],
+      "notification_topics" => node["nova"]["notification"]["topics"],
       "keystone_api_ipaddress" => ks_admin_endpoint["host"],
       "keystone_service_port" => ks_service_endpoint["port"],
       "keystone_service_protocol" => ks_service_endpoint["scheme"],
