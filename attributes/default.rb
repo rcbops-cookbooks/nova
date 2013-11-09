@@ -15,8 +15,8 @@ procmatch_base = '^((/usr/bin/)?python\d? )?(/usr/bin/)?'
 default["nova"]["rabbitmq"]["use_ha_queues"] = false
 
 # Set the notification Driver
-# Options are no_op, rpc, log, rabbit
-default["nova"]["notification"]["driver"] = "rabbit"
+# Options are no_op, rpc, log
+default["nova"]["notification"]["driver"] = "no_op"
 default["nova"]["notification"]["topics"] = "notifications"
 
 # set to true to enable debugging output in the logs

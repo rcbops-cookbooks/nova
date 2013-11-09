@@ -141,8 +141,6 @@ action :create do
 
   notification_provider = node["nova"]["notification"]["driver"]
   case notification_provider
-  when "rabbit"
-    notification_driver = "nova.openstack.common.notifier.rabbit_notifier"
   when "no_op"
     notification_driver = "nova.openstack.common.notifier.no_op_notifier"
   when "rpc"
