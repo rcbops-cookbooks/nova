@@ -1,4 +1,5 @@
 compute_manager=nova.compute.manager.ComputeManager
+allow_resize_to_same_host=true
 sql_connection=mysql://<%= @user %>:<%= @passwd %>@<%= @db_ipaddress %>/<%= @db_name %>
 connection_type=<%= @connection_type %>
 <% case @connection_type -%>
