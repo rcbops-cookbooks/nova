@@ -9,7 +9,7 @@ version           IO.read(File.join(File.dirname(__FILE__), 'VERSION'))
   supports os
 end
 
-%w{ cinder database dsh mysql nova-network openssl osops-utils sysctl apache2 }.each do |dep|
+%w{ cinder database dsh mysql nova-network openssl osops-utils sysctl apache2 ceph }.each do |dep|
   depends dep
 end
 
