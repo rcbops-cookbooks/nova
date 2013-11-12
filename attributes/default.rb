@@ -230,7 +230,7 @@ when "fedora", "redhat", "centos"
     # Misc
     "iscsi_helper" => "tgtadm",
     "iscsi_service" => "tgtd",
-    "libvirt_packages" => ["libvirt"],
+    "libvirt_packages" => ["libvirt", "systool"],
     "libvirt_service" => "libvirtd",
     "mysql_service" => "mysqld",
     "package_options" => ""
