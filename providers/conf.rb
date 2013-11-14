@@ -8,26 +8,34 @@ action :create do
 
   # Search for mysql endpoint info
   mysql_info = get_access_endpoint("mysql-master", "mysql", "db")
+
   # Search for rabbit endpoint info
   rabbit_info = get_access_endpoint("rabbitmq-server", "rabbitmq", "queue")
   rabbit_settings = get_settings_by_role("rabbitmq-server", "rabbitmq")
+
   # Get settings from role[nova-setup]
   nova_setup_info = get_settings_by_role("nova-setup", "nova")
+
   # Search for keystone endpoint info
   ks_api_role = "keystone-api"
   ks_ns = "keystone"
   ks_admin_endpoint = get_access_endpoint(ks_api_role, ks_ns, "admin-api")
   ks_service_endpoint = get_access_endpoint(ks_api_role, ks_ns, "service-api")
+
   # Search for glance endpoint info
   glance_endpoint = get_access_endpoint("glance-api", "glance", "api")
+
   # Get endpoint info for nova-api
   api_bind = get_bind_endpoint("nova", "api")
+
   # Get endpoint info for nova-api-ec2
   ec2_bind = get_bind_endpoint("nova", "ec2-public")
+
   # Search for xvpvnc endpoint info
   vnc_role = "nova-vncproxy"
   xvpvncproxy_endpoint = get_access_endpoint(vnc_role, "nova", "xvpvnc-proxy")
   novncproxy_endpoint = get_access_endpoint(vnc_role, "nova", "novnc-proxy")
+
   # Check novnc-proxy ssl config
   if node["nova"]["services"]["novnc-proxy"]["scheme"] == "https"
     novnc_proxy_cert = "#{node["nova"]["ssl"]["dir"]}/certs/#{node["nova"]["services"]["novnc-proxy"]["cert_file"]}"
@@ -36,6 +44,7 @@ action :create do
     novnc_proxy_cert = "donotset"
     novnc_proxy_key  = "donotset"
   end
+
   # Get bind info for vnc
   xvpvncproxy_bind = get_bind_endpoint("nova", "xvpvnc-proxy")
   novncserver_bind = get_bind_endpoint("nova", "novnc-server")
@@ -60,9 +69,11 @@ action :create do
     # Get settings from recipe[nova-network::nova-controller]
     recipe = "nova-network::nova-controller"
     neutron_info = get_settings_by_recipe(recipe, "neutron")
+
     # Search for neutron enpoint info
     nova_net_role = "nova-network-controller"
     neutron_endpoint = get_access_endpoint(nova_net_role, "neutron", "api")
+
     # Search for nova api endpoint info
     nova_info = get_access_endpoint("nova-api-os-compute", "nova", "api")
     metadata_ip = nova_info["host"]
@@ -128,6 +139,19 @@ action :create do
     iscsi_use_multipath = true
   end
 
+  notification_provider = node["nova"]["notification"]["driver"]
+  case notification_provider
+  when "no_op"
+    notification_driver = "nova.openstack.common.notifier.no_op_notifier"
+  when "rpc"
+    notification_driver = "nova.openstack.common.notifier.rpc_notifier"
+  when "log"
+    notification_driver = "nova.openstack.common.notifier.log_notifier"
+  else
+    msg = "#{notification_provider}, is not currently supported by these cookbooks."
+    Chef::Application.fatal! msg
+  end
+
   t = template new_resource.name do
     source "nova.conf.erb"
     owner "nova"
@@ -153,6 +177,8 @@ action :create do
       "rabbit_ipaddress" => rabbit_info["host"],
       "rabbit_port" => rabbit_info["port"],
       "rabbit_ha_queues" => rabbit_settings["cluster"] ? "True" : "False",
+      "notification_driver" => notification_driver,
+      "notification_topics" => node["nova"]["notification"]["topics"],
       "keystone_api_ipaddress" => ks_admin_endpoint["host"],
       "keystone_service_port" => ks_service_endpoint["port"],
       "keystone_service_protocol" => ks_service_endpoint["scheme"],
