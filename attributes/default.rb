@@ -37,7 +37,7 @@ default["nova"]["services"]["api"]["port"] = 8774
 default["nova"]["services"]["api"]["path"] = "/v2/%(tenant_id)s"
 default["nova"]["services"]["api"]["cert_file"] = "nova.pem"
 default["nova"]["services"]["api"]["key_file"] = "nova.key"
-default["nova"]["services"]["api"]["chain_file"] = ""
+#default["nova"]["services"]["api"]["chain_file"] = ""
 default["nova"]["services"]["api"]["wsgi_file"] = "nova-api-os-compute"
 
 default["nova"]["services"]["internal-api"]["scheme"] = "http"
@@ -56,7 +56,7 @@ default["nova"]["services"]["ec2-admin"]["port"] = 8773
 default["nova"]["services"]["ec2-admin"]["path"] = "/services/Admin"
 default["nova"]["services"]["ec2-admin"]["cert_file"] = "nova.pem"
 default["nova"]["services"]["ec2-admin"]["key_file"] = "nova.key"
-default["nova"]["services"]["ec2-admin"]["chain_file"] = ""
+#default["nova"]["services"]["ec2-admin"]["chain_file"] = ""
 default["nova"]["services"]["ec2-admin"]["wsgi_file"] = "nova-api-ec2"
 
 default["nova"]["services"]["ec2-public"]["scheme"] = "http"
@@ -65,7 +65,7 @@ default["nova"]["services"]["ec2-public"]["port"] = 8773
 default["nova"]["services"]["ec2-public"]["path"] = "/services/Cloud"
 default["nova"]["services"]["ec2-public"]["cert_file"] = "nova.pem"
 default["nova"]["services"]["ec2-public"]["key_file"] = "nova.key"
-default["nova"]["services"]["ec2-public"]["chain_file"] = ""
+#default["nova"]["services"]["ec2-public"]["chain_file"] = ""
 default["nova"]["services"]["ec2-public"]["wsgi_file"] = "nova-api-ec2"
 
 default["nova"]["services"]["xvpvnc-proxy"]["scheme"] = "http"
