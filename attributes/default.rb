@@ -230,7 +230,7 @@ when "fedora", "redhat", "centos"
     # Misc
     "iscsi_helper" => "tgtadm",
     "iscsi_service" => "tgtd",
-    "libvirt_packages" => ["libvirt", "systool"],
+    "libvirt_packages" => ["libvirt"], 
     "libvirt_service" => "libvirtd",
     "mysql_service" => "mysqld",
     "package_options" => ""
@@ -303,7 +303,7 @@ when "ubuntu"
     "iscsi_helper" => "tgtadm",
     "iscsi_service" => "tgt",
     # README(shep): python-libvirt does not get automatically upgraded
-    "libvirt_packages" => ["libvirt-bin", "python-libvirt", "pm-utils"],
+    "libvirt_packages" => ["libvirt-bin", "python-libvirt", "pm-utils", "systool"],
     "libvirt_service" => "libvirt-bin",
     "mysql_service" => "mysql",
     "package_options" => 
