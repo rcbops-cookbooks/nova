@@ -7,7 +7,7 @@ action :create do
   Chef::Log.info("Creating #{new_resource.name}")
 
   # Search for mysql endpoint info
-  mysql_info = get_access_endpoint("mysql-master", "mysql", "db")
+  mysql_info = get_mysql_endpoint
 
   # Search for rabbit endpoint info
   rabbit_info = get_access_endpoint("rabbitmq-server", "rabbitmq", "queue")
