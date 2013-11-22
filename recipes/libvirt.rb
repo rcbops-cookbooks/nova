@@ -89,3 +89,49 @@ execute "remove libvirt default network" do
   action :run
   only_if "virsh net-list | grep default"
 end
+
+# is cinder using rbd for volumes? If so, we can configure the libvirt secret
+# so that nova can boot from those volumes
+cinder_opts = get_settings_by_role('cinder-volume', 'cinder')
+
+unless cinder_opts.nil?
+  if cinder_opts['storage']['provider'] == 'rbd'
+
+    if rcb_safe_deref(node, "ceph.config.fsid")
+
+      include_recipe 'ceph::repo'
+      include_recipe 'ceph'
+      include_recipe 'ceph::conf'
+    end
+
+    rbd_user = cinder_opts['storage']['rbd']['rbd_user']
+    rbd_secret_uuid = cinder_opts['storage']['rbd']['rbd_secret_uuid']
+    rbd_user_key = cinder_opts['storage']['rbd']['rbd_user_key']
+
+    template "/tmp/secret.xml" do
+      source "secret.xml.erb"
+      variables(
+        "rbd_user" =>  rbd_user,
+        "rbd_secret_uuid" => rbd_secret_uuid
+      )
+    end
+
+    execute "define libvirt secret" do
+      command "virsh secret-define --file /tmp/secret.xml"
+      not_if "virsh secret list | grep #{rbd_secret_uuid}"
+    end
+
+    execute "set libvirt secret value" do
+      command "virsh secret-set-value --secret #{rbd_secret_uuid} #{rbd_user_key}"
+      not_if "virsh secret-get-value #{rbd_secret_uuid} | grep #{rbd_user_key}"
+    end
+
+    file "/tmp/secret.xml" do
+      action :delete
+    end
+
+  else
+    Chef::Log.debug('no cinder-volume found, or rbd not being used,
+    so not configuring libvirt secret for rbd')
+  end
+end
