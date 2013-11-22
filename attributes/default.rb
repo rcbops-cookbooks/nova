@@ -303,7 +303,7 @@ when "ubuntu"
     "iscsi_helper" => "tgtadm",
     "iscsi_service" => "tgt",
     # README(shep): python-libvirt does not get automatically upgraded
-    "libvirt_packages" => ["libvirt-bin", "python-libvirt", "pm-utils", "systool"],
+    "libvirt_packages" => ["libvirt-bin", "python-libvirt", "pm-utils", "sysfsutils"],
     "libvirt_service" => "libvirt-bin",
     "mysql_service" => "mysql",
     "package_options" => 
