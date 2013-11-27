@@ -157,7 +157,7 @@ keystone_endpoint "Register Compute Endpoint" do
   api_ver ks_admin_endpoint["path"]
   auth_token keystone["admin_token"]
   service_type "compute"
-  endpoint_region node["nova"]["compute"]["region"]
+  endpoint_region node["osops"]["region"]
   endpoint_adminurl api_admin_endpoint["uri"]
   endpoint_internalurl api_internal_endpoint["uri"]
   endpoint_publicurl api_endpoint["uri"]

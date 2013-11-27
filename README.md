@@ -188,8 +188,6 @@ NOTE: service password is no longer set statically in the attributes file, but s
 * `nova["services"]["volume"]["path"]` - URI to use
 * `nova["services"]["volume"]["cinder_catalog_info"]` - URL used for cinder
 
-* `nova["compute"]["region"]` - Region name, defaults to RegionOne
-
 * `nova["scheduler"]["scheduler_driver"]` - The scheduler driver to use
 NOTE: The filter scheduler currently does not work with ec2.
 * `nova["scheduler"]["scheduler_weight_classes"]` - A list of weight class names (separated by commas) to use for weighing hosts, defaults to nova.scheduler.weights.ram.RAMWeigher
