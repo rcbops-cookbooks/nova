@@ -91,8 +91,6 @@ default["nova"]["services"]["volume"]["port"] = 8776
 default["nova"]["services"]["volume"]["path"] = "/v1/%(tenant_id)s"
 default["nova"]["services"]["volume"]["cinder_catalog_info"] = "volume:cinder:publicURL"
 
-# can this be wedged into the "api" endpoint?
-default["nova"]["compute"]["region"] = "RegionOne"
 default["nova"]["compute"]["connection_type"] = "libvirt"
 
 default["nova"]["scheduler"]["scheduler_driver"] = "nova.scheduler.filter_scheduler.FilterScheduler"

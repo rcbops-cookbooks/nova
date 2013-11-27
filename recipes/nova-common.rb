@@ -77,7 +77,7 @@ template "/root/openrc" do
     "password" => keystone["users"][keystone["admin_user"]]["password"],
     "keystone_auth_uri" => ks_internal_endpoint["uri"],
     "nova_api_version" => "1.1",
-    "keystone_region" => node["nova"]["compute"]["region"],
+    "nova_region" => node["osops"]["region"],
     "auth_strategy" => "keystone",
     "ec2_url" => ec2_public_endpoint["uri"],
     "ec2_access_key" => ec2_creds["EC2"][keystone['admin_user']]["access"],
