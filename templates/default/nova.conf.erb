@@ -119,7 +119,7 @@ ec2_private_dns_show_ip=True
 <% if @iscsi_use_multipath == true -%>
 ##### EMC Multi-Path ####
 libvirt_iscsi_use_multipath = "True"
-<% end %>
+<% end -%>
 
 ##### CEILOMETER #####
 <% if @use_ceilometer.to_s.capitalize() == "True" -%>
@@ -129,4 +129,18 @@ notification_driver=nova.openstack.common.notifier.rpc_notifier
 notification_driver=ceilometer.compute.nova_notifier
 <% else -%>
 # disabled because ceilometer::ceilometer-compute is not in the run_list
+<% end -%>
+
+##### DATABASE CONNECTIONS #####
+[DATABASE]
+connection_debug=<%= @sql_connection_debug %>
+idle_timeout=<%= @sql_idle_timeout %>
+retry_interval=<%= @sql_retry_interval %>
+max_retries=<%= @sql_max_retries %>
+min_pool_size=<%= @sql_min_pool_size %>
+<% if @sql_max_pool_size -%>
+max_pool_size=<%= @sql_max_pool_size %>
+<% end -%>
+<% if @sql_max_overflow -%>
+max_overflow=<%= @sql_max_overflow %>
 <% end -%>
