@@ -28,6 +28,14 @@ action :create do
   vnc_role = "nova-vncproxy"
   xvpvncproxy_endpoint = get_access_endpoint(vnc_role, "nova", "xvpvnc-proxy")
   novncproxy_endpoint = get_access_endpoint(vnc_role, "nova", "novnc-proxy")
+  # Check novnc-proxy ssl config
+  if node["nova"]["services"]["novnc-proxy"]["scheme"] == "https"
+    novnc_proxy_cert = "#{node["nova"]["ssl"]["dir"]}/certs/#{node["nova"]["services"]["novnc-proxy"]["cert_file"]}"
+    novnc_proxy_key  = "#{node["nova"]["ssl"]["dir"]}/private/#{node["nova"]["services"]["novnc-proxy"]["key_file"]}"
+  else
+    novnc_proxy_cert = "donotset"
+    novnc_proxy_key  = "donotset"
+  end
   # Get bind info for vnc
   xvpvncproxy_bind = get_bind_endpoint("nova", "xvpvnc-proxy")
   novncserver_bind = get_bind_endpoint("nova", "novnc-server")
@@ -40,8 +48,10 @@ action :create do
   if memcached_endpoints.empty?
     memcached_servers = nil
   else
-    memcached_servers = memcached_endpoints.collect do |endpoint|
-      "#{endpoint["host"]}:#{endpoint["port"]}"
+    # sort array of hash objects by 'host' key and join into string
+    memcached_servers =
+      memcached_endpoints.sort {|a,b| a['host'] <=> b['host']}.collect do |ep|
+      "#{ep["host"]}:#{ep["port"]}"
     end.join(",")
   end
 
@@ -132,6 +142,8 @@ action :create do
       "db_name" => node["nova"]["db"]["name"],
       "vncserver_listen" => node["nova"]["libvirt"]["vncserver_listen"] || novncserver_bind["host"],
       "vncserver_proxyclient_address" => novncserver_bind["host"],
+      "novnc_proxy_cert" => novnc_proxy_cert,
+      "novnc_proxy_key" => novnc_proxy_key,
       "novncproxy_base_url" => novncproxy_endpoint["uri"],
       "xvpvncproxy_bind_host" => xvpvncproxy_bind["host"],
       "xvpvncproxy_bind_port" => xvpvncproxy_bind["port"],
@@ -160,6 +172,8 @@ action :create do
       "remove_unused_original_minimum_age_seconds" => node["nova"]["libvirt"]["remove_unused_original_minimum_age_seconds"],
       "checksum_base_images" => node["nova"]["libvirt"]["checksum_base_images"],
       "libvirt_inject_key" => node["nova"]["libvirt"]["libvirt_inject_key"],
+      "libvirt_inject_password" => node["nova"]["libvirt"]["libvirt_inject_password"],
+      "libvirt_inject_partition" => node["nova"]["libvirt"]["libvirt_inject_partition"],
       "force_raw_images" => node["nova"]["config"]["force_raw_images"],
       "allow_same_net_traffic" => node["nova"]["config"]["allow_same_net_traffic"],
       "quota_instances" => node["nova"]["config"]["quota_instances"],
@@ -188,7 +202,9 @@ action :create do
       "use_ceilometer" => node.recipe?("ceilometer::ceilometer-compute"),
       "iscsi_use_multipath" => iscsi_use_multipath,
       "memcached_servers" => memcached_servers,
-      'image_cache_manager_interval' => node['nova']['config']['image_cache_manager_interval']
+      "image_cache_manager_interval" => node["nova"]["config"]["image_cache_manager_interval"],
+      "max_age" => node["nova"]["config"]["max_age"],
+      "reserved_host_disk_mb" => node["nova"]["config"]["reserved_host_disk_mb"]
     )
   end
   new_resource.updated_by_last_action(t.updated_by_last_action?)

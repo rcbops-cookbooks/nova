@@ -204,6 +204,8 @@ NOTE: The filter scheduler currently does not work with ec2.
 * `nova["libvirt"]["remove_unused_original_minimum_age_seconds"]` - Defaults to 3600 seconds
 * `nova["libvirt"]["checksum_base_images"]` - Record and validate image checksums?
 * `nova["libvirt"]["libvirt_inject_key"]` - Inject ssh public key at boot?
+* `nova["libvirt"]["libvirt_inject_password"]` - Inject root password at boot?
+* `nova["libvirt"]["libvirt_inject_partition"]` - The partition to inject to: -2 = disable, -1 = inspect (libguestfs only), 0 = not partitioned, >0 = partition number
 * `nova["libvirt"]["disk_cachemodes"]` - KVM disk caching modes.  Defaults to "file=none".  To set writeback mode use "file=writeback".  To set multiple modes use "file=writeback,block=none"
 * `nova["config"]["use_single_default_gateway"]` - Use single default gateway?
 * `nova["config"]["availability_zone"]` - Nova availability zone.  Usually set at the node level to place a compute node in another az
@@ -226,6 +228,7 @@ NOTE: The filter scheduler currently does not work with ec2.
 * `nova["config"]["quota_security_groups"]` - Number of security groups per project, defaults to 50
 * `nova["config"]["quota_security_group_rules"]` - Number of security rules per security group, defaults to 20
 * `nova["config"]["force_config_drive"]` - Force attachment of config drive, defaults to false
+* `nova["config"]["reserved_host_disk_mb"]` - Amount of disk in MB to reserve for the host, defaults to 0
 
 * `nova["ratelimit"]["settings"]` - Tune OpenStack Compute API rate limits.  For Example:
 "override_attribute": {

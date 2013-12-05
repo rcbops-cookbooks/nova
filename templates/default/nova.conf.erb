@@ -52,11 +52,15 @@ quota_security_groups=<%= @quota_security_groups %>
 quota_security_group_rules=<%= @quota_security_group_rules %>
 quota_fixed_ips=<%= @quota_fixed_ips %>
 quota_instances=<%= @quota_instances %>
+max_age=<%= @max_age %>
+<% if @force_config_drive -%>
 force_config_drive=<%= @force_config_drive %>
+<% end -%>
 <% unless @memcached_servers.nil? -%>
 memcached_servers=<%= @memcached_servers %>
 <% end -%>
 
+reserved_host_disk_mb = <%= @reserved_host_disk_mb %>
 # TODO(shep): not sure if this should go in partial scheduler-options
 #             leaving here for now
 <%- if /FilterScheduler/.match(@scheduler_driver) or
