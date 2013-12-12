@@ -10,6 +10,12 @@ libvirt_type=<%= @virt_type %>
 libvirt_inject_key=<%= @libvirt_inject_key %>
 libvirt_inject_password=<%= @libvirt_inject_password %>
 libvirt_inject_partition=<%= @libvirt_inject_partition %>
+<% if not @libvirt_cpu_mode.nil? -%>
+libvirt_cpu_mode=<%= @libvirt_cpu_mode %>
+<% end %>
+<% if @libvirt_cpu_mode == "custom" and %w{kvm qemu}.include?(@virt_type) -%>
+libvirt_cpu_model=<%= @libvirt_cpu_model %>
+<% end %>
 disk_cachemodes="<%= @disk_cachemodes.sort.join(',') %>"
 <% end -%>
 # Command prefix to use for running commands as root (default: sudo)
