@@ -50,6 +50,13 @@ default["nova"]["services"]["admin-api"]["network"] = "management"
 default["nova"]["services"]["admin-api"]["port"] = 8774
 default["nova"]["services"]["admin-api"]["path"] = "/v2/%(tenant_id)s"
 
+default["nova"]["services"]["api-metadata"]["scheme"] = "http"
+# TODO(breu): do we need network here?
+default["nova"]["services"]["api-metadata"]["network"] = "management"
+default["nova"]["services"]["api-metadata"]["port"] = 8775
+# TODO(breu): do we need path here?
+default["nova"]["services"]["api-metadata"]["path"] = "/"
+
 default["nova"]["services"]["ec2-admin"]["scheme"] = "http"
 default["nova"]["services"]["ec2-admin"]["network"] = "public"
 default["nova"]["services"]["ec2-admin"]["port"] = 8773
