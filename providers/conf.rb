@@ -28,6 +28,9 @@ action :create do
   # Get endpoint info for nova-api
   api_bind = get_bind_endpoint("nova", "api")
 
+  # Get the socket bind information for nova-api-metadata
+  metadata_api_bind = get_bind_endpoint("nova", "api-metadata")
+
   # Get endpoint info for nova-api-ec2
   ec2_bind = get_bind_endpoint("nova", "ec2-public")
 
@@ -222,6 +225,8 @@ action :create do
       "vpn_image_id" => node["nova"]["config"]["vpn_image_id"],
       "force_config_drive" => node["nova"]["config"]["force_config_drive"],
       "cinder_catalog_info" => node["nova"]["services"]["volume"]["cinder_catalog_info"],
+      "metadata_listen" => metadata_api_bind["host"],
+      "metadata_listen_port" => metadata_api_bind["port"],
       "osapi_compute_listen" => api_bind["host"],
       "osapi_compute_listen_port" => api_bind["port"],
       "ec2_listen" => ec2_bind["host"],

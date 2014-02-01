@@ -103,6 +103,8 @@ cinder_catalog_info=<%= @cinder_catalog_info %>
 ##### API #####
 ec2_workers=<%= node["nova"]["config"]["ec2_workers"] %>
 osapi_compute_workers=<%= node["nova"]["config"]["osapi_compute_workers"] %>
+metadata_listen=<%= @metadata_listen %>
+metadata_listen_port=<%= @metadata_listen_port %>
 metadata_workers=<%= node["nova"]["config"]["metadata_workers"] %>
 osapi_volume_workers=<%= node["nova"]["config"]["osapi_volume_workers"] %>
 osapi_compute_listen=<%= @osapi_compute_listen %>
