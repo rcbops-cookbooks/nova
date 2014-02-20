@@ -140,6 +140,7 @@ default["nova"]["config"]["quota_instances"] = "20"
 # requires https://review.openstack.org/#/c/8423/
 default["nova"]["config"]["resume_guests_state_on_host_boot"] = false
 default["nova"]["config"]["force_config_drive"] = false
+default["nova"]["config"]["config_drive_format"] = "iso9660"
 default['nova']['config']['image_cache_manager_interval'] = 2400
 default["nova"]["config"]["max_age"] = 0
 default["nova"]["config"]["reserved_host_disk_mb"] = 0
