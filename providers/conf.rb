@@ -224,6 +224,7 @@ action :create do
       "scheduler_max_attempts" => node["nova"]["config"]["scheduler_max_attempts"],
       "vpn_image_id" => node["nova"]["config"]["vpn_image_id"],
       "force_config_drive" => node["nova"]["config"]["force_config_drive"],
+      "config_drive_format" => node["nova"]["config"]["config_drive_format"],
       "cinder_catalog_info" => node["nova"]["services"]["volume"]["cinder_catalog_info"],
       "metadata_listen" => metadata_api_bind["host"],
       "metadata_listen_port" => metadata_api_bind["port"],

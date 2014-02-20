@@ -56,6 +56,7 @@ max_age=<%= @max_age %>
 rpc_backend=nova.openstack.common.rpc.impl_kombu
 <% if @force_config_drive -%>
 force_config_drive=<%= @force_config_drive %>
+config_drive_format=<%= @config_drive_format %>
 <% end -%>
 <% unless @memcached_servers.nil? -%>
 memcached_servers=<%= @memcached_servers %>
