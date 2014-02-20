@@ -127,6 +127,7 @@ default["nova"]["libvirt"]["libvirt_inject_partition"] = 1
 default["nova"]["libvirt"]["libvirt_cpu_mode"] = nil
 default["nova"]["libvirt"]["libvirt_cpu_model"] = nil
 default["nova"]["libvirt"]["disk_cachemodes"] = ["file=none"]
+default["nova"]["libvirt"]["block_migration_flag"] = "VIR_MIGRATE_UNDEFINE_SOURCE, VIR_MIGRATE_PEER2PEER, VIR_MIGRATE_NON_SHARED_INC"
 default["nova"]["config"]["use_single_default_gateway"] = false
 default["nova"]["config"]["availability_zone"] = "nova"
 default["nova"]["config"]["default_schedule_zone"] = "nova"
