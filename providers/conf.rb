@@ -174,6 +174,7 @@ action :create do
       "libvirt_inject_key" => node["nova"]["libvirt"]["libvirt_inject_key"],
       "libvirt_inject_password" => node["nova"]["libvirt"]["libvirt_inject_password"],
       "libvirt_inject_partition" => node["nova"]["libvirt"]["libvirt_inject_partition"],
+      "block_migration_flag" => node["nova"]["libvirt"]["block_migration_flag"],
       "force_raw_images" => node["nova"]["config"]["force_raw_images"],
       "allow_same_net_traffic" => node["nova"]["config"]["allow_same_net_traffic"],
       "quota_instances" => node["nova"]["config"]["quota_instances"],
