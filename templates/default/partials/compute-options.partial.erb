@@ -17,6 +17,7 @@ libvirt_cpu_mode=<%= @libvirt_cpu_mode %>
 libvirt_cpu_model=<%= @libvirt_cpu_model %>
 <% end %>
 disk_cachemodes="<%= @disk_cachemodes.sort.join(',') %>"
+block_migration_flag=<%= @block_migration_flag %>
 <% end -%>
 # Command prefix to use for running commands as root (default: sudo)
 rootwrap_config=/etc/nova/rootwrap.conf
