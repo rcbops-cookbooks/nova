@@ -191,6 +191,7 @@ action :create do
       "scheduler_default_filters" => node["nova"]["scheduler"]["default_filters"].join(","),
       "scheduler_weight_classes" => node["nova"]["scheduler"]["scheduler_weight_classes"],
       "scheduler_ram_weight_multiplier" => node["nova"]["scheduler"]["ram_weight_multiplier"],
+      "scheduler_host_subset_size" => node["nova"]["scheduler"]["scheduler_host_subset_size"],
       "availability_zone" => node["nova"]["config"]["availability_zone"],
       "default_schedule_zone" => node["nova"]["config"]["default_schedule_zone"],
       "connection_type" => node["nova"]["compute"]["connection_type"],
