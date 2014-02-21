@@ -204,6 +204,8 @@ NOTE: The filter scheduler currently does not work with ec2.
 * `nova["libvirt"]["libvirt_inject_key"]` - Inject ssh public key at boot?
 * `nova["libvirt"]["libvirt_inject_password"]` - Inject root password at boot?
 * `nova["libvirt"]["libvirt_inject_partition"]` - The partition to inject to: -2 = disable, -1 = inspect (libguestfs only), 0 = not partitioned, >0 = partition number
+* `nova["libvirt"]["libvirt_cpu_mode"]` - Options include "host-model", "host-passthrough", "custom", and "none"; cookbook defaults to nil and does not insert into nova.conf unless adjusted
+* `nova["libvirt"]["libvirt_cpu_model"]` - This attribute is only applicable when `virt_type` is "kvm" or "qemu" and `libvirt_cpu_mode` is "custom"; cookbook defaults to nil and does not insert into nova.conf unless changed and applicable
 * `nova["libvirt"]["disk_cachemodes"]` - KVM disk caching modes.  Defaults to "file=none".  To set writeback mode use "file=writeback".  To set multiple modes use "file=writeback,block=none"
 * `nova["config"]["use_single_default_gateway"]` - Use single default gateway?
 * `nova["config"]["availability_zone"]` - Nova availability zone.  Usually set at the node level to place a compute node in another az
