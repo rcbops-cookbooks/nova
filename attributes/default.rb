@@ -102,6 +102,7 @@ default["nova"]["scheduler"]["default_filters"] = [
   "DifferentHostFilter",
   "RetryFilter"
 ]
+default["nova"]["scheduler"]["scheduler_host_subset_size"] = 1
 
 default["nova"]["libvirt"]["virt_type"] = "kvm"
 default["nova"]["libvirt"]["vncserver_listen"] = nil
