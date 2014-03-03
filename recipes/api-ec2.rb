@@ -161,5 +161,5 @@ keystone_endpoint "Register Compute Endpoint" do
   endpoint_adminurl ec2_admin_endpoint["uri"]
   endpoint_internalurl ec2_public_endpoint["uri"]
   endpoint_publicurl ec2_public_endpoint["uri"]
-  action :create
+  action :recreate
 end
