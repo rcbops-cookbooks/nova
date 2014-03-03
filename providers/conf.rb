@@ -240,7 +240,14 @@ action :create do
       "memcached_servers" => memcached_servers,
       "image_cache_manager_interval" => node["nova"]["config"]["image_cache_manager_interval"],
       "max_age" => node["nova"]["config"]["max_age"],
-      "reserved_host_disk_mb" => node["nova"]["config"]["reserved_host_disk_mb"]
+      "reserved_host_disk_mb" => node["nova"]["config"]["reserved_host_disk_mb"],
+      "sql_connection_debug" => node["nova"]["config"]["sql_connection_debug"],
+      "sql_idle_timeout" => node["nova"]["config"]["sql_idle_timeout"],
+      "sql_retry_interval" => node["nova"]["config"]["sql_retry_interval"],
+      "sql_max_retries" => node["nova"]["config"]["sql_max_retries"],
+      "sql_min_pool_size" => node["nova"]["config"]["sql_min_pool_size"],
+      "sql_max_pool_size" => node["nova"]["config"]["sql_max_pool_size"] || nil,
+      "sql_max_overflow" => node["nova"]["config"]["sql_max_overflow"] || nil
     )
   end
   new_resource.updated_by_last_action(t.updated_by_last_action?)
