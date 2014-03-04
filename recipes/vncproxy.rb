@@ -95,3 +95,10 @@ cookbook_file "/usr/share/novnc/include/index.html" do
   owner "root"
   group "root"
 end
+
+cookbook_file "/usr/share/novnc/favicon.ico" do
+  source "novncproxy.ico"
+  mode 0644
+  owner "root"
+  group "root"
+end
