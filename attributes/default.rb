@@ -159,14 +159,43 @@ default["nova"]["config"]["max_age"] = 0
 default["nova"]["config"]["reserved_host_disk_mb"] = 0
 
 # LOGGING VERBOSITY
+#
 # in order of verbosity (most to least)
 # DEBUG, INFO, WARNING, ERROR, CRITICAL
 default["nova"]["config"]["log_verbosity"] = "INFO"
 
-# quota settings
+# QUOTA SETTINGS
+#
 default["nova"]["config"]["quota_security_groups"] = 50
 default["nova"]["config"]["quota_security_group_rules"] = 20
 
+# DB CONNECTION SETTINGS
+#
+# (IntOpt) Verbosity of SQL debugging information. 0=None, 100=Everything
+default["nova"]["config"]["sql_connection_debug"] = 0
+
+# (IntOpt) Timeout before idle sql connections are reaped
+default["nova"]["config"]["sql_idle_timeout"] = 3600
+
+# (IntOpt) Interval between retries of opening a sql connection
+default["nova"]["config"]["sql_retry_interval"] = 10
+
+# (IntOpt) Maximum db connection retries during startup.
+# Setting -1 implies an infinite retry count.
+default["nova"]["config"]["sql_max_retries"] = 10
+
+# (IntOpt) Minimum number of SQL connections to keep open in a pool
+default["nova"]["config"]["sql_min_pool_size"] = 1
+
+# (IntOpt) If set, Maximum number of SQL connections to keep open in a pool
+#default["nova"]["config"]["sql_max_pool_size"] = 5
+
+# (IntOpt) If set, use this value for max_overflow with sqlalchemy
+# http://docs.sqlalchemy.org/en/rel_0_9/core/pooling.html#sqlalchemy.pool.QueuePool
+#default["nova"]["config"]["sql_max_overflow"] = 10
+
+# NOVA RATELIMIT SETTINGS
+#
 default["nova"]["ratelimit"]["settings"] = {
     "generic-post-limit" => { "verb" => "POST", "uri" => "*", "regex" => ".*", "limit" => "10", "interval" => "MINUTE" },
     "create-servers-limit" => { "verb" => "POST", "uri" => "*/servers", "regex" => "^/servers", "limit" => "50", "interval" => "DAY" },
