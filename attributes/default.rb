@@ -124,7 +124,7 @@ default["nova"]["libvirt"]["remove_unused_original_minimum_age_seconds"] = 3600
 default["nova"]["libvirt"]["checksum_base_images"] = false
 default["nova"]["libvirt"]["libvirt_inject_key"] = false
 default["nova"]["libvirt"]["libvirt_inject_password"] = false
-default["nova"]["libvirt"]["libvirt_inject_partition"] = 1
+default["nova"]["libvirt"]["libvirt_inject_partition"] = -2
 default["nova"]["libvirt"]["libvirt_cpu_mode"] = nil
 default["nova"]["libvirt"]["libvirt_cpu_model"] = nil
 default["nova"]["libvirt"]["disk_cachemodes"] = ["file=none"]
@@ -269,7 +269,7 @@ when "fedora", "redhat", "centos"
     # Misc
     "iscsi_helper" => "tgtadm",
     "iscsi_service" => "tgtd",
-    "libvirt_packages" => ["libvirt"], 
+    "libvirt_packages" => ["libvirt"],
     "libvirt_service" => "libvirtd",
     "mysql_service" => "mysqld",
     "package_options" => ""
@@ -345,7 +345,7 @@ when "ubuntu"
     "libvirt_packages" => ["libvirt-bin", "python-libvirt", "pm-utils", "sysfsutils"],
     "libvirt_service" => "libvirt-bin",
     "mysql_service" => "mysql",
-    "package_options" => 
+    "package_options" =>
       "-o Dpkg::Options::='--force-confold' -o Dpkg::Options::='--force-confdef'"
   }
   default["nova"]["ssl"]["dir"] = "/etc/ssl"
