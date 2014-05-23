@@ -168,6 +168,7 @@ action :create do
       "user" => node["nova"]["db"]["username"],
       "passwd" => nova_setup_info["db"]["password"],
       "db_name" => node["nova"]["db"]["name"],
+      "vnc_password" => node["nova"]["libvirt"]["vnc_password"],
       "vncserver_listen" => node["nova"]["libvirt"]["vncserver_listen"] || novncserver_bind["host"],
       "vncserver_proxyclient_address" => novncserver_bind["host"],
       "novnc_proxy_cert" => novnc_proxy_cert,

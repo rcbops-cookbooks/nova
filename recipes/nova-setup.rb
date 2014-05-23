@@ -22,8 +22,10 @@
 # Allow for using a well known db password
 if node["developer_mode"] == true
   node.set_unless["nova"]["db"]["password"] = "nova"
+  node.set_unless["nova"]["libvirt"]["vnc_password"] = "nova"
 else
   node.set_unless["nova"]["db"]["password"] = secure_password
+  node.set_unless["nova"]["libvirt"]["vnc_password"] = secure_password
 end
 
 include_recipe "nova::nova-common"
