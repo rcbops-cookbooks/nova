@@ -116,6 +116,7 @@ default["nova"]["scheduler"]["scheduler_host_subset_size"] = 1
 
 default["nova"]["libvirt"]["virt_type"] = "kvm"
 default["nova"]["libvirt"]["vncserver_listen"] = nil
+default["nova"]["libvirt"]["vnc_password"] = nil
 default["nova"]["libvirt"]["vncserver_proxyclient_address"] = node["ipaddress"]
 default["nova"]["libvirt"]["auth_tcp"] = "none"
 default["nova"]["libvirt"]["remove_unused_base_images"] = true
