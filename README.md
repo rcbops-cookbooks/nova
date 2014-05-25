@@ -167,11 +167,6 @@ NOTE: service password is no longer set statically in the attributes file, but s
 * `nova["services"]["ec2-public"]["cert_override"]` - For SSL - specify location of custom Cert file
 * `nova["services"]["ec2-public"]["key_override"]` - For SSL - specify location of custom Key file
 
-* `nova["services"]["xvpvnc-proxy"]["scheme"]` - Scheme for xvpvncproxy service service (http/https)
-* `nova["services"]["xvpvnc-proxy"]["network"]` - `osops_networks` network name which service operates on
-* `nova["services"]["xvpvnc-proxy"]["port"]` - Port to bind service to
-* `nova["services"]["xvpvnc-proxy"]["path"]` - URI to use
-
 * `nova["services"]["novnc-proxy"]["scheme"]` - Scheme for novncproxy service (http/https)
 * `nova["services"]["novnc-proxy"]["network"]` - `osops_networks` network name which service operates on
 * `nova["services"]["novnc-proxy"]["port"]` - Port to bind service to
@@ -302,6 +297,8 @@ Author:: Darren Birkett (<darren.birkett@rackspace.co.uk>)
 Author:: Evan Callicoat (<evan.callicoat@rackspace.com>)  
 Author:: Matt Thompson (<matt.thompson@rackspace.co.uk>)  
 Author:: Andy McCrae (<andrew.mccrae@rackspace.co.uk>)  
+Author:: Kevin Carter (<kevin.carter@rackspace.com>)
+
 
 Copyright 2012-2013, Rackspace US, Inc.  
 

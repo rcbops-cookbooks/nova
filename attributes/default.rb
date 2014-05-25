@@ -75,11 +75,6 @@ default["nova"]["services"]["ec2-public"]["key_file"] = "nova.key"
 #default["nova"]["services"]["ec2-public"]["chain_file"] = ""
 default["nova"]["services"]["ec2-public"]["wsgi_file"] = "nova-api-ec2"
 
-default["nova"]["services"]["xvpvnc-proxy"]["scheme"] = "http"
-default["nova"]["services"]["xvpvnc-proxy"]["network"] = "nova"
-default["nova"]["services"]["xvpvnc-proxy"]["port"] = 6081
-default["nova"]["services"]["xvpvnc-proxy"]["path"] = "/console"
-
 default["nova"]["services"]["novnc-proxy"]["scheme"] = "http"
 default["nova"]["services"]["novnc-proxy"]["network"] = "nova"
 default["nova"]["services"]["novnc-proxy"]["port"] = 6080
