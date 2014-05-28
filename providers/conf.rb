@@ -34,9 +34,8 @@ action :create do
   # Get endpoint info for nova-api-ec2
   ec2_bind = get_bind_endpoint("nova", "ec2-public")
 
-  # Search for xvpvnc endpoint info
+  # Search for vnc endpoint info
   vnc_role = "nova-vncproxy"
-  xvpvncproxy_endpoint = get_access_endpoint(vnc_role, "nova", "xvpvnc-proxy")
   novncproxy_endpoint = get_access_endpoint(vnc_role, "nova", "novnc-proxy")
 
   # Check novnc-proxy ssl config
@@ -49,7 +48,6 @@ action :create do
   end
 
   # Get bind info for vnc
-  xvpvncproxy_bind = get_bind_endpoint("nova", "xvpvnc-proxy")
   novncserver_bind = get_bind_endpoint("nova", "novnc-server")
   novncproxy_bind = get_bind_endpoint("nova", "novnc-proxy")
 
@@ -174,11 +172,8 @@ action :create do
       "novnc_proxy_cert" => novnc_proxy_cert,
       "novnc_proxy_key" => novnc_proxy_key,
       "novncproxy_base_url" => novncproxy_endpoint["uri"],
-      "xvpvncproxy_bind_host" => xvpvncproxy_bind["host"],
-      "xvpvncproxy_bind_port" => xvpvncproxy_bind["port"],
       "novncproxy_bind_host" => novncproxy_bind["host"],
       "novncproxy_bind_port" => novncproxy_bind["port"],
-      "xvpvncproxy_base_url" => xvpvncproxy_endpoint["uri"],
       "rabbit_ipaddress" => rabbit_info["host"],
       "rabbit_port" => rabbit_info["port"],
       "rabbit_ha_queues" => rabbit_settings["cluster"] ? "True" : "False",
